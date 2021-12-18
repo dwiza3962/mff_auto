@@ -41,8 +41,8 @@ class Updater:
     """Class for working with project updates."""
 
     NEW_VERSION_FILE = "new_version.py"
-    GITHUB_VERSION_LINK = "https://raw.githubusercontent.com/tmarenko/mff_auto/master/version.py"
-    GITHUB_SOURCE_CODE_URL = "https://github.com/tmarenko/mff_auto/archive/{version}.zip"
+    GITHUB_VERSION_LINK = "https://raw.githubusercontent.com/dwiza3962/mff_auto/master/version.py"
+    GITHUB_SOURCE_CODE_URL = "https://github.com/dwiza3962/mff_auto/archive/{version}.zip"
     DOWNLOAD_COUNTER_LINK = "https://api.countapi.xyz/hit/mff_auto/{version}"
     SOURCE_CODE_FOLDER_NAME = "mff_auto-{version}"
 
