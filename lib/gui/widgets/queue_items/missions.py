@@ -9,6 +9,7 @@ class _LegendaryBattle(GameMode):
         "Infinity War": missions.LegendaryBattle.INFINITY_WAR,
         "Ant-Man & The Wasp": missions.LegendaryBattle.ANT_MAN,
         "Captain Marvel": missions.LegendaryBattle.CAPTAIN_MARVEL,
+        "Black Widow": missions.LegendaryBattle.BLACK_WIDOW,
         "Shang-Chi": missions.LegendaryBattle.SHANG_CHI
     }
 
@@ -745,6 +746,30 @@ class _DeviantDiversion(GameMode):
 
     def __init__(self, game):
         super().__init__(game, "DEVIANT DIVERSION", missions.DeviantDiversion, "Deviant Diversion [Black Panther]")
+        self.mode_settings.append(GameMode.ModeSetting(setting_type=GameMode.ModeSetting.Spinbox,
+                                                       setting_key="times",
+                                                       text="Select how many stages to complete"))
+        self.mode_settings.append(GameMode.ModeSetting(setting_type=GameMode.ModeSetting.Spinbox,
+                                                       setting_key="difficulty",
+                                                       text="Select stage difficulty",
+                                                       min=1, max=4))
+
+class _SmallerHeadsPrevail(GameMode):
+
+    def __init__(self, game):
+        super().__init__(game, "SMALLER HEADS PREVAIL", missions.DeviantDiversion, "Smaller Heads Prevail [Kingo]")
+        self.mode_settings.append(GameMode.ModeSetting(setting_type=GameMode.ModeSetting.Spinbox,
+                                                       setting_key="times",
+                                                       text="Select how many stages to complete"))
+        self.mode_settings.append(GameMode.ModeSetting(setting_type=GameMode.ModeSetting.Spinbox,
+                                                       setting_key="difficulty",
+                                                       text="Select stage difficulty",
+                                                       min=1, max=4))
+
+class _BrainsVsBlades(GameMode):
+
+    def __init__(self, game):
+        super().__init__(game, "BRAINS VS BLADES", missions.DeviantDiversion, "Brains VS Blades [??]")
         self.mode_settings.append(GameMode.ModeSetting(setting_type=GameMode.ModeSetting.Spinbox,
                                                        setting_key="times",
                                                        text="Select how many stages to complete"))

@@ -362,11 +362,12 @@ class PlayingHero(OneStageEpicQuest):
         super().__init__(game=game, mode_label_ui=ui.EQ_PLAYING_HERO_STAGE_LABEL)
 
 
-class HeroesReunited(OneStageEpicQuest):
+class HeroesReunited(TwoStageEpicQuest):
     """Class for working with Epic Quest mission: Heroes Reunited: Madness Ensues."""
 
     def __init__(self, game):
-        super().__init__(game=game, mode_label_ui=ui.EQ_HEROES_REUNITED_STAGE)
+        super().__init__(game=game, mode_label_ui=ui.EQ_HEROES_REUNITED_LABEL,
+                         stage_1_ui=ui.EQ_HEROES_REUNITED_STAGE_1, stage_2_ui=ui.EQ_HEROES_REUNITED_STAGE_2)
 
 
 class GoldenGods(TwoStageEpicQuest):
