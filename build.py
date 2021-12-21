@@ -25,6 +25,7 @@ PORTABLE_PYTHON_FILE_PATH = os.path.join(cur_dir(), PORTABLE_PYTHON_FILE_NAME)
 PORTABLE_PYTHON_FOLDER = "Python 3.6.5 Portable"
 REQUIREMENTS_FILE_PATH = os.path.join(cur_dir(), "requirements.txt")
 BUILD_FOLDER = os.path.join(cur_dir(), "build")
+OUTPUT_FOLDER = os.path.join(cur_dir(), "output")
 SEVEN_ZIP_EXE = os.path.join(cur_dir(), SEVEN_ZIP_FOLDER, "7z.exe")
 IMAGES_FOLDER = "images"
 LIB_FOLDER = "lib"
@@ -46,6 +47,9 @@ def remove_last_build():
     if os.path.isdir(BUILD_FOLDER):
         print("Removing last build.")
         shutil.rmtree(BUILD_FOLDER)
+    if os.path.isdir(OUTPUT_FOLDER):
+        print("Removing last build artifacts.")
+        shutil.rmtree(OUTPUT_FOLDER)
 
 
 def copy_project_files():
@@ -63,7 +67,7 @@ def copy_project_files():
         shutil.rmtree(os.path.join(BUILD_FOLDER, SETTINGS_FOLDER, GUI_FOLDER))
     os.mkdir(path=os.path.join(BUILD_FOLDER, LOG_FOLDER))
     os.mkdir(path=os.path.join(BUILD_FOLDER, SETTINGS_FOLDER, GUI_FOLDER))
-
+    os.mkdir(path=OUTPUT_FOLDER)
 
 def download_7zip():
     if os.path.isfile(SEVEN_ZIP_FILE_PATH):
@@ -193,19 +197,43 @@ def remove_7zip():
 
 def build_binaries():
     remove_last_build()
-    copy_project_files()
-    download_7zip()
-    download_portable_python()
-    download_tesseract_ocr()
-    extract_7zip()
-    extract_portable_python()
-    extrace_tesseract_ocr()
-    install_requirements()
-    remove_trash()
-    create_gui_start_file()
-    archive_build()
-    remove_7zip()
+    print(f"remove_last_build: {time.time() - now}")
 
+    copy_project_files()
+    print(f"copy_project_files: {time.time() - now}")
+
+    download_7zip()
+    print(f"download_7zip: {time.time() - now}")
+
+    download_portable_python()
+    print(f"download_portable_python: {time.time() - now}")
+
+    download_tesseract_ocr()
+    print(f"download_tesseract_ocr: {time.time() - now}")
+
+    extract_7zip()
+    print(f"extract_7zip: {time.time() - now}")
+
+    extract_portable_python()
+    print(f"extract_portable_python: {time.time() - now}")
+
+    extrace_tesseract_ocr()
+    print(f"extrace_tesseract_ocr: {time.time() - now}")
+
+    install_requirements()
+    print(f"install_requirements: {time.time() - now}")
+
+    remove_trash()
+    print(f"remove_trash: {time.time() - now}")
+
+    create_gui_start_file()
+    print(f"create_gui_start_file: {time.time() - now}")
+
+    archive_build()
+    print(f"archive_build: {time.time() - now}")
+
+    remove_7zip()
+    print(f"remove_7zip: {time.time() - now}")
 
 if __name__ == '__main__':
     now = time.time()
