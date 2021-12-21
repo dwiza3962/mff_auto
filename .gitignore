@@ -109,3 +109,7 @@ unittests/*
 
 # scipy _nd_image
 !_nd_image.cp36-win32.pyd
+*.exe
+*.7z
+7zip/
+*.zip
