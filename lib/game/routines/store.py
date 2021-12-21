@@ -246,8 +246,8 @@ class ArtifactStore(Store):
                 logger.debug(f"Buying Artifact Chest: {chest_ui.name}")
                 self.emulator.click_button(chest_ui)
                 if wait_until(self.emulator.is_ui_element_on_screen,
-                              ui_element=ui.STORE_ARTIFACT_FREE_CHEST_PURCHASE):
-                    self.emulator.click_button(ui.STORE_ARTIFACT_FREE_CHEST_PURCHASE)
+                              ui_element=ui.STORE_ARTIFACT_GOLD_CHEST_PURCHASE):
+                    self.emulator.click_button(ui.STORE_ARTIFACT_GOLD_CHEST_PURCHASE)
                     if wait_until(self.emulator.is_ui_element_on_screen, ui_element=ui.SKIP_CUTSCENE):
                         self.emulator.click_button(ui.SKIP_CUTSCENE)
                         if wait_until(self.emulator.is_ui_element_on_screen,
