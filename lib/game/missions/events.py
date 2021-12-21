@@ -1,4 +1,6 @@
-﻿import lib.logger as logging
+﻿from asyncio import sleep
+
+import lib.logger as logging
 from lib.functions import wait_until, r_sleep, is_strings_similar
 from lib.game import ui
 from lib.game.battle_bot import ManualBattleBot
@@ -207,15 +209,25 @@ class WorldEvent(EventMissions):
     def complete_world_event(self):
         """Completes available stage in World Event."""
         self.open_world_event()
-        if wait_until(self.emulator.is_ui_element_on_screen, ui_element=ui.EVENT_WORLD_LOBBY_READY_BUTTON):
-            logger.debug("Entering into team selection lobby.")
-            self.emulator.click_button(ui.EVENT_WORLD_LOBBY_READY_BUTTON)
-            self._get_ready_to_battle()
-            if wait_until(self.emulator.is_ui_element_on_screen, ui_element=ui.EVENT_WORLD_BATTLE_START_BUTTON):
-                self.emulator.click_button(ui.EVENT_WORLD_BATTLE_START_BUTTON)
-                ManualBattleBot(self.game, self.battle_over_conditions).fight(move_around=True)
-                self.emulator.click_button(ui.EVENT_WORLD_BATTLE_TOTAL_SCORE)
-                self.game.go_to_main_menu()
+        self.emulator.click_button(ui.EVENT_WORLD_LOBBY_READY_BUTTON)
+        logger.debug("Clicked: EVENT_WORLD_LOBBY_READY_BUTTON: " + ui.EVENT_WORLD_LOBBY_READY_BUTTON.text)
+        if self.emulator.is_ui_element_on_screen(ui_element=ui.EVENT_WORLD_BATTLE_READY_BUTTON):
+            self.emulator.click_button(ui.EVENT_WORLD_BATTLE_READY_BUTTON)
+            logger.debug("Clicked: EVENT_WORLD_BATTLE_READY_BUTTON: " + ui.EVENT_WORLD_BATTLE_READY_BUTTON.text)
+            self.emulator.click_button(ui.EVENT_WORLD_SELECT_BATTLE_READY)
+            logger.debug("Clicked: EVENT_WORLD_SELECT_BATTLE_READY: " + ui.EVENT_WORLD_SELECT_BATTLE_READY.text)
+            # if self.emulator.is_ui_element_on_screen(ui_element = ui.EVENT_WORLD_SELECT_BATTLE_READY):
+            #     self.emulator.click_button(ui.EVENT_WORLD_SELECT_BATTLE_READY)
+            #     logger.debug("Clicked: EVENT_WORLD_SELECT_BATTLE_READY: " + ui.EVENT_WORLD_SELECT_BATTLE_READY.text)
+            # if self.emulator.is_ui_element_on_screen(ui_element = ui.EVENT_WORLD_SELECT_BATTLE_READY_OK):
+            self.emulator.click_button(ui.EVENT_WORLD_SELECT_BATTLE_READY_OK)
+            logger.debug("Clicked: EVENT_WORLD_SELECT_BATTLE_READY_OK: " + ui.EVENT_WORLD_SELECT_BATTLE_READY_OK.text)
+        if wait_until(self.emulator.is_ui_element_on_screen, ui_element=ui.EVENT_WORLD_BATTLE_START_BUTTON):
+            self.emulator.click_button(ui.EVENT_WORLD_BATTLE_START_BUTTON)
+            ManualBattleBot(self.game, self.battle_over_conditions).fight(move_around=True)
+            self.emulator.click_button(ui.EVENT_WORLD_BATTLE_TOTAL_SCORE)
+            self.game.go_to_main_menu()
+        return
 
 
 class FuturePass(EventMissions):
@@ -268,3 +280,36 @@ class FuturePass(EventMissions):
         self._acquire_free_points()
         self._claim_rewards()
         self.game.go_to_main_menu()
+
+
+class BattleWorld(EventMissions):
+    """Class for working with Future Pass event."""
+
+    EVENT_NAME = "BATTLE WORLD"
+
+    def open_battle_world(self):
+        """Opens Future Pass in Event List."""
+        self.game.go_to_main_menu()
+        event_ui = self.find_event_ui_by_name(self.EVENT_NAME, similar_to_full_line=False)
+        if not event_ui:
+            return logger.warning("Can't find Battle World, probably event isn't on right now.")
+        self.emulator.click_button(event_ui)
+        return wait_until(self.emulator.is_ui_element_on_screen, ui_element=ui.EVENT_BATTLE_WORLD_LABEL_SELECT)
+
+    # def select_mission(self):
+
+    def complete_battle_world(self):
+        """Completes available stage in World Event."""
+        self.open_battle_world()
+        logger.debug("!!!!get ready for battle")
+        # if wait_until(self.emulator.is_ui_element_on_screen, ui_element=ui.EVENT_WORLD_LOBBY_READY_BUTTON):
+        #     logger.debug("Entering into team selection lobby.")
+        #     self.emulator.click_button(ui.EVENT_WORLD_LOBBY_READY_BUTTON)
+        #     logger.debug("Entering into team selection lobby.")
+        if wait_until(self.emulator.is_ui_element_on_screen, ui_element=ui.EVENT_WORLD_BATTLE_START_BUTTON):
+            self.emulator.click_button(ui.EVENT_WORLD_BATTLE_START_BUTTON)
+            ManualBattleBot(self.game, self.battle_over_conditions).fight(move_around=True)
+            self.emulator.click_button(ui.EVENT_WORLD_BATTLE_TOTAL_SCORE)
+            self.game.go_to_main_menu()
+
+        return
