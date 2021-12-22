@@ -18,13 +18,13 @@ if __name__ == '__main__':
     game.set_timeline_team(1)                 # Setup your team for PVP missions
     game.ACQUIRE_HEROIC_QUEST_REWARDS = True  # Setup ability to collect Heroic Quest rewards
 
-    # Store Purchases - Free Artifact, Free Hero, Gold Purchase Artifact, Support Shop
+    # # Store Purchases - Free Artifact, Free Hero, Gold Purchase Artifact, Support Shop
     # EnergyStore(game).collect_free_energy()
     # EnergyStore(game).collect_energy_via_assemble_points()
-    #
+    # #
     # ArtifactStore(game).acquire_free_artifact_chest()
-    ArtifactStore(game).buy_artifact_chest(chests_to_buy=['STORE_ARTIFACT_CHEST_1', 'STORE_ARTIFACT_CHEST_2', 'STORE_ARTIFACT_CHEST_3', 'STORE_ARTIFACT_CHEST_4'])
-
+    ArtifactStore(game).buy_artifact_chest(chests_to_buy=['1', '2', '3', '4'])
+    #
     # CharacterStore(game).acquire_free_hero_chest()
-
+    #
     # SupportShop(game).buy_materials(materials_list=['SUPPORT_SHOP_MATERIAL_MKRAAN_SHARD', 'SUPPORT_SHOP_MATERIAL_UNIFORM_UPGRADE_KIT'])
