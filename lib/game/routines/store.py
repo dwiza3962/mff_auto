@@ -241,21 +241,19 @@ class ArtifactStore(Store):
         r_sleep(1)  # Wait for animations
         self._drag_store_list_to_the_right()
         for chest in chests_to_buy:
-            chest_ui = ui.get_by_name(chest)
-            if wait_until(self.emulator.is_ui_element_on_screen, ui_element=chest_ui):
-                logger.debug(f"Buying Artifact Chest: {chest_ui.name}")
-                self.emulator.click_button(chest_ui)
-                if wait_until(self.emulator.is_ui_element_on_screen,
-                              ui_element=ui.STORE_ARTIFACT_GOLD_CHEST_PURCHASE):
+            if wait_until(self.emulator.is_ui_element_on_screen, ui_element=ui.STORE_ARTIFACT_CHEST_GOLD):
+                self.emulator.click_button(ui.STORE_ARTIFACT_CHEST_GOLD)
+                if wait_until(self.emulator.is_ui_element_on_screen, ui_element=ui.STORE_ARTIFACT_GOLD_CHEST_PURCHASE):
                     self.emulator.click_button(ui.STORE_ARTIFACT_GOLD_CHEST_PURCHASE)
                     if wait_until(self.emulator.is_ui_element_on_screen, ui_element=ui.SKIP_CUTSCENE):
                         self.emulator.click_button(ui.SKIP_CUTSCENE)
                         if wait_until(self.emulator.is_ui_element_on_screen,
                                       ui_element=ui.STORE_ARTIFACT_FREE_CHEST_PURCHASE_CLOSE):
                             self.emulator.click_button(ui.STORE_ARTIFACT_FREE_CHEST_PURCHASE_CLOSE)
-                            logger.info(f"Artifact Chest {chest_ui.name} acquired.")
+                            logger.info(f"Artifact Chest STORE_ARTIFACT_CHEST_GOLD acquired.")
                     if wait_until(self.emulator.is_ui_element_on_screen,
                                   ui_element=ui.STORE_RECHARGE_ENERGY_VIA_POINTS_LIMIT):
-                        logger.info(f"Reached daily limit for {chest_ui.name}.")
+                        logger.info("Daily Acquire Artifact Chest Reached.")
                         self.emulator.click_button(ui.STORE_RECHARGE_ENERGY_VIA_POINTS_LIMIT)
+                        break
         self.game.go_to_main_menu()
