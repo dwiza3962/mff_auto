@@ -164,7 +164,7 @@ CONTENT_STATUS_BOARD_1.button_rect = Rect(0.05625, 0.2462962962962963, 0.94375, 
 
 CONTENT_STATUS_BOARD_2 = UIElement(name='CONTENT_STATUS_BOARD_2')
 CONTENT_STATUS_BOARD_2.description = "Position of second half of content status board. Contains info about stages."
-CONTENT_STATUS_BOARD_2.button_rect = Rect(0.05520833333333333, 0.34274074074074073, 0.94375, 0.9092592592592592)
+CONTENT_STATUS_BOARD_2.button_rect = Rect(0.05625, 0.2462962962962963, 0.94375, 0.8148148148148148)
 
 CONTENT_STATUS_ELEMENT_1 = UIElement(name='CONTENT_STATUS_ELEMENT_1')
 CONTENT_STATUS_ELEMENT_1.description = "Local position of any element in content status board 1. Can be translated to any col/row. Button rect contains offset info for col/row."
@@ -183,12 +183,12 @@ CONTENT_STATUS_ELEMENT_STAGE.text_threshold = 160
 CONTENT_STATUS_ELEMENT_STAGE.available_characters = "1234567890/"
 
 CONTENT_STATUS_DRAG_FROM = UIElement(name='CONTENT_STATUS_DRAG_FROM')
-CONTENT_STATUS_DRAG_FROM.description = "Start position of dragging board to see others elements."
-CONTENT_STATUS_DRAG_FROM.button_rect = Rect(0.7640625, 0.6462962962962963, 0.8104166666666667, 0.725925925925926)
+CONTENT_STATUS_DRAG_FROM.description = "Start position of dragging board to see others elements. COL[2.4]"
+CONTENT_STATUS_DRAG_FROM.button_rect = Rect(0.4835584677419355, 0.7524910394265231, 0.5178326612903226, 0.7811648745519713)
 
 CONTENT_STATUS_DRAG_TO = UIElement(name='CONTENT_STATUS_DRAG_TO')
 CONTENT_STATUS_DRAG_TO.description = "End position of dragging board to see others elements."
-CONTENT_STATUS_DRAG_TO.button_rect = Rect(0.7640625, 0.2659259259259259, 0.8104166666666667, 0.34555555555555556)
+CONTENT_STATUS_DRAG_TO.button_rect = Rect(0.4835584677419355, 0.15, 0.5178326612903226, 0.17)
 
 MENU_BACK = UIElement(name='MENU_BACK')
 MENU_BACK.description = "Back button in menus."
