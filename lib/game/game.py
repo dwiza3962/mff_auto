@@ -36,6 +36,7 @@ class Game(Notifications):
     """Class for working with main game methods."""
 
     ACQUIRE_HEROIC_QUEST_REWARDS = False
+    USE_CLEAR_TICKETS = False
 
     def __init__(self, emulator, user_name=None):
         """Class initialization.

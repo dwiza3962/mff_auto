@@ -18,35 +18,52 @@ class EpicQuest(Missions):
         """
         super().__init__(game, mode_name=mode_label.text)
 
-    def start_stage(self, stage_button, stage_num, farm_shifter_bios=False):
+    def start_stage(self, stage_num, farm_shifter_bios=False, stage_button=None):
         """Starts Epic Quests stage.
 
-        :param ui.UIElement stage_button: rect of button to start stage.
         :param int stage_num: available stages count.
         :param bool farm_shifter_bios: should game be restarted if shifter isn't appeared.
         """
-        if not wait_until(self.emulator.is_ui_element_on_screen, ui_element=ui.START_BUTTON):
-            self.emulator.click_button(stage_button)
-            wait_until(self.emulator.is_ui_element_on_screen, ui_element=ui.START_BUTTON)
-        if not self.press_start_button():
-            logger.error(f"Cannot start Epic Quest stage {self.mode_name}, exiting.")
-            return 0
-        auto_battle_bot = AutoBattleBot(self.game, self.battle_over_conditions)
-        ally_appeared = auto_battle_bot.wait_until_shifter_appeared() if farm_shifter_bios else True
-        if farm_shifter_bios and not ally_appeared:
-            logger.info("No shifter, restarting.")
-            if self.game.restart_game(repeat_while=auto_battle_bot.is_battle):
-                self.game.select_mode(self.mode_name)
-                return stage_num
-
-        auto_battle_bot.fight()
-        stage_num -= 1
-        logger.debug(f"{stage_num} stages left to complete.")
-        self.close_mission_notifications()
-        if stage_num > 0:
-            self.press_repeat_button()
+        if self.game.USE_CLEAR_TICKETS:
+            logger.info("Use Clear Tickets: TODO implement AutoBattleBot Clear Ticket User")
+            while stage_num > 0:
+                if wait_until(self.emulator.is_ui_element_on_screen, ui_element=ui.CLEAR_BUTTON):
+                    logger.debug("Clicked CLEAR button.")
+                    self.emulator.click_button(ui.CLEAR_BUTTON)
+                    if wait_until(self.emulator.is_ui_element_on_screen, ui_element=ui.CLEAR_TICKET_NOTIFICATION_X1):
+                        logger.debug("Clicked USE x1 Clear Tickets button.")
+                        self.emulator.click_button(ui.CLEAR_TICKET_NOTIFICATION_X1)
+                        if wait_until(self.emulator.is_ui_element_on_screen, ui_element=ui.CLEAR_TICKET_USED_NOTIFICATION_CLOSE, timeout=15):
+                            logger.debug("Clicked Clear Ticket Close button.")
+                            self.emulator.click_button(ui.CLEAR_TICKET_USED_NOTIFICATION_CLOSE)
+                            stage_num -= 1
+                    else:
+                        logger.debug("X1 not on screen.")
+                else:
+                    logger.debug("Clear Mission not on screen, setting stages to 1 and returning.")
+                    stage_num = 1
         else:
-            self.press_home_button()
+            if not wait_until(self.emulator.is_ui_element_on_screen, ui_element=ui.START_BUTTON):
+                self.emulator.click_button(stage_button)
+                wait_until(self.emulator.is_ui_element_on_screen, ui_element=ui.START_BUTTON)
+            if not self.press_start_button():
+                logger.error(f"Cannot start Epic Quest stage {self.mode_name}, exiting.")
+                return 0
+            auto_battle_bot = AutoBattleBot(self.game, self.battle_over_conditions)
+            ally_appeared = auto_battle_bot.wait_until_shifter_appeared() if farm_shifter_bios else True
+            if farm_shifter_bios and not ally_appeared:
+                logger.info("No shifter, restarting.")
+                if self.game.restart_game(repeat_while=auto_battle_bot.is_battle):
+                    self.game.select_mode(self.mode_name)
+                    return stage_num
+            auto_battle_bot.fight()
+            stage_num -= 1
+            logger.debug(f"{stage_num} stages left to complete.")
+            self.close_mission_notifications()
+            if stage_num > 0:
+                self.press_repeat_button()
+            else:
+                self.press_home_button()
         return stage_num
 
     def do_missions(self, times=None, farm_shifter_bios=False):
@@ -88,7 +105,7 @@ class OneStageEpicQuest(EpicQuest):
             self.game.select_mode(self.mode_name)
             stage_num = self.stages
             while stage_num > 0:
-                stage_num = self.start_stage(self.mode_label_ui, stage_num, farm_shifter_bios=farm_shifter_bios)
+                stage_num = self.start_stage(stage_num, farm_shifter_bios=farm_shifter_bios)
         logger.info(f"No more stages for {self.mode_name}.")
 
 
@@ -117,12 +134,12 @@ class TwoStageEpicQuest(EpicQuest):
                 stage_2_num = 0
             if stage_1_num > 0 or stage_2_num > 0:
                 while stage_1_num > 0 and self.stages > 0:
-                    stage_1_num = self.start_stage(self.stage_1_ui, stage_1_num, farm_shifter_bios=farm_shifter_bios)
+                    stage_1_num = self.start_stage(stage_1_num, farm_shifter_bios=farm_shifter_bios)
                     self.stages = stage_1_num + stage_2_num
                 if stage_2_num > 0 and self.game.is_main_menu():
                     self.game.select_mode(self.mode_name)
                 while stage_2_num > 0 and self.stages > 0:
-                    stage_2_num = self.start_stage(self.stage_2_ui, stage_2_num, farm_shifter_bios=farm_shifter_bios)
+                    stage_2_num = self.start_stage(stage_2_num, farm_shifter_bios=farm_shifter_bios)
                     self.stages = stage_1_num + stage_2_num
         logger.info(f"No more stages for {self.mode_name}.")
 
@@ -143,7 +160,8 @@ class TwoStageEpicQuest(EpicQuest):
 class TenStageEpicQuest(EpicQuest):
     """Class for working with Epic Quests with 10 stages (usual missions without difficulty)."""
 
-    SECOND_PAGE_EQ = [ui.EQ_RISE_OF_X_MEN.name, ui.EQ_SORCERER_SUPREME.name, ui.EQ_X_FORCE.name]
+    SECOND_PAGE_EQ = [ui.EQ_FIRST_FAMILY.name, ui.EQ_RISE_OF_X_MEN.name, ui.EQ_X_FORCE.name]
+    THIRD_PAGE_EQ = [ui.EQ_SORCERER_SUPREME.name]
 
     def __init__(self, game, mode_selector_ui, mission_selector_ui, mission_selector_label_ui, stage_selector_ui,
                  stage_name=None):
@@ -166,14 +184,23 @@ class TenStageEpicQuest(EpicQuest):
     def _select_epic_quest(self):
         """Selects Epic Quest."""
         if self.game.go_to_epic_quests():
+            logger.debug("Mode Selector: " + self.mode_selector_ui.name)
+            if self.mode_selector_ui.name in self.THIRD_PAGE_EQ:
+                logger.debug("Epic Quests is referring to the third page. Trying to scroll.")
+                self.emulator.drag(ui.EQ_PAGE_DRAG_FROM, ui.EQ_PAGE_DRAG_TO)
+                self.emulator.drag(ui.EQ_PAGE_DRAG_FROM, ui.EQ_PAGE_DRAG_TO)
+                r_sleep(5)
             if self.mode_selector_ui.name in self.SECOND_PAGE_EQ:
                 logger.debug("Epic Quests is referring to the second page. Trying to scroll.")
                 self.emulator.drag(ui.EQ_PAGE_DRAG_FROM, ui.EQ_PAGE_DRAG_TO)
-                r_sleep(1)
+                r_sleep(5)
             if wait_until(self.emulator.is_ui_element_on_screen, ui_element=self.mode_selector_ui):
                 logger.debug(f"Selecting Epic Quest: {self.mode_selector_ui.name}.")
                 self.emulator.click_button(self.mode_selector_ui)
+                r_sleep(1)
                 return True
+            logger.error(f"Failed to get to mode: {self.mode_selector_ui.name}")
+            return False
 
     def _select_mission(self):
         """Selects missions in Epic Quest."""
@@ -199,7 +226,7 @@ class TenStageEpicQuest(EpicQuest):
         if times:
             if self._select_epic_quest() and self._select_mission() and self._select_stage():
                 while times > 0:
-                    times = self.start_stage(self.stage_selector_ui, times, farm_shifter_bios=farm_shifter_bios)
+                    times = self.start_stage(times, farm_shifter_bios=farm_shifter_bios)
         logger.info(f"No more stages for {self.mode_name}.")
 
     def do_missions(self, times=10, farm_shifter_bios=False):
@@ -271,7 +298,7 @@ class TenStageWithDifficultyEpicQuest(TenStageEpicQuest):
         if times:
             if self._select_epic_quest() and self._select_mission() and self._select_stage(difficulty=difficulty):
                 while times > 0:
-                    times = self.start_stage(self.stage_selector_ui, times, farm_shifter_bios=farm_shifter_bios)
+                    times = self.start_stage(times, farm_shifter_bios=farm_shifter_bios)
         logger.info(f"No more stages for {self.mode_name}.")
 
     def do_missions(self, times=10, difficulty=6, farm_shifter_bios=False):
