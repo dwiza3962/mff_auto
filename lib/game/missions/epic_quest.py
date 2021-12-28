@@ -25,23 +25,21 @@ class EpicQuest(Missions):
         :param bool farm_shifter_bios: should game be restarted if shifter isn't appeared.
         """
         if self.game.USE_CLEAR_TICKETS:
-            logger.info("Use Clear Tickets: TODO implement AutoBattleBot Clear Ticket User")
             while stage_num > 0:
-                if wait_until(self.emulator.is_ui_element_on_screen, ui_element=ui.CLEAR_BUTTON):
-                    logger.debug("Clicked CLEAR button.")
-                    self.emulator.click_button(ui.CLEAR_BUTTON)
-                    if wait_until(self.emulator.is_ui_element_on_screen, ui_element=ui.CLEAR_TICKET_NOTIFICATION_X1):
-                        logger.debug("Clicked USE x1 Clear Tickets button.")
-                        self.emulator.click_button(ui.CLEAR_TICKET_NOTIFICATION_X1)
-                        if wait_until(self.emulator.is_ui_element_on_screen, ui_element=ui.CLEAR_TICKET_USED_NOTIFICATION_CLOSE, timeout=15):
-                            logger.debug("Clicked Clear Ticket Close button.")
-                            self.emulator.click_button(ui.CLEAR_TICKET_USED_NOTIFICATION_CLOSE)
-                            stage_num -= 1
-                    else:
-                        logger.debug("X1 not on screen.")
+                if not self.press_clear_button():
+                    logger.error(f"Cannot Clear Epic Quest stage {self.mode_name}, exiting.")
+                    return 0
+                if wait_until(self.emulator.is_ui_element_on_screen, ui_element=ui.CLEAR_TICKET_NOTIFICATION_X1):
+                    logger.debug(f"Clicked USE x1 Clear Tickets button.   {self.mode_name}")
+                    self.emulator.click_button(ui.CLEAR_TICKET_NOTIFICATION_X1)
+                    r_sleep(5)
+                    if wait_until(self.emulator.is_ui_element_on_screen,
+                                  ui_element=ui.CLEAR_TICKET_USED_NOTIFICATION_CLOSE, timeout=10):
+                        logger.debug(f"Clicked Clear Ticket Close button.  {self.mode_name}")
+                        self.emulator.click_button(ui.CLEAR_TICKET_USED_NOTIFICATION_CLOSE)
+                        stage_num -= 1
                 else:
-                    logger.debug("Clear Mission not on screen, setting stages to 1 and returning.")
-                    stage_num = 1
+                    logger.debug("X1 not on screen.")
         else:
             if not wait_until(self.emulator.is_ui_element_on_screen, ui_element=ui.START_BUTTON):
                 self.emulator.click_button(stage_button)
@@ -160,8 +158,8 @@ class TwoStageEpicQuest(EpicQuest):
 class TenStageEpicQuest(EpicQuest):
     """Class for working with Epic Quests with 10 stages (usual missions without difficulty)."""
 
-    SECOND_PAGE_EQ = [ui.EQ_FIRST_FAMILY.name, ui.EQ_RISE_OF_X_MEN.name, ui.EQ_X_FORCE.name]
-    THIRD_PAGE_EQ = [ui.EQ_SORCERER_SUPREME.name]
+    SECOND_PAGE_EQ = [ui.EQ_FIRST_FAMILY.name]
+    THIRD_PAGE_EQ = [ui.EQ_SORCERER_SUPREME.name, ui.EQ_RISE_OF_X_MEN.name, ui.EQ_X_FORCE.name]
 
     def __init__(self, game, mode_selector_ui, mission_selector_ui, mission_selector_label_ui, stage_selector_ui,
                  stage_name=None):
@@ -192,7 +190,7 @@ class TenStageEpicQuest(EpicQuest):
                 r_sleep(5)
             if self.mode_selector_ui.name in self.SECOND_PAGE_EQ:
                 logger.debug("Epic Quests is referring to the second page. Trying to scroll.")
-                self.emulator.drag(ui.EQ_PAGE_DRAG_FROM, ui.EQ_PAGE_DRAG_TO)
+                self.emulator.drag(ui.EQ_PAGE_DRAG_FROM_PAGE2, ui.EQ_PAGE_DRAG_TO_PAGE2)
                 r_sleep(5)
             if wait_until(self.emulator.is_ui_element_on_screen, ui_element=self.mode_selector_ui):
                 logger.debug(f"Selecting Epic Quest: {self.mode_selector_ui.name}.")
@@ -487,6 +485,16 @@ class LegacyOfBlood(TenStageWithDifficultyEpicQuest):
                          ui.EQ_CUTTHROAT_COMPANIONS_LABEL, ui.EQ_LEGACY_OF_BLOOD)
 
 
+class DeadlyAccuracy(TenStageWithDifficultyEpicQuest):
+    """Class for working with Epic Quest mission stages: Legacy Of Blood."""
+
+    DIFFICULTY = Missions._DIFFICULTY_4
+
+    def __init__(self, game):
+        super().__init__(game, ui.EQ_DARK_REIGN, ui.EQ_CUTTHROAT_COMPANIONS,
+                         ui.EQ_CUTTHROAT_COMPANIONS_LABEL, ui.EQ_DEADLY_ACCURACY)
+
+
 class QuantumPower(TenStageWithDifficultyEpicQuest):
     """Class for working with Epic Quest mission stages: Quantum Power."""
 
@@ -635,3 +643,23 @@ class DeviantDiversion(TenStageWithDifficultyEpicQuest):
     def __init__(self, game):
         super().__init__(game, ui.EQ_FATE_OF_MANKIND, ui.EQ_RECLAIMED_MEMORY, ui.EQ_RECLAIMED_MEMORY_LABEL,
                          ui.EQ_DEVIANT_DIVERSION)
+
+
+class SmallerHeadsPrevail(TenStageWithDifficultyEpicQuest):
+    """Class for working with Epic Quest mission stages: Industrial Complex."""
+
+    DIFFICULTY = Missions._DIFFICULTY_4
+
+    def __init__(self, game):
+        super().__init__(game, ui.EQ_FATE_OF_MANKIND, ui.EQ_BROKEN_HARMONY, ui.EQ_BROKEN_HARMONY_LABEL,
+                         ui.EQ_SMALLER_HEADS_PREVAIL)
+
+
+class BrainsVsBlades(TenStageWithDifficultyEpicQuest):
+    """Class for working with Epic Quest mission stages: Deviant Diversion."""
+
+    DIFFICULTY = Missions._DIFFICULTY_4
+
+    def __init__(self, game):
+        super().__init__(game, ui.EQ_FATE_OF_MANKIND, ui.EQ_BROKEN_HARMONY, ui.EQ_BROKEN_HARMONY_LABEL,
+                         ui.EQ_BRAINS_VS_BLADES)

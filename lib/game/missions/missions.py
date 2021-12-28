@@ -188,6 +188,26 @@ class Missions(Notifications):
         logger.error(f"Unable to press {start_button_ui} button.")
         return False
 
+    def press_clear_button(self, clear_button_ui=ui.CLEAR_BUTTON):
+        """Presses start button of the mission."""
+        if self.emulator.is_ui_element_on_screen(clear_button_ui):
+            self.select_team()
+            self.emulator.click_button(clear_button_ui)
+            if wait_until(self.emulator.is_ui_element_on_screen, timeout=2, ui_element=ui.NOT_ENOUGH_ENERGY):
+                self.emulator.click_button(ui.NOT_ENOUGH_ENERGY)
+                logger.warning(f"Not enough energy for starting mission, current energy: {self.game.energy}")
+                return False
+            if wait_until(self.emulator.is_ui_element_on_screen, timeout=2, ui_element=ui.INVENTORY_FULL):
+                self.emulator.click_button(ui.INVENTORY_FULL)
+                logger.warning("Your inventory is full, cannot start mission.")
+                return False
+            if wait_until(self.emulator.is_ui_element_on_screen, timeout=2,
+                          ui_element=ui.ITEM_MAX_LIMIT_NOTIFICATION):
+                self.emulator.click_button(ui.ITEM_MAX_LIMIT_NOTIFICATION)
+            return True
+        logger.error(f"Unable to press {clear_button_ui} button.")
+        return False
+
     def press_repeat_button(self, repeat_button_ui=ui.REPEAT_BUTTON, start_button_ui=ui.START_BUTTON):
         """Presses repeat button of the mission."""
         logger.debug(f"Clicking REPEAT button with UI Element: {repeat_button_ui}.")
