@@ -1,5 +1,6 @@
 import lib.logger as logging
 from lib.emulators.nox_player import NoxPlayer
+from lib.game.dispatch_mission import DispatchMission
 from lib.game.game import Game
 from lib.game.missions import HeroesReunited, IndustrialComplex, DeviantDiversion, MonasteryInTrouble, PowerOfTheDark, \
     MysteriousAmbush, RoadToMonastery, StingOfTheScorpion, SelfDefenseProtocol, DangerousSisters, CosmicRider, \
@@ -25,7 +26,10 @@ if __name__ == '__main__':
     game.ACQUIRE_HEROIC_QUEST_REWARDS = True  # Setup ability to collect Heroic Quest rewards
 
     # World Event
-    WorldEvent(game).complete_world_event()
+    # WorldEvent(game).complete_world_event()
+
+    # Dispatch Acquire Rewards
+    DispatchMission(game).acquire_all_rewards()
 
     # Future Pass
     # FuturePass(game).acquire_points_and_claim_rewards()
