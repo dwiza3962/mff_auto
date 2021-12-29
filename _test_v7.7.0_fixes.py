@@ -29,7 +29,7 @@ if __name__ == '__main__':
     # WorldEvent(game).complete_world_event()
 
     # Dispatch Acquire Rewards
-    DispatchMission(game).acquire_all_rewards()
+    # DispatchMission(game).acquire_all_rewards()
 
     # Future Pass
     # FuturePass(game).acquire_points_and_claim_rewards()
@@ -68,22 +68,24 @@ if __name__ == '__main__':
     # MeanAndGreen(game).do_missions(times=1)
 
     # # Galactic Imperative
-    # QuantumPower(game).do_missions(times=1, difficulty=6)
-    # WingsOfDarkness(game).do_missions(times=1, difficulty=6)
-    # DangerousSisters(game).do_missions(times=1, difficulty=6)
-    # CosmicRider(game).do_missions(times=1, difficulty=6)
+    # QuantumPower(game).do_missions(times=1, difficulty=4)
+    # WingsOfDarkness(game).do_missions(times=1, difficulty=4)
+    # DangerousSisters(game).do_missions(times=1)
+    # CosmicRider(game).do_missions(times=1)
     #
     # # Dark Avengers
     # LegacyOfBlood(game).do_missions(times=1, difficulty=4)
     # DeadlyAccuracy(game).do_missions(times=1, difficulty=4)
-    # StingOfTheScorpion(game).do_missions(times=1, difficulty=6)
-    # SelfDefenseProtocol(game).do_missions(times=1, difficulty=6)
+    # StingOfTheScorpion(game).do_missions(times=1)
+    # SelfDefenseProtocol(game).do_missions(times=1)
     #
     # # Eternals
-    # IndustrialComplex(game).do_missions(times=1, difficulty=4)
-    # DeviantDiversion(game).do_missions(times=1, difficulty=4)
-    # SmallerHeadsPrevail(game).do_missions(times=1, difficulty=4)
-    # BrainsVsBlades(game).do_missions(times=1, difficulty=4)
+    #IndustrialComplex(game).do_missions(times=1, difficulty=4)
+    SmallerHeadsPrevail(game).do_missions(times=1, difficulty=4)
+
+    # TODO test when unlocked
+    #DeviantDiversion(game).do_missions(times=1, difficulty=4)
+    #BrainsVsBlades(game).do_missions(times=1, difficulty=4)
 
 
 
