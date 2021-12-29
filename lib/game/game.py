@@ -349,7 +349,7 @@ class Game(Notifications):
         if mode.ui_board == ui.CONTENT_STATUS_BOARD_2.button_rect.value:
             logger.debug(f"Mode {name} is on second board. Dragging")
             self.emulator.drag(ui.CONTENT_STATUS_DRAG_FROM, ui.CONTENT_STATUS_DRAG_TO, duration=3)
-            r_sleep(1)
+            r_sleep(3)
         self.emulator.click_button(mode.ui_button)
         return True
 

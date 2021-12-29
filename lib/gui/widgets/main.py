@@ -93,6 +93,7 @@ class MainWindow(QMainWindow, design.Ui_MainWindow):
                                                             self.queue_button_3, self.queue_button_4])
         self.screen_image = ScreenImageLabel(emulator=self.emulator, widget=self.screen_label)
         self.acquire_heroic_quest_rewards_checkbox.stateChanged.connect(self.acquire_heroic_quest_rewards_state_changed)
+        self.use_clear_tickets_checkbox.stateChanged.connect(self.use_clear_tickets_checkbox_state_changed)
         self.mission_team_spin_box.valueChanged.connect(self.mission_team_changed)
         self.timeline_team_spin_box.valueChanged.connect(self.timeline_team_changed)
         self.threads = ThreadPool()
@@ -166,6 +167,14 @@ class MainWindow(QMainWindow, design.Ui_MainWindow):
         else:
             self.game.ACQUIRE_HEROIC_QUEST_REWARDS = False
         logger.info(f"Acquire Heroic Quest rewards: {self.game.ACQUIRE_HEROIC_QUEST_REWARDS}")
+        self.save_settings_to_file()
+
+    def use_clear_tickets_checkbox_state_changed(self):
+        if self.use_clear_tickets_checkbox.isChecked():
+            self.game.USE_CLEAR_TICKETS = True
+        else:
+            self.game.USE_CLEAR_TICKETS = False
+        logger.info(f"Use Clear Tickets: {self.game.USE_CLEAR_TICKETS}")
         self.save_settings_to_file()
 
     def load_settings_from_file(self):

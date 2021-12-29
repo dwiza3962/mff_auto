@@ -37,11 +37,25 @@ if __name__ == '__main__':
     # ArtifactStore(game).acquire_free_artifact_chest()
     # CharacterStore(game).acquire_free_hero_chest()
 
-    # HeroesReunited(game).do_missions()
     #
     # ArtifactStore(game).buy_artifact_chest(chests_to_buy=['1', '2', '3', '4'])
 
     # Artifact(game).dismantle_artifacts(artifact_stars=['ARTIFACT_DISMANTLE_STAR_1', 'ARTIFACT_DISMANTLE_STAR_2'])
+
+    # # Missions
+    # # Deluxe Pack Missions
+    # #Eternals - Makkari / Gilgamesh
+    HeroesReunited(game).do_missions()
+    # # Fantastic Four - Invisible Woman
+    # DoomsDay(game).do_missions()
+    # # Galactic Imperative - Nova
+    # FateOfTheUniverse(game).do_missions()
+    # # Dark Avengers - Moonstone
+    # PlayingHero(game).do_missions()
+    # # X-Men Magneto
+    # MutualEnemy(game).do_missions()
+    # # X-Force Psylocke
+    # BeginningOfTheChaos(game).do_missions()
 
     # Sorcerer Supreme
     # RoadToMonastery(game).do_missions(times=1, difficulty=6)
@@ -81,7 +95,7 @@ if __name__ == '__main__':
     #
     # # Eternals
     #IndustrialComplex(game).do_missions(times=1, difficulty=4)
-    SmallerHeadsPrevail(game).do_missions(times=1, difficulty=4)
+    # SmallerHeadsPrevail(game).do_missions(times=1, difficulty=4)
 
     # TODO test when unlocked
     #DeviantDiversion(game).do_missions(times=1, difficulty=4)

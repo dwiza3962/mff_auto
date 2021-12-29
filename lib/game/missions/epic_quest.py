@@ -25,21 +25,24 @@ class EpicQuest(Missions):
         :param bool farm_shifter_bios: should game be restarted if shifter isn't appeared.
         """
         if self.game.USE_CLEAR_TICKETS:
+            # check if entered in the mode.
+            if not wait_until(self.emulator.is_ui_element_on_screen, ui_element=ui.CLEAR_BUTTON):
+                self.emulator.click_button(stage_button)
+                wait_until(self.emulator.is_ui_element_on_screen, ui_element=ui.CLEAR_BUTTON)
             while stage_num > 0:
-                if not self.press_clear_button():
+                if not self.press_clear_button(ui.CLEAR_BUTTON):
                     logger.error(f"Cannot Clear Epic Quest stage {self.mode_name}, exiting.")
                     return 0
-                if wait_until(self.emulator.is_ui_element_on_screen, ui_element=ui.CLEAR_TICKET_NOTIFICATION_X1):
-                    logger.debug(f"Clicked USE x1 Clear Tickets button.   {self.mode_name}")
-                    self.emulator.click_button(ui.CLEAR_TICKET_NOTIFICATION_X1)
-                    r_sleep(5)
-                    if wait_until(self.emulator.is_ui_element_on_screen,
-                                  ui_element=ui.CLEAR_TICKET_USED_NOTIFICATION_CLOSE, timeout=10):
-                        logger.debug(f"Clicked Clear Ticket Close button.  {self.mode_name}")
-                        self.emulator.click_button(ui.CLEAR_TICKET_USED_NOTIFICATION_CLOSE)
-                        stage_num -= 1
-                else:
-                    logger.debug("X1 not on screen.")
+                logger.debug(f"Clicked USE x1 Clear Tickets button.   {self.mode_name}")
+                self.emulator.click_button(ui.CLEAR_TICKET_NOTIFICATION_X1)
+                r_sleep(5)
+                if wait_until(self.emulator.is_ui_element_on_screen,
+                              ui_element=ui.CLEAR_TICKET_USED_NOTIFICATION_CLOSE, timeout=10):
+                    logger.debug(f"Clicked Clear Ticket Close button.  {self.mode_name}")
+                    self.emulator.click_button(ui.CLEAR_TICKET_USED_NOTIFICATION_CLOSE)
+                    stage_num -= 1
+                    logger.debug(f"{stage_num} stages left to complete.")
+                    self.close_mission_notifications()
         else:
             if not wait_until(self.emulator.is_ui_element_on_screen, ui_element=ui.START_BUTTON):
                 self.emulator.click_button(stage_button)
@@ -132,12 +135,12 @@ class TwoStageEpicQuest(EpicQuest):
                 stage_2_num = 0
             if stage_1_num > 0 or stage_2_num > 0:
                 while stage_1_num > 0 and self.stages > 0:
-                    stage_1_num = self.start_stage(stage_1_num, farm_shifter_bios=farm_shifter_bios)
+                    stage_1_num = self.start_stage(stage_num=stage_1_num, farm_shifter_bios=farm_shifter_bios, stage_button=self.stage_1_ui)
                     self.stages = stage_1_num + stage_2_num
                 if stage_2_num > 0 and self.game.is_main_menu():
                     self.game.select_mode(self.mode_name)
                 while stage_2_num > 0 and self.stages > 0:
-                    stage_2_num = self.start_stage(stage_2_num, farm_shifter_bios=farm_shifter_bios)
+                    stage_2_num = self.start_stage(stage_num=stage_2_num, farm_shifter_bios=farm_shifter_bios, stage_button=self.stage_2_ui)
                     self.stages = stage_1_num + stage_2_num
         logger.info(f"No more stages for {self.mode_name}.")
 
