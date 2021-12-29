@@ -4,7 +4,7 @@ opencv-python==4.5.4.60
 pillow==8.4.0
 regex==2021.11.10
 pyautoit==0.6.5
-pywin32==302
+pywin32==303
 win32gui==221.6
 
 #   gui
@@ -13,7 +13,7 @@ multiprocess==0.70.12.2
 
 autoit~=0.2.3
 pip==21.3.1
-wheel==0.37.0
+wheel==0.37.1
 dill~=0.3.4
 setuptools==59.6.0
 matplotlib~=3.3.4

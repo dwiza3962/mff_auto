@@ -9,7 +9,7 @@ class _LegendaryBattle(GameMode):
         "Infinity War": missions.LegendaryBattle.INFINITY_WAR,
         "Ant-Man & The Wasp": missions.LegendaryBattle.ANT_MAN,
         "Captain Marvel": missions.LegendaryBattle.CAPTAIN_MARVEL,
-        "Black Widow": missions.LegendaryBattle.BLACK_WIDOW,
+        # "Black Widow": missions.LegendaryBattle.BLACK_WIDOW,
         "Shang-Chi": missions.LegendaryBattle.SHANG_CHI
     }
 
