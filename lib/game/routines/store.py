@@ -47,7 +47,7 @@ class Store(Notifications):
             if not self.emulator.is_ui_element_on_screen(ui_filter) and ui_filter.name in self.SECOND_LIST:
                 while not wait_until(self.emulator.is_ui_element_on_screen, ui_element=ui_filter, timeout=1):
                     logger.debug("Dragging to the bottom of the filters.")
-                    self.emulator.drag(from_ui=ui.STORE_FILTER_DRAG_BOTTOM, to_ui=ui.STORE_FILTER_DRAG_TOP)
+                    self.emulator.drag(from_ui=ui.STORE_FILTER_DRAG_BOTTOM, to_ui=ui.STORE_FILTER_DRAG_TOP, duration=3)
             if self.emulator.is_ui_element_on_screen(ui_filter):
                 logger.debug(f"Selecting by filter {ui_filter.name}")
                 self.emulator.click_button(ui_filter)
@@ -212,8 +212,7 @@ class ArtifactStore(Store):
         if wait_until(self.emulator.is_ui_element_on_screen, ui_element=ui.STORE_ARTIFACT_FREE_CHEST_BUTTON_ACQUIRE):
             logger.debug("Acquiring Free Artifact Chest.")
             self.emulator.click_button(ui.STORE_ARTIFACT_FREE_CHEST_BUTTON_ACQUIRE)
-            if wait_until(self.emulator.is_ui_element_on_screen,
-                          ui_element=ui.STORE_ARTIFACT_FREE_CHEST_PURCHASE):
+            if wait_until(self.emulator.is_ui_element_on_screen, ui_element=ui.STORE_ARTIFACT_FREE_CHEST_PURCHASE, timeout=5):
                 self.emulator.click_button(ui.STORE_ARTIFACT_FREE_CHEST_PURCHASE)
                 if wait_until(self.emulator.is_ui_element_on_screen, ui_element=ui.SKIP_CUTSCENE):
                     self.emulator.click_button(ui.SKIP_CUTSCENE)
