@@ -201,8 +201,11 @@ class Missions(Notifications):
                 self.emulator.click_button(ui.INVENTORY_FULL)
                 logger.warning("Your inventory is full, cannot start mission.")
                 return False
-            if wait_until(self.emulator.is_ui_element_on_screen, timeout=2,
-                          ui_element=ui.ITEM_MAX_LIMIT_NOTIFICATION):
+            if wait_until(self.emulator.is_ui_element_on_screen, timeout=2, ui_element=ui.ALL_AVAILABLE_ENTRIES_USED):
+                self.emulator.click_button(ui.ALL_AVAILABLE_ENTRIES_USED)
+                logger.warning("All available entires are used.")
+                return False
+            if wait_until(self.emulator.is_ui_element_on_screen, timeout=2, ui_element=ui.ITEM_MAX_LIMIT_NOTIFICATION):
                 self.emulator.click_button(ui.ITEM_MAX_LIMIT_NOTIFICATION)
             return True
         logger.error(f"Unable to press {clear_button_ui} button.")

@@ -25,7 +25,7 @@ def load_queue_list(path="settings/gui/queue_list.json"):
 def save_queue_list(json_data, path="settings/gui/queue_list.json"):
     """Store queue list."""
     with open(path, mode='w', encoding='utf-8') as file:
-        json.dump(json_data, file)
+        json.dump(json_data, file, indent=3)
 
 
 class QueueList:

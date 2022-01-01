@@ -74,7 +74,7 @@ class DailyRewards(Notifications):
             if wait_until(self.emulator.is_ui_element_on_screen, ui_element=ui.DAILY_REWARDS_ACQUIRE_ALL_BUTTON):
                 logger.debug("Acquiring daily rewards.")
                 self.emulator.click_button(ui.DAILY_REWARDS_ACQUIRE_ALL_BUTTON)
-                if wait_until(self.emulator.is_ui_element_on_screen, timeout=1,
+                if wait_until(self.emulator.is_ui_element_on_screen, timeout=5,
                               ui_element=ui.DAILY_REWARDS_ACQUIRE_ALL_CLOSE):
                     logger.info("Daily rewards acquired, exiting.")
                     self.emulator.click_button(ui.DAILY_REWARDS_ACQUIRE_ALL_CLOSE)

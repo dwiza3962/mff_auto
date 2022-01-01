@@ -168,7 +168,9 @@ class CharacterStore(Store):
             self.emulator.click_button(ui.STORE_CHARACTER_FREE_HERO_CHEST_BUTTON)
             if wait_until(self.emulator.is_ui_element_on_screen,
                           ui_element=ui.STORE_CHARACTER_FREE_HERO_CHEST_BUTTON_ACQUIRE):
+                logger.info("Free Hero Chest is available.")
                 self.emulator.click_button(ui.STORE_CHARACTER_FREE_HERO_CHEST_BUTTON_ACQUIRE)
+
                 if wait_until(self.emulator.is_ui_element_on_screen,
                               ui_element=ui.STORE_CHARACTER_FREE_HERO_CHEST_PURCHASE):
                     self.emulator.click_button(ui.STORE_CHARACTER_FREE_HERO_CHEST_PURCHASE)

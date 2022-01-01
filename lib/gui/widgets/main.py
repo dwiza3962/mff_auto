@@ -45,7 +45,7 @@ def load_game_settings(path="settings/gui/game.json"):
 def save_game_settings(json_data, path="settings/gui/game.json"):
     """Stores game settings."""
     with open(path, mode='w', encoding='utf-8') as file:
-        json.dump(json_data, file)
+        json.dump(json_data, file, indent=3)
 
 
 class MainWindow(QMainWindow, design.Ui_MainWindow):
@@ -189,11 +189,13 @@ class MainWindow(QMainWindow, design.Ui_MainWindow):
         self.timeline_team_spin_box.setValue(game_settings.get("timeline_team"))
         self.mission_team_spin_box.setValue(game_settings.get("mission_team"))
         self.acquire_heroic_quest_rewards_checkbox.setChecked(game_settings.get("acquire_heroic_quest_rewards", True))
+        self.use_clear_tickets_checkbox.setChecked(game_settings.get("use_clear_tickets", True))
         self.handle_network_errors_checkbox.setChecked(game_settings.get("handle_network_errors", False))
         self.init_emulator_and_game()
         self.game.set_mission_team(self.mission_team_spin_box.value())
         self.game.set_timeline_team(self.timeline_team_spin_box.value())
         self.game.ACQUIRE_HEROIC_QUEST_REWARDS = self.acquire_heroic_quest_rewards_checkbox.isChecked()
+        self.game.USE_CLEAR_TICKETS = self.use_clear_tickets_checkbox.isChecked()
 
     def save_settings_to_file(self):
         """Stores GUI settings to file."""
@@ -201,6 +203,7 @@ class MainWindow(QMainWindow, design.Ui_MainWindow):
             "timeline_team": self.game.timeline_team,
             "mission_team": self.game.mission_team,
             "acquire_heroic_quest_rewards": self.game.ACQUIRE_HEROIC_QUEST_REWARDS,
+            "use_clear_tickets": self.game.USE_CLEAR_TICKETS,
             "handle_network_errors": self.handle_network_errors_checkbox.isChecked(),
             "emulator_name": self.emulator_name,
             "emulator_type": self.emulator_type,

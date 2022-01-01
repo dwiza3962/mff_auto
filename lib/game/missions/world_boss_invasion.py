@@ -1,7 +1,7 @@
 import regex
 
 import lib.logger as logging
-from lib.functions import wait_until
+from lib.functions import wait_until, r_sleep
 from lib.game import ui
 from lib.game.battle_bot import ManualBattleBot
 from lib.game.missions.missions import Missions
@@ -144,7 +144,7 @@ class WorldBossInvasion(Missions):
                 self._max_chests = times
             if self.chests < self.max_chests and self._find_boss_for_fight():
                 while self.chests < self.max_chests:
-                    logger.debug(f"{times} stages left to complete ({self.chests} out of {self.max_chests}.")
+                    logger.debug(f"{times} stages left to complete {self.chests} out of {self.max_chests}.")
                     if not self.press_start_button(ignore_coop_mission=ignore_coop_mission):
                         return
                     self._wait_for_players_and_start_fight()
@@ -361,13 +361,16 @@ class WorldBossInvasion(Missions):
     def _manual_bot_start(self):
         """Starts manual bot for the fight."""
         ManualBattleBot(self.game, self.battle_over_conditions, self.disconnect_conditions).fight()
-        if wait_until(self.emulator.is_image_on_screen, timeout=2, ui_element=ui.INVASION_HOME_BUTTON):
+        logger.debug(f"_chests: {self._chests} {self.chests}")
+        logger.debug(f"_max_chests: {self._max_chests} {self.max_chests}")
+        r_sleep(2)
+        if wait_until(self.emulator.is_image_on_screen, timeout=10, ui_element=ui.INVASION_HOME_BUTTON):
             if self._chests < self._max_chests:
                 self.press_repeat_button(repeat_button_ui=ui.INVASION_REPEAT_BUTTON,
                                          start_button_ui=ui.INVASION_BOSS_FIGHT_START)
+
             else:
                 self.press_home_button(home_button=ui.INVASION_HOME_BUTTON)
-            return
         # In case we got back from fight by disconnect or something else
         logger.debug("Any chest after boss fight wasn't acquired.")
         if wait_until(self.emulator.is_ui_element_on_screen, timeout=20,
