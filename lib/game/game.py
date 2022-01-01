@@ -263,7 +263,7 @@ class Game(Notifications):
         """
         if not self.go_to_content_status_board():
             return logger.error("Failed to open Content Status board.")
-        mode = self.find_mode_on_board(mode_name=mode_name, board=ui.CONTENT_STATUS_BOARD_1, rows=3, cols=4)
+        mode = self.find_mode_on_board(mode_name=mode_name, board=ui.CONTENT_STATUS_BOARD_1, rows=3, cols=5)
         if mode:
             self.go_to_main_menu()
             return mode
@@ -346,10 +346,10 @@ class Game(Notifications):
         if not self.go_to_content_status_board():
             logger.error("Failed to open Content Status board.")
             return False
-        if mode.ui_board == ui.CONTENT_STATUS_BOARD_2.button_rect.value:
-            logger.debug(f"Mode {name} is on second board. Dragging")
-            self.emulator.drag(ui.CONTENT_STATUS_DRAG_FROM, ui.CONTENT_STATUS_DRAG_TO, duration=3)
-            r_sleep(3)
+        # if mode.ui_board == ui.CONTENT_STATUS_BOARD_2.button_rect.value:
+        #     logger.debug(f"Mode {name} is on second board. Dragging")
+        #     self.emulator.drag(ui.CONTENT_STATUS_DRAG_FROM, ui.CONTENT_STATUS_DRAG_TO, duration=3)
+        #     r_sleep(3)
         self.emulator.click_button(mode.ui_button)
         return True
 
