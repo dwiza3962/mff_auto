@@ -264,7 +264,7 @@ class WorldBossInvasion(Missions):
                 if boss_time:
                     logger.debug(f"Found boss with UI: {boss_ui} with time {boss_time}, entering.")
                     self.emulator.click_button(boss_ui)
-                    if wait_until(self.emulator.is_ui_element_on_screen, ui_element=ui.INVASION_BOSS_FIGHT_ENTER):
+                    if wait_until(self.emulator.is_ui_element_on_screen, ui_element=ui.INVASION_BOSS_FIGHT_ENTER, timeout=10):
                         self._boss_mission = self.emulator.get_screen_text(ui.INVASION_BOSS_MISSION)
                         logger.debug(f"Current boss mission: {self._boss_mission}")
                         self.emulator.click_button(ui.INVASION_BOSS_FIGHT_ENTER)
@@ -311,7 +311,7 @@ class WorldBossInvasion(Missions):
                 logger.warning("No slots for chests. Exiting.")
                 self.emulator.click_button(ui.INVASION_NO_CHEST_SLOTS)
                 return False
-        if wait_until(self.emulator.is_ui_element_on_screen, timeout=2,
+        if wait_until(self.emulator.is_ui_element_on_screen, timeout=5,
                       ui_element=ui.DISCONNECT_NEW_OPPONENT):
             logger.debug("Found disconnect notification. Trying to start again.")
             self.emulator.click_button(ui.DISCONNECT_NEW_OPPONENT)
@@ -363,12 +363,10 @@ class WorldBossInvasion(Missions):
         ManualBattleBot(self.game, self.battle_over_conditions, self.disconnect_conditions).fight()
         logger.debug(f"_chests: {self._chests} {self.chests}")
         logger.debug(f"_max_chests: {self._max_chests} {self.max_chests}")
-        r_sleep(2)
-        if wait_until(self.emulator.is_image_on_screen, timeout=10, ui_element=ui.INVASION_HOME_BUTTON):
+        if wait_until(self.emulator.is_ui_element_on_screen, timeout=5, ui_element=ui.INVASION_END_BATTLE_DAMAGE):
             if self._chests < self._max_chests:
                 self.press_repeat_button(repeat_button_ui=ui.INVASION_REPEAT_BUTTON,
                                          start_button_ui=ui.INVASION_BOSS_FIGHT_START)
-
             else:
                 self.press_home_button(home_button=ui.INVASION_HOME_BUTTON)
         # In case we got back from fight by disconnect or something else
