@@ -16,6 +16,25 @@ class Story(Missions):
 
     class STORY_STAGE:
         DIMENSIONAL_CLASH_1_1 = "STORY_MISSION_DIMENSIONAL_CLASH_1_1"
+        DIMENSIONAL_CLASH_1_2 = "STORY_MISSION_DIMENSIONAL_CLASH_1_2"
+        DIMENSIONAL_CLASH_1_3 = "STORY_MISSION_DIMENSIONAL_CLASH_1_3"
+        DIMENSIONAL_CLASH_2_1 = "STORY_MISSION_DIMENSIONAL_CLASH_2_1"
+        DIMENSIONAL_CLASH_2_2 = "STORY_MISSION_DIMENSIONAL_CLASH_2_2"
+        DIMENSIONAL_CLASH_2_3 = "STORY_MISSION_DIMENSIONAL_CLASH_2_3"
+        DIMENSIONAL_CLASH_3_1 = "STORY_MISSION_DIMENSIONAL_CLASH_3_1"
+        DIMENSIONAL_CLASH_3_2 = "STORY_MISSION_DIMENSIONAL_CLASH_3_2"
+        DIMENSIONAL_CLASH_3_3 = "STORY_MISSION_DIMENSIONAL_CLASH_3_3"
+        DIMENSIONAL_CLASH_4_1 = "STORY_MISSION_DIMENSIONAL_CLASH_4_1"
+        DIMENSIONAL_CLASH_4_2 = "STORY_MISSION_DIMENSIONAL_CLASH_4_2"
+        DIMENSIONAL_CLASH_5_1 = "STORY_MISSION_DIMENSIONAL_CLASH_5_1"
+        DIMENSIONAL_CLASH_6_1 = "STORY_MISSION_DIMENSIONAL_CLASH_6_1"
+        DIMENSIONAL_CLASH_6_2 = "STORY_MISSION_DIMENSIONAL_CLASH_6_2"
+        DIMENSIONAL_CLASH_7_1 = "STORY_MISSION_DIMENSIONAL_CLASH_7_1"
+        DIMENSIONAL_CLASH_7_2 = "STORY_MISSION_DIMENSIONAL_CLASH_7_2"
+        DIMENSIONAL_CLASH_7_3 = "STORY_MISSION_DIMENSIONAL_CLASH_7_3"
+        DIMENSIONAL_CLASH_8_1 = "STORY_MISSION_DIMENSIONAL_CLASH_8_1"
+        DIMENSIONAL_CLASH_8_2 = "STORY_MISSION_DIMENSIONAL_CLASH_8_2"
+        DIMENSIONAL_CLASH_8_3 = "STORY_MISSION_DIMENSIONAL_CLASH_8_3"
 
     def __init__(self, game):
         """Class initialization.
@@ -70,8 +89,17 @@ class Story(Missions):
         :param str story_stage: UI element that represent mission stage.
         """
         while not self.emulator.is_ui_element_on_screen(ui.get_by_name(story_stage)):
-            # TODO: plus sign for next missions
+            logger.info(f"Clicking Minus Button")
             self.emulator.click_button(ui.STORY_STAGE_MINUS)
+            if self.emulator.is_ui_element_on_screen(ui.STORY_MISSION_DIMENSIONAL_CLASH_1_1):
+                break
+        while not self.emulator.is_ui_element_on_screen(ui.get_by_name(story_stage)):
+            logger.info(f"Clicking Plus Button")
+            self.emulator.click_button(ui.STORY_STAGE_PLUS)
+            if self.emulator.is_ui_element_on_screen(ui.STORY_MISSION_DIMENSIONAL_CLASH_8_3):
+                break
+
+
 
     def select_team(self):
         """Selects team for missions."""
@@ -97,7 +125,7 @@ class Story(Missions):
                 self._select_story_stage(story_stage=story_stage)
                 if not self.press_start_button():
                     return
-                ManualBattleBot(self.game, self.battle_over_conditions).fight(move_around=True)
+                ManualBattleBot(self.game, self.battle_over_conditions).fight(move_around=False, move_forward=True)
                 times -= 1
                 if times > 0:
                     self.press_repeat_button(repeat_button_ui=ui.STORY_REPEAT_BUTTON,
