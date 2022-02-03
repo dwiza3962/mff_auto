@@ -698,7 +698,26 @@ class _StoryMission(GameMode):
     }
 
     story_stage = {
-        "1-1 Emergency Dispatch": missions.Story.STORY_STAGE.DIMENSIONAL_CLASH_1_1
+        "1-1 Emergency Dispatch": missions.Story.STORY_STAGE.DIMENSIONAL_CLASH_1_1,
+        "1-2 An Unexpected Encounter": missions.Story.STORY_STAGE.DIMENSIONAL_CLASH_1_2,
+        "1-3 Robotic Theft": missions.Story.STORY_STAGE.DIMENSIONAL_CLASH_1_3,
+        #NOAUTO_"2-1 The Rescue Plan": missions.Story.STORY_STAGE.DIMENSIONAL_CLASH_2_1,
+        #NOAUTO_"2-2 Scheme of Advanced Evil": missions.Story.STORY_STAGE.DIMENSIONAL_CLASH_2_2,
+        #NOAUTO_"2-3 Mad Science to the Max": missions.Story.STORY_STAGE.DIMENSIONAL_CLASH_2_3,
+        #TODO GOLEFT_"3-1 S.H.I.E.D. Under Siege": missions.Story.STORY_STAGE.DIMENSIONAL_CLASH_3_1,
+        #TODO GORIGHT_"3-2 Shadow Over The Streets": missions.Story.STORY_STAGE.DIMENSIONAL_CLASH_3_2,
+        "3-3 Chaos Descends": missions.Story.STORY_STAGE.DIMENSIONAL_CLASH_3_3,
+        #ALLOVER_"4-1 Crack in the S.H.I.E.L.D.": missions.Story.STORY_STAGE.DIMENSIONAL_CLASH_4_1,
+        "4-2 The Beginning of the Storm": missions.Story.STORY_STAGE.DIMENSIONAL_CLASH_4_2,
+        #HERO REFLECT AVOID FIRE "5-1 The Battle for Domination": missions.Story.STORY_STAGE.DIMENSIONAL_CLASH_5_1,
+        "6-1 An Eternal Nemesis": missions.Story.STORY_STAGE.DIMENSIONAL_CLASH_6_1,
+        "6-2 The Red Madness": missions.Story.STORY_STAGE.DIMENSIONAL_CLASH_6_2,
+        "7-1 Emergency Dispatch": missions.Story.STORY_STAGE.DIMENSIONAL_CLASH_7_1,
+        "7-2 An Unexpected Encounter": missions.Story.STORY_STAGE.DIMENSIONAL_CLASH_7_2,
+        "7-3 Robotic Theft": missions.Story.STORY_STAGE.DIMENSIONAL_CLASH_7_3,
+        "8-1 Dimensional Shift": missions.Story.STORY_STAGE.DIMENSIONAL_CLASH_8_1,
+        #NOAUTO_"8-2 Anti-Matter Recovery": missions.Story.STORY_STAGE.DIMENSIONAL_CLASH_8_2,
+        "8-3 The Showdown": missions.Story.STORY_STAGE.DIMENSIONAL_CLASH_8_3
     }
 
     def __init__(self, game):
@@ -714,7 +733,6 @@ class _StoryMission(GameMode):
                                                        setting_key="story_stage",
                                                        text="Select mission stage",
                                                        values_dict=self.story_stage))
-
 
 class _HeroesReunited(GameMode):
 
