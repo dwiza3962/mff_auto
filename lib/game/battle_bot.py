@@ -259,6 +259,8 @@ class ManualBattleBot(BattleBot):
         self.cached_available_skill = None
         self.moving_positions = cycle([ui.MOVE_AROUND_POS_DOWN, ui.MOVE_AROUND_POS_LEFT,
                                        ui.MOVE_AROUND_POS_UP, ui.MOVE_AROUND_POS_RIGHT])
+        self.moving_forward = cycle([ui.MOVE_AROUND_POS_LEFT,
+                                       ui.MOVE_AROUND_POS_UP, ui.MOVE_AROUND_POS_RIGHT])
         self.moving_position_from = next(self.moving_positions)
 
     def _init_base_skills(self):
@@ -280,7 +282,7 @@ class ManualBattleBot(BattleBot):
         self.coop_skill = LockedSkill(self.game, ui.SKILL_COOP)
         self.danger_room_skill = LockedSkill(self.game, ui.SKILL_DANGER_ROOM)
 
-    def fight(self, move_around=False):
+    def fight(self, move_around=False, move_forward=False):
         """Starts battle and uses skills until the end of battle.
 
         :param bool move_around: move around if skills are unavailable to cast.
@@ -313,6 +315,9 @@ class ManualBattleBot(BattleBot):
                     if move_around:
                         self.move_character()
                         self.move_character()
+                    if move_forward:
+                        self.move_forward()
+                        self.move_forward()
             else:
                 self.skip_cutscene()
                 r_sleep(0.75)
@@ -323,6 +328,13 @@ class ManualBattleBot(BattleBot):
         """Moves character around."""
         logger.debug("Moving around.")
         next_position_from, next_position_to = self.moving_position_from, next(self.moving_positions)
+        self.emulator.drag(next_position_from, next_position_to, duration=0.5)
+        self.moving_position_from = next_position_to
+
+    def move_forward(self):
+        """Moves character around."""
+        logger.debug("Moving forward.")
+        next_position_from, next_position_to = self.moving_position_from, next(self.moving_forward)
         self.emulator.drag(next_position_from, next_position_to, duration=0.5)
         self.moving_position_from = next_position_to
 
