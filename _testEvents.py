@@ -1,7 +1,7 @@
 import lib.logger as logging
 from lib.emulators.nox_player import NoxPlayer
 from lib.game.game import Game
-from lib.game.missions.events import EventMissions, WorldEvent
+from lib.game.missions.events import EventMissions, WorldEvent, FuturePass
 from lib.game.routines import DailyTrivia, Alliance, Friends
 
 logger = logging.get_logger(__name__)
@@ -18,6 +18,9 @@ if __name__ == '__main__':
 
     # World Event
     WorldEvent(game).complete_world_event()
+
+    # Future Pass
+    #FuturePass(game).acquire_points_and_claim_rewards()
 
 
 

@@ -15,6 +15,9 @@ class LegendaryBattle(Missions):
     INFINITY_WAR = "INFINITY_WAR"
     ANT_MAN = "ANT_MAN"
     CAPTAIN_MARVEL = "CAPTAIN_MARVEL"
+    BLACK_WIDOW = "BLACK_WIDOW"
+    SPIDERMAN_FFH = "SPIDERMAN_FFH"
+    AVENGERS_ENDGAME = "AVENGERS_ENDGAME"
     SHANG_CHI = "SHANG_CHI"
 
     class MODE:
@@ -85,13 +88,19 @@ class LegendaryBattle(Missions):
         if mode != self.MODE.NORMAL and mode != self.MODE.EXTREME:
             logger.error(f"Got wrong mode for battles: {mode}.")
             return False
-        if battle not in [self.THOR_RAGNAROK, self.BLACK_PANTHER, self.ANT_MAN, self.INFINITY_WAR, self.CAPTAIN_MARVEL,
-                          self.SHANG_CHI]:
+        if battle not in [self.THOR_RAGNAROK, self.BLACK_PANTHER, self.ANT_MAN, self.INFINITY_WAR,
+                          self.CAPTAIN_MARVEL, self.AVENGERS_ENDGAME, self.SPIDERMAN_FFH, self.BLACK_WIDOW, self.SHANG_CHI]:
             logger.error(f"Got wrong battle: {battle}.")
             return False
         if battle == self.SHANG_CHI:
             return self._select_legendary_battle_from_top(title=ui.LB_SHANG_CHI_BATTLE_TITLE,
                                                           battle=ui.LB_SHANG_CHI_BATTLE, mode=mode)
+        if battle == self.BLACK_WIDOW:
+            return self._select_legendary_battle_from_bottom(title=ui.LB_CAPTAIN_MARVEL_BATTLE_TITLE,
+                                                             battle=ui.LB_CAPTAIN_MARVEL_BATTLE, mode=mode)
+        if battle == self.SPIDERMAN_FFH:
+            return self._select_legendary_battle_from_bottom(title=ui.LB_CAPTAIN_MARVEL_BATTLE_TITLE,
+                                                             battle=ui.LB_CAPTAIN_MARVEL_BATTLE, mode=mode)
         if battle == self.THOR_RAGNAROK:
             return self._select_legendary_battle_from_bottom(title=ui.LB_RAGNAROK_BATTLE_TITLE,
                                                              battle=ui.LB_RAGNAROK_BATTLE, mode=mode)
@@ -107,6 +116,11 @@ class LegendaryBattle(Missions):
         if battle == self.CAPTAIN_MARVEL:
             return self._select_legendary_battle_from_bottom(title=ui.LB_CAPTAIN_MARVEL_BATTLE_TITLE,
                                                              battle=ui.LB_CAPTAIN_MARVEL_BATTLE, mode=mode)
+        if battle == self.AVENGERS_ENDGAME:
+            return self._select_legendary_battle_from_bottom(title=ui.LB_CAPTAIN_MARVEL_BATTLE_TITLE,
+                                                             battle=ui.LB_CAPTAIN_MARVEL_BATTLE, mode=mode)
+
+
 
     def _select_battle_mode(self, mode):
         """Selects battle mode.

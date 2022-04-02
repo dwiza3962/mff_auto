@@ -7,7 +7,9 @@ from lib.game.missions import HeroesReunited, IndustrialComplex, DeviantDiversio
     InhumanPrincess, MeanAndGreen, DarkAdvent, IncreasingDarkness, Blindsided, LegacyOfBlood, QuantumPower, \
     WingsOfDarkness, ClobberinTime, Hothead, AwManThisGuy, DominoFalls, GoingRogue, FriendsAndEnemies, \
     WeatheringTheStorm
-from lib.game.missions.epic_quest import SmallerHeadsPrevail, BrainsVsBlades, DeadlyAccuracy
+from lib.game.missions.epic_quest import SmallerHeadsPrevail, BrainsVsBlades, DeadlyAccuracy, DoomsDay, \
+    FateOfTheUniverse, PlayingHero, MutualEnemy, BeginningOfTheChaos, TheFault, GoldenGods, VeiledSecret, TwistedWorld, \
+    TheBigTwin, StupidXMen
 from lib.game.missions.events import EventMissions, WorldEvent, FuturePass
 from lib.game.routines import DailyTrivia, Alliance, Friends, ArtifactStore, Artifact, CharacterStore
 
@@ -35,17 +37,17 @@ if __name__ == '__main__':
     # FuturePass(game).acquire_points_and_claim_rewards()
 
     # ArtifactStore(game).acquire_free_artifact_chest()
-    # CharacterStore(game).acquire_free_hero_chest()
+    CharacterStore(game).acquire_free_hero_chest()
 
     #
     # ArtifactStore(game).buy_artifact_chest(chests_to_buy=['1', '2', '3', '4'])
 
     # Artifact(game).dismantle_artifacts(artifact_stars=['ARTIFACT_DISMANTLE_STAR_1', 'ARTIFACT_DISMANTLE_STAR_2'])
 
-    # # Missions
-    # # Deluxe Pack Missions
-    # #Eternals - Makkari / Gilgamesh
-    HeroesReunited(game).do_missions()
+    # Missions
+    # Deluxe Pack Missions
+    #Eternals - Makkari / Gilgamesh
+    # HeroesReunited(game).do_missions()
     # # Fantastic Four - Invisible Woman
     # DoomsDay(game).do_missions()
     # # Galactic Imperative - Nova
@@ -56,6 +58,15 @@ if __name__ == '__main__':
     # MutualEnemy(game).do_missions()
     # # X-Force Psylocke
     # BeginningOfTheChaos(game).do_missions()
+
+    # Other Epic Quest Missions - browsable via content status board.
+    # Phylla Vell Dimension Shift - Obelisks
+    # TheFault(game).do_missions()
+    # GoldenGods(game).do_missions()
+    # VeiledSecret(game).do_missions()
+    # TwistedWorld(game).do_missions()
+    # TheBigTwin(game).do_missions()
+    # StupidXMen(game).do_missions()
 
     # Sorcerer Supreme
     # RoadToMonastery(game).do_missions(times=1, difficulty=6)

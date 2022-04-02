@@ -17,7 +17,9 @@ if __name__ == '__main__':
     game.set_timeline_team(1)                 # Setup your team for PVP missions
     game.ACQUIRE_HEROIC_QUEST_REWARDS = True  # Setup ability to collect Heroic Quest rewards
 
-    # # Trivia
+    # Daily Run for Everything
+
+    # Trivia
     # dt = DailyTrivia(game).do_trivia()
     #
     # # Friends
@@ -29,11 +31,10 @@ if __name__ == '__main__':
     # dr = Alliance(game).donate_resources()
     # csi = Alliance(game).claim_support_item()
     bifs = Alliance(game).buy_items_from_store(items=['ALLIANCE_STORE_ENERGY_ITEM_1',
-                                                      'ALLIANCE_STORE_UNIFORM_EXP_CHIP_ITEM_2',
-                                                      'ALLIANCE_STORE_HIDDEN_TICKET_ITEM_3',
-                                                      'ALLIANCE_STORE_BOOST_POINT_ITEM_4'],
-                                               buy_all_available=True)
-
+                                                          'ALLIANCE_STORE_UNIFORM_EXP_CHIP_ITEM_2',
+                                                          'ALLIANCE_STORE_HIDDEN_TICKET_ITEM_3',
+                                                          'ALLIANCE_STORE_BOOST_POINT_ITEM_4'],
+                                                   buy_all_available=True)
     # cefc = Alliance(game).collect_energy_from_challenges()
     cefc = Alliance(game).request_support_item(support_item='ALLIANCE_SUPPORT_REQUEST_BLACK_ANTI_MATTER')
 

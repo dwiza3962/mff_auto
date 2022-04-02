@@ -33,6 +33,8 @@ class DispatchMission:
         r_sleep(1)
         self.emulator.drag(ui.DISPATCH_DRAG_LEFT_POSITION, ui.DISPATCH_DRAG_RIGHT_POSITION)
         r_sleep(1)
+        self.emulator.drag(ui.DISPATCH_DRAG_LEFT_POSITION, ui.DISPATCH_DRAG_RIGHT_POSITION)
+        r_sleep(1)
 
     def _acquire_rewards_from_sectors(self):
         """Acquired rewards from Dispatch Mission's sectors starting from the left one."""

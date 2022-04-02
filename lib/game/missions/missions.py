@@ -224,7 +224,7 @@ class Missions(Notifications):
         logger.debug(f"Clicking HOME button with UI Element: {home_button}.")
         self.emulator.click_button(home_button)
         while not self.game.is_main_menu():
-            self.close_after_mission_notifications(timeout=1)
+            self.close_after_mission_notifications(timeout=3)
         return True
 
     def is_stage_startable(self):
