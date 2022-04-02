@@ -1,6 +1,6 @@
 # mff_auto
 Game bot for [Marvel Future Fight](https://play.google.com/store/apps/details?id=com.netmarble.mherosgb&hl=ru) game.
-Compatible with **7.5.1** version.
+Compatible with **7.9.1** version.
 
 ## FAQ
 **Q**: What this bot can do?
@@ -13,7 +13,7 @@ Also it can enable *Autoplay++* feature anywhere and do your daily routines.
 
 **Q**: Which Android emulators are supported?
 
-**A**: [NoxPlayer](https://bignox.com) (up to 7.0.1.0) and [BlueStacks](https://www.bluestacks.com).
+**A**: [NoxPlayer](https://bignox.com) (up to 6.6.1.5) and [BlueStacks](https://www.bluestacks.com).
 
 **Q**: Why are you suggesting to use **NoxPlayer**?
 
