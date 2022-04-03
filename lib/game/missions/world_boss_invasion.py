@@ -118,10 +118,13 @@ class WorldBossInvasion(Missions):
     @property
     def battle_over_conditions(self):
         def damage():
-            if self.emulator.is_ui_element_on_screen(ui.INVASION_END_BATTLE_DAMAGE):
+            if self.emulator.is_ui_element_on_screen(ui.INVASION_END_CHEST_POPUP):
                 logger.info("Won battle, chest was acquired.")
-                self._chests += 1
-                return True
+                self.emulator.click_button(ui.INVASION_END_CHEST_POPUP)
+                if self.emulator.is_ui_element_on_screen(ui.INVASION_END_BATTLE_DAMAGE):
+                    logger.info("End Battle")
+                    self._chests += 1
+                    return True
             return False
 
         def failed():
@@ -133,6 +136,28 @@ class WorldBossInvasion(Missions):
         """Does missions."""
         self.start_missions(times=times, ignore_coop_mission=ignore_coop_mission)
         self.end_missions()
+
+    def do_test(self):
+        # if self.emulator.is_ui_element_on_screen(ui.INVASION_END_CHEST_POPUP):
+        #     logger.info("Won battle, chest was acquired.")
+        #     self.emulator.click_button(ui.INVASION_END_CHEST_POPUP)
+        # if self.emulator.is_ui_element_on_screen(ui.INVASION_END_BATTLE_DAMAGE):
+        #     logger.info("End Battle")
+        logger.debug(f"_chests: {self._chests} {self.chests}")
+        logger.debug(f"_max_chests: {self._max_chests} {self.max_chests}")
+        if wait_until(self.emulator.is_ui_element_on_screen, timeout=5, ui_element=ui.INVASION_END_BATTLE_DAMAGE):
+            if self._chests < self._max_chests:
+                self.press_repeat_button(repeat_button_ui=ui.INVASION_REPEAT_BUTTON,
+                                         start_button_ui=ui.INVASION_BOSS_FIGHT_START)
+            else:
+                self.press_home_button(home_button=ui.INVASION_HOME_BUTTON)
+        # In case we got back from fight by disconnect or something else
+        logger.debug("Any chest after boss fight wasn't acquired.")
+        if wait_until(self.emulator.is_ui_element_on_screen, timeout=20,
+                      ui_element=ui.INVASION_BOSS_FIGHT_START):
+            if self.press_start_button():
+                self._wait_for_players_and_start_fight()
+
 
     def start_missions(self, times=None, ignore_coop_mission=False):
         """Starts World Boss Invasion."""
