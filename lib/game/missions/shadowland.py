@@ -14,6 +14,11 @@ logger = logging.get_logger(__name__)
 class Shadowland(Missions):
     """Class for working with Shadowland."""
 
+    class RosterMode:
+        BEGINNER_ROSTER = "BEGINNER_ROSTER"
+        STRONG_ROSTER = "STRONG_ROSTER"
+        MAXIMUM_ROSTER = "MAXIMUM_ROSTER"
+
     class FloorFilter:
         """Class for working with floor rules."""
 
@@ -139,26 +144,28 @@ class Shadowland(Missions):
             self.emulator.click_button(ui.SL_KING_OF_THE_HILL_NOTICE)
         return wait_until(self.emulator.is_ui_element_on_screen, ui_element=ui.SL_ENTER_SHADOWLAND)
 
-    def do_missions(self, times=None):
+    def do_missions(self, times=None, roster_mode=RosterMode.BEGINNER_ROSTER):
         """Does Shadowland battles.
-
         :param int times: how many Shadowland floors to clear.
+        :param roster_mode : allows different options for character selection.
         """
         if times:
             self.stages = times
         elif self.stages_max == 35:
             self.stages = self.stages_max - self.stages - 1
         if self.stages > 0:
-            self.start_missions(times=self.stages)
+            self.start_missions(times=self.stages, roster_mode=roster_mode)
             self.end_missions()
         self.game.go_to_main_menu()
 
-    def start_missions(self, times=0):
+    def start_missions(self, times=0, roster_mode=RosterMode.BEGINNER_ROSTER):
         """Starts Shadowland battles.
-
         :param int times: how many Shadowland floors to clear.
+        :param roster_mode : allows different options for character selection.
         """
         logger.info(f"Starting Shadowland for {self.stages} times.")
+        logger.info(f"Starting Shadowland for {times} times.")
+        logger.info(f"Starting Shadowland for {roster_mode} times.")
         if not self.open_shadowland():
             return logger.error("Can't get into Shadowland.")
 
@@ -170,8 +177,7 @@ class Shadowland(Missions):
                 return logger.error("Can't open Shadowland Floor, exiting.")
             if not self.select_floor():
                 return logger.error("Can't select Shadowland Floor, exiting.")
-
-            if not self.press_start_button():
+            if not self.press_start_button(roster_mode=roster_mode):
                 return logger.error("Failed to start Shadowland Floor battle.")
             ManualBattleBot(self.game, self.battle_over_conditions).fight()
             if wait_until(self.emulator.is_ui_element_on_screen, ui_element=ui.SL_BATTLE_LOST):
@@ -187,26 +193,31 @@ class Shadowland(Missions):
                 self.press_home_button(home_button=ui.SL_BATTLE_HOME_BUTTON)
                 self.close_after_mission_notifications()
 
-    def press_start_button(self, start_button_ui=ui.SL_START_BATTLE):
+    def press_start_button(self, start_button_ui=ui.SL_START_BATTLE, roster_mode=RosterMode.BEGINNER_ROSTER):
         """Presses start button of the Shadowland floor."""
         if self.emulator.is_ui_element_on_screen(start_button_ui):
-            if self._cleared_previously:
-                all_deployed = self._deploy_characters()
-                if not all_deployed:
-                    self._cleared_previously = False  # Select characters from the bottom of the list
-                    logger.debug("Missing characters. Redeploying additional characters using floor rules.")
-                    all_deployed = self._deploy_characters(apply_character_filter=True)
-                if not all_deployed:
-                    logger.debug("Not enough characters with floor rules. Deploying any possible character")
-                    self.emulator.click_button(ui.SL_CHARACTER_FILTER, min_duration=1, max_duration=1)
-                    self.emulator.click_button(ui.SL_CHARACTER_FILTER, min_duration=1, max_duration=1)
-                    all_deployed = self._deploy_characters(apply_character_filter=False)
-            else:
-                all_deployed = self._deploy_characters(apply_character_filter=True)
+            all_deployed = self._deploy_characters(apply_character_filter=True, roster_mode=roster_mode)
+            #
+            # if self._cleared_previously:
+            #     all_deployed = self._deploy_characters()
+            #     if not all_deployed:
+            #         self._cleared_previously = False  # Select characters from the bottom of the list
+            #         logger.debug("Missing characters. Redeploying additional characters using floor rules.")
+            #         all_deployed = self._deploy_characters(apply_character_filter=True)
+            #     if not all_deployed:
+            #         logger.debug("Not enough characters with floor rules. Deploying any possible character")
+            #         self.emulator.click_button(ui.SL_CHARACTER_FILTER, min_duration=1, max_duration=1)
+            #         self.emulator.click_button(ui.SL_CHARACTER_FILTER, min_duration=1, max_duration=1)
+            #         all_deployed = self._deploy_characters(apply_character_filter=False)
+            # else:
+            #     all_deployed = self._deploy_characters(apply_character_filter=True)
+
             if not all_deployed:
                 logger.warning("No more characters to deploy. Exiting")
                 return False
             self.emulator.click_button(ui.SL_START_BATTLE)
+            if self.emulator.is_ui_element_on_screen(ui.SL_SELECT_CHARACTERS_CHARACTERS_AVAILABLE_CONTINUE):
+                self.emulator.click_button(ui.SL_SELECT_CHARACTERS_CHARACTERS_AVAILABLE_CONTINUE)
             return True
         return False
 
@@ -300,40 +311,71 @@ class Shadowland(Missions):
         logger.debug(f"Rule for current room: {self._room_rule}")
         return wait_until(self.emulator.is_ui_element_on_screen, ui_element=ui.SL_START_BATTLE)
 
-    def _deploy_characters(self, apply_character_filter=False):
+    def _deploy_characters(self, apply_character_filter=False, number_of_characters=1, roster_mode=RosterMode.BEGINNER_ROSTER, stage=1):
         """Tries to deploy characters.
         If room was cleared in previous season then selects characters from top of the list.
-        If room wasn't cleared in previous season then selectes characters from bottom of the list.
+        If room wasn't cleared in previous season then selects characters from bottom of the list.
         Stops selecting characters when gets `NO EMPTY SLOTS` notification.
-
         :param bool apply_character_filter: should character filter be applied or not.
-
         :return: (True or False) full team was selected or not.
         :rtype: bool
         """
-        if self._cleared_previously:
-            char_num_gen = (char_num for char_num in range(1, 4))  # Only first 3 character from previous clear
-        else:
-            char_num_gen = (char_num for char_num in range(12, 0, -1))  # 12 characters from the bottom to top
-        if apply_character_filter:
+
+        # Stages 1-15
+        # Take position 11 after filter.   Sort by Level Desc, take 4-5
+
+        # if self._cleared_previously:
+        #     char_num_gen = (char_num for char_num in range(12, 0, -1))  # Only first 3 character from previous clear
+        # else:
+        #     char_num_gen = (char_num for char_num in range(12, 0, -1))  # 12 characters from the bottom to top
+
+        # 1-'THREE_CHARACTER_STRONG_WEAK'
+
+        logger.debug(f"Character Selection Mode {roster_mode}.")
+
+        if roster_mode == self.RosterMode.STRONG_ROSTER:
             self._select_character_filter_by_mission()
-        while not self.emulator.is_ui_element_on_screen(ui.SL_SELECT_CHARACTERS_NO_EMPTY_SLOTS):
-            char_num = next(char_num_gen, None)
-            if not char_num:  # If no more characters is available to deploy
-                if self._cleared_previously:  # Use default strategy with 12 characters
+            self.emulator.click_button(ui.get_by_name(f"SL_CHARACTER_11"), 0.1, 0.2)
+            self._select_character_filter_by_level()
+            self.emulator.click_button(ui.get_by_name(f"SL_CHARACTER_4"), 0.1, 0.2)
+            self.emulator.click_button(ui.get_by_name(f"SL_CHARACTER_5"), 0.1, 0.2)
+        elif roster_mode == self.RosterMode.MAXIMUM_ROSTER:
+            self._select_character_filter_by_mission()
+            self.emulator.click_button(ui.get_by_name(f"SL_CHARACTER_11"), 0.1, 0.2)
+            self._select_character_filter_by_level()
+            self.emulator.click_button(ui.get_by_name(f"SL_CHARACTER_4"), 0.1, 0.2)
+            self.emulator.click_button(ui.get_by_name(f"SL_CHARACTER_5"), 0.1, 0.2)
+        else:
+            while not self.emulator.is_ui_element_on_screen(ui.SL_SELECT_CHARACTERS_NO_EMPTY_SLOTS):
+                char_num = next(char_num_gen, None)
+                if not char_num:  # If no more characters is available to deploy
+                    if self._cleared_previously:  # Use default strategy with 12 characters
+                        char_num_gen = (char_num for char_num in range(12, 0, -1))
+                        self._cleared_previously = False
+                        continue
+                    else:
+                        return False
+                # If `cleared` characters is no more then use default strategy with 12 characters
+                if char_num and self._cleared_previously and not self.emulator.is_ui_element_on_screen(
+                        ui.get_by_name(f"SL_CHARACTER_CLEARED_{char_num}")):
                     char_num_gen = (char_num for char_num in range(12, 0, -1))
                     self._cleared_previously = False
                     continue
-                else:
-                    return False
-            # If `cleared` characters is no more then use default strategy with 12 characters
-            if char_num and self._cleared_previously and not self.emulator.is_ui_element_on_screen(
-                    ui.get_by_name(f"SL_CHARACTER_CLEARED_{char_num}")):
-                char_num_gen = (char_num for char_num in range(12, 0, -1))
-                self._cleared_previously = False
-                continue
-            self.emulator.click_button(ui.get_by_name(f"SL_CHARACTER_{char_num}"))
-        self.emulator.click_button(ui.SL_SELECT_CHARACTERS_NO_EMPTY_SLOTS)
+                self.emulator.click_button(ui.get_by_name(f"SL_CHARACTER_{char_num}"))
+            self.emulator.click_button(ui.SL_SELECT_CHARACTERS_NO_EMPTY_SLOTS)
+
+
+        # self._select_character_filter_by_mission()
+        # self.emulator.click_button(ui.get_by_name(f"SL_CHARACTER_11"), 0.1, 0.2)
+        # self._select_character_filter_by_level()
+        # self.emulator.click_button(ui.get_by_name(f"SL_CHARACTER_4"), 0.1, 0.2)
+        # self.emulator.click_button(ui.get_by_name(f"SL_CHARACTER_5"), 0.1, 0.2)
+        #
+        # char_num_gen = (char_num for char_num in range(12, 0, -1))  # Only first 3 character from previous clear
+        # char_num = next(char_num_gen, None)
+        # self.emulator.click_button(ui.get_by_name(f"SL_CHARACTER_{char_num}"), 0.1, 0.2)
+        # self.emulator.click_button(ui.SL_START_BATTLE)
+        # self.emulator.click_button(ui.SL_SELECT_CHARACTERS_CHARACTERS_AVAILABLE_CONTINUE)
         return True
 
     def _select_character_filter_by_mission(self):
@@ -344,3 +386,7 @@ class Shadowland(Missions):
                 logger.debug(f"Found filter {characters_filter} by {floor_filter}")
                 self.emulator.click_button(ui.SL_CHARACTER_FILTER, min_duration=1, max_duration=1)
                 self.emulator.click_button(characters_filter, min_duration=1, max_duration=1)
+
+    def _select_character_filter_by_level(self):
+        """Selects character filter by matching rules with `FloorFilter` objects."""
+        self.emulator.click_button(ui.SL_CHARACTER_LEVEL_DESC)

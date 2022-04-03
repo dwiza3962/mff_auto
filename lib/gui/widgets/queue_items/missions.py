@@ -695,6 +695,11 @@ class _GoldenGods(GameMode):
 
 
 class _Shadowland(GameMode):
+    shadowland_modes = {
+            "BEGINNER_ROSTER": missions.Shadowland.RosterMode.BEGINNER_ROSTER,
+            "STRONG_ROSTER": missions.Shadowland.RosterMode.STRONG_ROSTER,
+            "MAXIMUM_ROSTER": missions.Shadowland.RosterMode.MAXIMUM_ROSTER
+    }
 
     def __init__(self, game):
         super().__init__(game, "SHADOWLAND", missions.Shadowland, "Shadowland [BETA]")
@@ -702,6 +707,10 @@ class _Shadowland(GameMode):
                                                        setting_key="times",
                                                        text="Select how many floors to complete",
                                                        min=1, max=99))
+        self.mode_settings.append(GameMode.ModeSetting(setting_type=GameMode.ModeSetting.Combobox,
+                                                       setting_key="roster_mode",
+                                                       text="Select Shadowland Mode",
+                                                       values_dict=self.shadowland_modes))
 
 
 class _StoryMission(GameMode):

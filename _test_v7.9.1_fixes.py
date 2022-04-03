@@ -6,7 +6,7 @@ from lib.game.missions import HeroesReunited, IndustrialComplex, DeviantDiversio
     MysteriousAmbush, RoadToMonastery, StingOfTheScorpion, SelfDefenseProtocol, DangerousSisters, CosmicRider, \
     InhumanPrincess, MeanAndGreen, DarkAdvent, IncreasingDarkness, Blindsided, LegacyOfBlood, QuantumPower, \
     WingsOfDarkness, ClobberinTime, Hothead, AwManThisGuy, DominoFalls, GoingRogue, FriendsAndEnemies, \
-    WeatheringTheStorm, WorldBoss, WorldBossInvasion
+    WeatheringTheStorm, WorldBoss, WorldBossInvasion, Shadowland
 from lib.game.missions.epic_quest import SmallerHeadsPrevail, BrainsVsBlades, DeadlyAccuracy, DoomsDay, \
     FateOfTheUniverse, PlayingHero, MutualEnemy, BeginningOfTheChaos, TheFault, GoldenGods, VeiledSecret, TwistedWorld, \
     TheBigTwin, StupidXMen
@@ -30,10 +30,17 @@ if __name__ == '__main__':
     # WorldBossInvasion(game).do_test()
     # WorldBossInvasion(game).do_missions()
 
-    DispatchMission(game).acquire_all_rewards()
+    # DispatchMission(game).acquire_all_rewards()
+    # World Event
+    # WorldEvent(game).complete_world_event()
+    # CharacterStore(game).acquire_free_hero_chest()
 
+    #ArtifactStore(game).acquire_free_artifact_chest()
+    #
+    # ArtifactStore(game).buy_artifact_chest(chests_to_buy=['1', '2', '3', '4'])
 
+    # WorldBoss(game).do_missions(mode=WorldBoss.MODE.ULTIMATE, difficulty=20, boss=WorldBoss.BOSS.TODAYS_BOSS)
 
-
+    Shadowland(game).do_missions(times=1, roster_mode=Shadowland.RosterMode.STRONG_ROSTER)
 
 
