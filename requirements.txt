@@ -1,8 +1,8 @@
 #   core
 numpy==1.21.0
-opencv-python==4.2.0.34
-pillow==8.3.2
-regex==2020.9.27
+opencv-python==4.5.5.64
+pillow==8.4.0
+regex==2022.3.15
 pyautoit==0.6.0
 pywin32==301
 win32gui==221.6
