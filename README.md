@@ -85,10 +85,26 @@ On first start you will see `Setup` window. Follow the instructions in the windo
 At current state Marvel Future Fight bot is at beta stage.
 
 - Timeline battle do not check if your team is available for battle. Please setup team manually.
+
 - Alliance and World Boss battles do not check if your characters can do these modes. 
   Make sure that you have strong characters.
+
 - Shadowland requires a big roaster of powerful heroes. 
   Make sure that you have at least 60 to 90 T2 characters and uniforms for them.
+
+- Shadowland Updates - Added BEGINNER_ROSTER for the default behavior above.
+  - This uses the last used characters from shadowland on your emulator, or the top 3 of the filter.
+  - Sometimes, if uses too many strong characters in the lower stages leaving weaker ones at the later stages.
+- Added STRONG_ROSTER option if you have 20+ t3's and awakened characters.
+  - It picks one of those and then sorts by level and picks 2 of the lower level people since most strong T3 and T2 can win by themselves.
+- Added MAX_ROSTER option and this currently works the same way as STRONG_ROSTER does for now.
+  - This is still in progress.   Likely it'll skip your first page of characters for the lower shadowland levels 1-15 or so.
+
+- Use Clear Tickets option has been added, but I think I only have it where it works in Epic Quests.    
+- It's much slower actually that just playing through so just play regularly until I can get some more functionality in.
+- I want to add in more options for Dimension Missions.
+
+
 
 ## Contribution
 
@@ -103,7 +119,13 @@ Feel free to contribute. Don't forget about [license](LICENSE).
 - Copy `tessdata` folder to your Tesseract folder.
 - Add `lib` folder to your `PYTHONPATH` or mark it as lib source.
 
+Highly recommend you use an IDE like PyCharm from Jetbrains.
 Check `example.py` for examples of running any modes.
+
+In the terminal window -
+run `./app_gui.py` for the same behavior as the start.bat from the install
+run `./_test_v7.9.1_fixes.py` or any of the other test files run without the GUI.
+run `./_captureRectangle.py` to load a screenshot to grab box coordinates for the game.
 
 ### Capture video for debugging
 
@@ -124,4 +146,5 @@ with EmulatorCapture(nox) as recorder:
 
 ### Building release package from source code
 
+- Update the `version.py` to update the game version
 - Run `build.py`
