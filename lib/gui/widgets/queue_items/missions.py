@@ -696,9 +696,9 @@ class _GoldenGods(GameMode):
 
 class _Shadowland(GameMode):
     shadowland_modes = {
-            "BEGINNER_ROSTER": missions.Shadowland.RosterMode.BEGINNER_ROSTER,
-            "STRONG_ROSTER": missions.Shadowland.RosterMode.STRONG_ROSTER,
-            "MAXIMUM_ROSTER": missions.Shadowland.RosterMode.MAXIMUM_ROSTER
+        "BEGINNER_ROSTER": missions.Shadowland.RosterMode.BEGINNER_ROSTER,
+        "STRONG_ROSTER": missions.Shadowland.RosterMode.STRONG_ROSTER,
+        "MAXIMUM_ROSTER": missions.Shadowland.RosterMode.MAXIMUM_ROSTER
     }
 
     def __init__(self, game):
@@ -820,3 +820,21 @@ class _BrainsVsBlades(GameMode):
                                                        setting_key="difficulty",
                                                        text="Select stage difficulty",
                                                        min=1, max=4))
+
+
+class _TrueEvolution(GameMode):
+
+    def __init__(self, game):
+        super().__init__(game, "TRUE EVOLUTION", missions.TrueEvolution, "True Evolution [??]")
+        self.mode_settings.append(GameMode.ModeSetting(setting_type=GameMode.ModeSetting.Checkbox,
+                                                       setting_key="all_stages",
+                                                       text="All stages"))
+        self.mode_settings.append(GameMode.ModeSetting(setting_type=GameMode.ModeSetting.Spinbox,
+                                                       setting_key="times",
+                                                       text="Select how many stages to complete",
+                                                       min=1, max=2))
+        self.mode_settings.append(GameMode.ModeSetting(setting_type=GameMode.ModeSetting.Checkbox,
+                                                       setting_key="farm_shifter_bios",
+                                                       initial_state=False,
+                                                       text="Farm shifter's biometrics (requires restartable emulator)")
+                                  )

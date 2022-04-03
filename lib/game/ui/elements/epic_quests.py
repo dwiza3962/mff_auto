@@ -178,6 +178,10 @@ EQ_DOOMSDAY_STAGE_LABEL = UIElement(name='EQ_DOOMSDAY_STAGE_LABEL')
 EQ_DOOMSDAY_STAGE_LABEL.description = "Epic Quest : First Family : Doom's Day stage."
 EQ_DOOMSDAY_STAGE_LABEL.text = "DOOM'S DAY"
 
+EQ_TRUE_EVOLUTION_STAGE_LABEL = UIElement(name='EQ_TRUE_EVOLUTION_STAGE_LABEL')
+EQ_TRUE_EVOLUTION_STAGE_LABEL.description = "Epic Quest : The Fate of Mankind : True Evolution."
+EQ_TRUE_EVOLUTION_STAGE_LABEL.text = "TRUE EVOLUTION"
+
 EQ_THE_FAULT_STAGE_LABEL = UIElement(name='EQ_THE_FAULT_STAGE_LABEL')
 EQ_THE_FAULT_STAGE_LABEL.description = "Epic Quest : The Galactic Imperative: The Fault stage text (to detect if it's loaded)."
 EQ_THE_FAULT_STAGE_LABEL.text_rect = Rect(0.052083333333333336, 0.013888888888888888, 0.16614583333333333, 0.0824074074074074)

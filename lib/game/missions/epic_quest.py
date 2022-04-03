@@ -139,12 +139,14 @@ class TwoStageEpicQuest(EpicQuest):
                 stage_2_num = 0
             if stage_1_num > 0 or stage_2_num > 0:
                 while stage_1_num > 0 and self.stages > 0:
-                    stage_1_num = self.start_stage(stage_num=stage_1_num, farm_shifter_bios=farm_shifter_bios, stage_button=self.stage_1_ui)
+                    stage_1_num = self.start_stage(stage_num=stage_1_num, farm_shifter_bios=farm_shifter_bios,
+                                                   stage_button=self.stage_1_ui)
                     self.stages = stage_1_num + stage_2_num
                 if stage_2_num > 0 and self.game.is_main_menu():
                     self.game.select_mode(self.mode_name)
                 while stage_2_num > 0 and self.stages > 0:
-                    stage_2_num = self.start_stage(stage_num=stage_2_num, farm_shifter_bios=farm_shifter_bios, stage_button=self.stage_2_ui)
+                    stage_2_num = self.start_stage(stage_num=stage_2_num, farm_shifter_bios=farm_shifter_bios,
+                                                   stage_button=self.stage_2_ui)
                     self.stages = stage_1_num + stage_2_num
         logger.info(f"No more stages for {self.mode_name}.")
 
@@ -670,3 +672,10 @@ class BrainsVsBlades(TenStageWithDifficultyEpicQuest):
     def __init__(self, game):
         super().__init__(game, ui.EQ_FATE_OF_MANKIND, ui.EQ_BROKEN_HARMONY, ui.EQ_BROKEN_HARMONY_LABEL,
                          ui.EQ_BRAINS_VS_BLADES)
+
+
+class TrueEvolution(OneStageEpicQuest):
+    """Class for working with Epic Quest mission: Mutual Enemy."""
+
+    def __init__(self, game):
+        super().__init__(game=game, mode_label_ui=ui.EQ_TRUE_EVOLUTION_STAGE_LABEL)

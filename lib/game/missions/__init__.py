@@ -7,7 +7,7 @@ from .epic_quest import StupidXMen, MutualEnemy, BeginningOfTheChaos, DoomsDay, 
     WingsOfDarkness, InhumanPrincess, MeanAndGreen, ClobberinTime, Hothead, AwManThisGuy, DominoFalls, GoingRogue, \
     FriendsAndEnemies, WeatheringTheStorm, Blindsided, DarkAdvent, IncreasingDarkness, RoadToMonastery, \
     MysteriousAmbush, MonasteryInTrouble, PowerOfTheDark, StingOfTheScorpion, SelfDefenseProtocol, LegacyOfBlood, \
-    PlayingHero, GoldenGods, IndustrialComplex, DeviantDiversion, HeroesReunited
+    PlayingHero, GoldenGods, IndustrialComplex, DeviantDiversion, HeroesReunited, TrueEvolution
 from .events import EventWorldBoss, WorldEvent, FuturePass
 from .giant_boss_raid import GiantBossRaid
 from .legendary_battle import LegendaryBattle

@@ -9,7 +9,7 @@ from lib.game.missions import HeroesReunited, IndustrialComplex, DeviantDiversio
     WeatheringTheStorm, WorldBoss, WorldBossInvasion, Shadowland
 from lib.game.missions.epic_quest import SmallerHeadsPrevail, BrainsVsBlades, DeadlyAccuracy, DoomsDay, \
     FateOfTheUniverse, PlayingHero, MutualEnemy, BeginningOfTheChaos, TheFault, GoldenGods, VeiledSecret, TwistedWorld, \
-    TheBigTwin, StupidXMen
+    TheBigTwin, StupidXMen, TrueEvolution
 from lib.game.missions.events import EventMissions, WorldEvent, FuturePass
 from lib.game.routines import DailyTrivia, Alliance, Friends, ArtifactStore, Artifact, CharacterStore
 
@@ -41,6 +41,8 @@ if __name__ == '__main__':
 
     # WorldBoss(game).do_missions(mode=WorldBoss.MODE.ULTIMATE, difficulty=20, boss=WorldBoss.BOSS.TODAYS_BOSS)
 
-    Shadowland(game).do_missions(times=1, roster_mode=Shadowland.RosterMode.STRONG_ROSTER)
+    # Shadowland(game).do_missions(times=1, roster_mode=Shadowland.RosterMode.STRONG_ROSTER)
+
+    TrueEvolution(game).do_missions(times=1)
 
 
