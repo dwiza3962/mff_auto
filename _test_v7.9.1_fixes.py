@@ -35,7 +35,7 @@ if __name__ == '__main__':
     # WorldEvent(game).complete_world_event()
     # CharacterStore(game).acquire_free_hero_chest()
 
-    #ArtifactStore(game).acquire_free_artifact_chest()
+    ArtifactStore(game).acquire_free_artifact_chest()
     #
     # ArtifactStore(game).buy_artifact_chest(chests_to_buy=['1', '2', '3', '4'])
 
@@ -43,6 +43,6 @@ if __name__ == '__main__':
 
     # Shadowland(game).do_missions(times=1, roster_mode=Shadowland.RosterMode.STRONG_ROSTER)
 
-    TrueEvolution(game).do_missions(times=1)
+    # TrueEvolution(game).do_missions(times=1)
 
 

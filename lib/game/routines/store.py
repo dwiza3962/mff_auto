@@ -210,6 +210,9 @@ class ArtifactStore(Store):
         """Acquires available Free Artifact Chest."""
         if not self.open_artifact_store():
             return logger.error("Can't open Artifact Store.")
+        self._drag_store_list_to_the_right()
+        r_sleep(1)  # Wait for animations
+        self._drag_store_list_to_the_right()
         self.emulator.click_button(ui.STORE_ARTIFACT_FREE_CHEST)
         if wait_until(self.emulator.is_ui_element_on_screen, ui_element=ui.STORE_ARTIFACT_FREE_CHEST_BUTTON_ACQUIRE):
             logger.debug("Acquiring Free Artifact Chest.")
