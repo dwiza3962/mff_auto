@@ -332,20 +332,27 @@ class Shadowland(Missions):
         # 1-'THREE_CHARACTER_STRONG_WEAK'
 
         logger.debug(f"Character Selection Mode {roster_mode}.")
+        self._select_character_filter_by_mission()
 
         if roster_mode == self.RosterMode.STRONG_ROSTER:
-            self._select_character_filter_by_mission()
             self.emulator.click_button(ui.get_by_name(f"SL_CHARACTER_11"), 0.1, 0.2)
             self._select_character_filter_by_level()
             self.emulator.click_button(ui.get_by_name(f"SL_CHARACTER_4"), 0.1, 0.2)
             self.emulator.click_button(ui.get_by_name(f"SL_CHARACTER_5"), 0.1, 0.2)
+            return True
         elif roster_mode == self.RosterMode.MAXIMUM_ROSTER:
-            self._select_character_filter_by_mission()
             self.emulator.click_button(ui.get_by_name(f"SL_CHARACTER_11"), 0.1, 0.2)
             self._select_character_filter_by_level()
             self.emulator.click_button(ui.get_by_name(f"SL_CHARACTER_4"), 0.1, 0.2)
             self.emulator.click_button(ui.get_by_name(f"SL_CHARACTER_5"), 0.1, 0.2)
+            return True
         else:
+            if self._cleared_previously:
+                char_num_gen = (char_num for char_num in range(1, 4))  # Only first 3 character from previous clear
+            else:
+                char_num_gen = (char_num for char_num in range(12, 0, -1))  # 12 characters from the bottom to top
+            if apply_character_filter:
+                self._select_character_filter_by_mission()
             while not self.emulator.is_ui_element_on_screen(ui.SL_SELECT_CHARACTERS_NO_EMPTY_SLOTS):
                 char_num = next(char_num_gen, None)
                 if not char_num:  # If no more characters is available to deploy
@@ -363,20 +370,7 @@ class Shadowland(Missions):
                     continue
                 self.emulator.click_button(ui.get_by_name(f"SL_CHARACTER_{char_num}"))
             self.emulator.click_button(ui.SL_SELECT_CHARACTERS_NO_EMPTY_SLOTS)
-
-
-        # self._select_character_filter_by_mission()
-        # self.emulator.click_button(ui.get_by_name(f"SL_CHARACTER_11"), 0.1, 0.2)
-        # self._select_character_filter_by_level()
-        # self.emulator.click_button(ui.get_by_name(f"SL_CHARACTER_4"), 0.1, 0.2)
-        # self.emulator.click_button(ui.get_by_name(f"SL_CHARACTER_5"), 0.1, 0.2)
-        #
-        # char_num_gen = (char_num for char_num in range(12, 0, -1))  # Only first 3 character from previous clear
-        # char_num = next(char_num_gen, None)
-        # self.emulator.click_button(ui.get_by_name(f"SL_CHARACTER_{char_num}"), 0.1, 0.2)
-        # self.emulator.click_button(ui.SL_START_BATTLE)
-        # self.emulator.click_button(ui.SL_SELECT_CHARACTERS_CHARACTERS_AVAILABLE_CONTINUE)
-        return True
+            return True
 
     def _select_character_filter_by_mission(self):
         """Selects character filter by matching rules with `FloorFilter` objects."""
