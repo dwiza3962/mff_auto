@@ -15,6 +15,8 @@ Also it can enable *Autoplay++* feature anywhere and do your daily routines.
 
 **A**: [NoxPlayer](https://bignox.com) (up to 6.6.1.5) and [BlueStacks](https://www.bluestacks.com).
 
+**A**: [NoxPlayer](https://bignox.com) (up to 7.0.1.1) - Fails to Detect window handle.
+
 **Q**: Why are you suggesting to use **NoxPlayer**?
 
 **A**: NoxPlayer has shortcut to force close applications (requires to reset game's state).
@@ -31,13 +33,24 @@ Video footage of all game modes running by **mff_auto**: https://youtu.be/QcgZcA
 
 - Set [NoxPlayer](https://bignox.com)
  (or [BlueStacks](https://www.bluestacks.com))
- screen resolution at least **1280x720**. If you encounter problems then try **1920x1080**.
- 
+
+- Optimal Nox Settings 
+  - Screen Resolution **1920x1080**.
+  - Optimal Stability for Nox:
+  - Windows Size and Position: **Fixed**
+  - Performance: **Enhanced Compatibility Mode (OpenGL)**
+
 - Set in [Marvel Future Fight](https://play.google.com/store/apps/details?id=com.netmarble.mherosgb) 
-  setting **GRAPHICS** to at least **Medium**. Lesser settings will lead to blurried text.
+
+- Optimal In-Game Settings
+  - setting `GRAPHICS` to **Medium** or **High**
+  - Set `Performance` to **High**
+  - Set `Mission Navigation Auto Popup` to **Off**
+  - Set `Future Pass Point Acquired` to **Off**
+  - Leave all other settings on
 
   In the same setting's menu turn off this notifications: 
-  `Mission Navigation Auto Popup` and `Future Pass Point Acquired`.
+   and .
 
 - Download last release: [Link to releases](https://github.com/dwiza3962/mff_auto/releases)
 - Run `start.bat`
