@@ -396,6 +396,13 @@ class PlayingHero(OneStageEpicQuest):
         super().__init__(game=game, mode_label_ui=ui.EQ_PLAYING_HERO_STAGE_LABEL)
 
 
+class TrueEvolution(OneStageEpicQuest):
+    """Class for working with Epic Quest mission: Mutual Enemy."""
+
+    def __init__(self, game):
+        super().__init__(game=game, mode_label_ui=ui.EQ_TRUE_EVOLUTION_STAGE_LABEL)
+
+
 class HeroesReunited(TwoStageEpicQuest):
     """Class for working with Epic Quest mission: Heroes Reunited: Madness Ensues."""
 
@@ -672,10 +679,3 @@ class BrainsVsBlades(TenStageWithDifficultyEpicQuest):
     def __init__(self, game):
         super().__init__(game, ui.EQ_FATE_OF_MANKIND, ui.EQ_BROKEN_HARMONY, ui.EQ_BROKEN_HARMONY_LABEL,
                          ui.EQ_BRAINS_VS_BLADES)
-
-
-class TrueEvolution(OneStageEpicQuest):
-    """Class for working with Epic Quest mission: Mutual Enemy."""
-
-    def __init__(self, game):
-        super().__init__(game=game, mode_label_ui=ui.EQ_TRUE_EVOLUTION_STAGE_LABEL)
