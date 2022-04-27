@@ -62,25 +62,25 @@ class Shadowland(Missions):
     class BlastCharacters(FloorFilter):
 
         def __init__(self):
-            super().__init__(pattern="Blast-type characters have an advantage in this stage.",
+            super().__init__(pattern="Blast-types have an advantage in this stage.",
                              floor_filter=ui.SL_CHARACTER_FILTER_BLAST)
 
     class CombatCharacters(FloorFilter):
 
         def __init__(self):
-            super().__init__(pattern="Combat-type characters have an advantage in this stage.",
+            super().__init__(pattern="Combat-types have an advantage in this stage.",
                              floor_filter=ui.SL_CHARACTER_FILTER_COMBAT)
 
     class SpeedCharacters(FloorFilter):
 
         def __init__(self):
-            super().__init__(pattern="Speed-type characters have an advantage in this stage.",
+            super().__init__(pattern="Speed-types have an advantage in this stage.",
                              floor_filter=ui.SL_CHARACTER_FILTER_SPEED)
 
     class UniversalCharacters(FloorFilter):
 
         def __init__(self):
-            super().__init__(pattern="Universal-type characters have an advantage in this stage.",
+            super().__init__(pattern="Universal-types have an advantage in this stage.",
                              floor_filter=ui.SL_CHARACTER_FILTER_UNIVERSAL)
 
     class MaleHeroes(FloorFilter):
@@ -311,7 +311,8 @@ class Shadowland(Missions):
         logger.debug(f"Rule for current room: {self._room_rule}")
         return wait_until(self.emulator.is_ui_element_on_screen, ui_element=ui.SL_START_BATTLE)
 
-    def _deploy_characters(self, apply_character_filter=False, number_of_characters=1, roster_mode=RosterMode.BEGINNER_ROSTER, stage=1):
+    def _deploy_characters(self, apply_character_filter=False, number_of_characters=1,
+                           roster_mode=RosterMode.BEGINNER_ROSTER, stage=1):
         """Tries to deploy characters.
         If room was cleared in previous season then selects characters from top of the list.
         If room wasn't cleared in previous season then selects characters from bottom of the list.
@@ -324,23 +325,15 @@ class Shadowland(Missions):
         # Stages 1-15
         # Take position 11 after filter.   Sort by Level Desc, take 4-5
 
-        # if self._cleared_previously:
-        #     char_num_gen = (char_num for char_num in range(12, 0, -1))  # Only first 3 character from previous clear
-        # else:
-        #     char_num_gen = (char_num for char_num in range(12, 0, -1))  # 12 characters from the bottom to top
-
-        # 1-'THREE_CHARACTER_STRONG_WEAK'
-
-        logger.debug(f"Character Selection Mode {roster_mode}.")
-        self._select_character_filter_by_mission()
-
         if roster_mode == self.RosterMode.STRONG_ROSTER:
+            self._select_character_filter_by_mission()
             self.emulator.click_button(ui.get_by_name(f"SL_CHARACTER_11"), 0.1, 0.2)
             self._select_character_filter_by_level()
             self.emulator.click_button(ui.get_by_name(f"SL_CHARACTER_4"), 0.1, 0.2)
             self.emulator.click_button(ui.get_by_name(f"SL_CHARACTER_5"), 0.1, 0.2)
             return True
         elif roster_mode == self.RosterMode.MAXIMUM_ROSTER:
+            self._select_character_filter_by_mission()
             self.emulator.click_button(ui.get_by_name(f"SL_CHARACTER_11"), 0.1, 0.2)
             self._select_character_filter_by_level()
             self.emulator.click_button(ui.get_by_name(f"SL_CHARACTER_4"), 0.1, 0.2)
