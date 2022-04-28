@@ -164,7 +164,7 @@ CONTENT_STATUS_BOARD_1.button_rect = Rect(0.05625, 0.2462962962962963, 0.94375, 
 
 CONTENT_STATUS_BOARD_2 = UIElement(name='CONTENT_STATUS_BOARD_2')
 CONTENT_STATUS_BOARD_2.description = "Position of second half of content status board. Contains info about stages."
-CONTENT_STATUS_BOARD_2.button_rect = Rect(0.05625, 0.2462962962962963, 0.94375, 0.8148148148148148)
+CONTENT_STATUS_BOARD_2.button_rect = Rect(0.05520833333333333, 0.34274074074074073, 0.94375, 0.9092592592592592)
 
 CONTENT_STATUS_ELEMENT_1 = UIElement(name='CONTENT_STATUS_ELEMENT_1')
 CONTENT_STATUS_ELEMENT_1.description = "Local position of any element in content status board 1. Can be translated to any col/row. Button rect contains offset info for col/row."

@@ -267,7 +267,8 @@ class Game(Notifications):
         if mode:
             self.go_to_main_menu()
             return mode
-        self.emulator.drag(ui.CONTENT_STATUS_DRAG_FROM, ui.CONTENT_STATUS_DRAG_TO, duration=3)
+        self.emulator.drag(ui.CONTENT_STATUS_DRAG_FROM, ui.CONTENT_STATUS_DRAG_TO, duration=0.5)
+        self.emulator.drag(ui.CONTENT_STATUS_DRAG_FROM, ui.CONTENT_STATUS_DRAG_TO, duration=0.5)
         r_sleep(1)
         mode = self.find_mode_on_board(mode_name=mode_name, board=ui.CONTENT_STATUS_BOARD_2, rows=3, cols=4)
         if mode:
@@ -294,7 +295,9 @@ class Game(Notifications):
                                        (row + 1) * element.button_rect.width + row * element.offset.width,
                                        (col + 1) * element.button_rect.height + col * element.offset.height)
                 mode = self.get_mode_from_element(board_rect=board.button_rect, element_rect=element_rect)
+                logger.debug(f"Rect: {element_rect.x1} {element_rect.y1}")
                 if mode:
+                    logger.debug(f"Mode: {mode.name}")
                     self._modes[mode.name] = mode
                     if mode.name == mode_name:
                         return mode
@@ -346,10 +349,10 @@ class Game(Notifications):
         if not self.go_to_content_status_board():
             logger.error("Failed to open Content Status board.")
             return False
-        # if mode.ui_board == ui.CONTENT_STATUS_BOARD_2.button_rect.value:
-        #     logger.debug(f"Mode {name} is on second board. Dragging")
-        #     self.emulator.drag(ui.CONTENT_STATUS_DRAG_FROM, ui.CONTENT_STATUS_DRAG_TO, duration=3)
-        #     r_sleep(3)
+        if mode.ui_board == ui.CONTENT_STATUS_BOARD_2.button_rect.value:
+            logger.debug(f"Mode {name} is on second board. Dragging")
+            self.emulator.drag(ui.CONTENT_STATUS_DRAG_FROM, ui.CONTENT_STATUS_DRAG_TO, duration=1)
+            r_sleep(2)
         self.emulator.click_button(mode.ui_button)
         return True
 
