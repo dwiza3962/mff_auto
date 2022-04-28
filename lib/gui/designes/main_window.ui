@@ -436,6 +436,32 @@
               </widget>
              </item>
              <item row="9" column="0">
+              <widget class="QLabel" name="story_team_label">
+               <property name="toolTip">
+                <string>Your in-game team number for PvP mode</string>
+               </property>
+               <property name="text">
+                <string>Story Team</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+               </property>
+              </widget>
+             </item>
+             <item row="9" column="1">
+              <widget class="QSpinBox" name="story_team_spin_box">
+               <property name="toolTip">
+                <string>Your in-game team number for PvP mode</string>
+               </property>
+               <property name="minimum">
+                <number>1</number>
+               </property>
+               <property name="maximum">
+                <number>5</number>
+               </property>
+              </widget>
+             </item>
+             <item row="10" column="0">
               <widget class="QLabel" name="handle_network_errors_label">
                <property name="toolTip">
                 <string>Should bot restart current queue when network errors occurred</string>
@@ -445,7 +471,7 @@
                </property>
               </widget>
              </item>
-             <item row="9" column="1">
+             <item row="10" column="1">
               <widget class="QCheckBox" name="handle_network_errors_checkbox">
                <property name="sizePolicy">
                 <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
@@ -467,14 +493,14 @@
                </property>
               </widget>
              </item>
-             <item row="10" column="0">
+             <item row="11" column="0">
               <widget class="QLabel" name="useClearTicketsLabel">
                <property name="text">
                 <string>Use Clear Tickets</string>
                </property>
               </widget>
              </item>
-             <item row="10" column="1">
+             <item row="11" column="1">
               <widget class="QCheckBox" name="use_clear_tickets_checkbox">
                <property name="toolTip">
                 <string>Should we use clear tickets to Complete missions (beta)</string>
@@ -569,34 +595,6 @@ Upgrade All</string>
           </widget>
          </item>
          <item>
-          <widget class="QPushButton" name="world_boss_invasion_button">
-           <property name="minimumSize">
-            <size>
-             <width>120</width>
-             <height>50</height>
-            </size>
-           </property>
-           <property name="text">
-            <string>World Boss Invasion:
- All Battles</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QPushButton" name="danger_room_button">
-           <property name="minimumSize">
-            <size>
-             <width>120</width>
-             <height>50</height>
-            </size>
-           </property>
-           <property name="text">
-            <string>Danger Room:
- 1 Battle</string>
-           </property>
-          </widget>
-         </item>
-         <item>
           <widget class="QPushButton" name="enhance_potential_button">
            <property name="minimumSize">
             <size>
@@ -621,6 +619,20 @@ with 10% success rate</string>
            <property name="text">
             <string>Shadowland:
 Clear All Floors</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="story_button">
+           <property name="minimumSize">
+            <size>
+             <width>120</width>
+             <height>50</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>Story Auto:
+Clear All</string>
            </property>
           </widget>
          </item>

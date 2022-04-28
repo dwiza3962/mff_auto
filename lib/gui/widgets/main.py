@@ -335,9 +335,9 @@ class MainWindow(QMainWindow, design.Ui_MainWindow):
         """Creates all available tasks."""
         self._create_task(button=self.autoplay_button, task_class=AutoPlayTask)
         self._create_task(button=self.daily_trivia_button, task_class=DailyTriviaTask)
-        self._create_task(button=self.world_boss_invasion_button, task_class=WorldBossInvasionTask)
+        # self._create_task(button=self.world_boss_invasion_button, task_class=WorldBossInvasionTask)
         self._create_task(button=self.squad_battle_button, task_class=SquadBattleAllTask)
-        self._create_task(button=self.danger_room_button, task_class=DangerRoomOneBattleTask)
+        # self._create_task(button=self.danger_room_button, task_class=DangerRoomOneBattleTask)
         self._create_task(button=self.restart_game_button, task_class=RestartGameTask)
         self._create_task(button=self.comic_cards_button, task_class=ComicCardsTask)
         self._create_task(button=self.custom_gear_button, task_class=CustomGearTask)
