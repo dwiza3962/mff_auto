@@ -10,6 +10,7 @@ import lib.gui.designes.setup_emulator as emulator_design
 import lib.gui.designes.setup_game as game_design
 import lib.logger as logging
 from lib.emulators.bluestacks import BlueStacks, BLUESTACKS_4_EXE, BLUESTACKS_5_EXE
+from lib.emulators.mumu_player import MuMuPlayer, NEMU_EXE
 from lib.emulators.nox_player import NoxPlayer, NOX_EXE
 from lib.game.game import Game
 from lib.game.ui.general import Rect, UIElement
@@ -80,6 +81,11 @@ class SetupEmulator(QDialog, emulator_design.Ui_Dialog):
             self.setup_game.exec()
         if isinstance(self.selected_emulator, BlueStacks):
             return
+        if isinstance(self.selected_emulator, MuMuPlayer):
+            self.setup_game = SetupGame(emulator=self.selected_emulator)
+            self.setup_game.show()
+            self.setup_game.exec()
+            return
 
     def emulator_processes(self):
         """Processes iterator."""
@@ -94,10 +100,16 @@ class SetupEmulator(QDialog, emulator_design.Ui_Dialog):
         """
         name = win32gui.GetWindowText(hwnd)
         p_hwnd, process_id = win32process.GetWindowThreadProcessId(hwnd)
+        logger.info(f"Process Name:  {name}")
+        # logger.info(f"Process HWND:  {p_hwnd}")
+        # logger.info(f"Process ID:  {process_id}")
+
         try:
             process = win32api.OpenProcess(win32con.PROCESS_QUERY_INFORMATION | win32con.PROCESS_VM_READ, 0, process_id)
             process_exe = win32process.GetModuleFileNameEx(process, 0)
-            if any(exe_name in process_exe for exe_name in [NOX_EXE, BLUESTACKS_4_EXE, BLUESTACKS_5_EXE]):
+            logger.info(f"Process EXE:  {process_exe}")
+
+            if any(exe_name in process_exe for exe_name in [NOX_EXE, BLUESTACKS_4_EXE, BLUESTACKS_5_EXE, NEMU_EXE]):
                 self.add_process_to_list(process_name=name, process_id=process_id, process_exe=process_exe)
         except pywintypes.error:
             pass
@@ -115,6 +127,8 @@ class SetupEmulator(QDialog, emulator_design.Ui_Dialog):
             emulator = NoxPlayer(name=process_name)
         if BLUESTACKS_4_EXE in process_exe or BLUESTACKS_5_EXE in process_exe:
             emulator = BlueStacks(name=process_name)
+        if NEMU_EXE in process_exe:
+            emulator = MuMuPlayer(name=process_name)
         if emulator.initialized:
             process = EmulatorProcess(emulator=emulator, process_name=process_name, process_id=process_id)
             self.emulators_list_widget.addItem(process)
