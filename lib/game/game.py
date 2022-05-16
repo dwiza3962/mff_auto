@@ -53,6 +53,7 @@ class Game(Notifications):
         self._boost = 0
         self.timeline_team = 1
         self.mission_team = 1
+        self.story_team = 4
         self._modes = {}
         self._game_app_ui = ui.GAME_APP.copy()
         super().__init__(self)
@@ -295,9 +296,7 @@ class Game(Notifications):
                                        (row + 1) * element.button_rect.width + row * element.offset.width,
                                        (col + 1) * element.button_rect.height + col * element.offset.height)
                 mode = self.get_mode_from_element(board_rect=board.button_rect, element_rect=element_rect)
-                logger.debug(f"Rect: {element_rect.x1} {element_rect.y1}")
                 if mode:
-                    logger.debug(f"Mode: {mode.name}")
                     self._modes[mode.name] = mode
                     if mode.name == mode_name:
                         return mode

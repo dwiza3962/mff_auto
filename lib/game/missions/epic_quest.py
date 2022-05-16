@@ -39,7 +39,7 @@ class EpicQuest(Missions):
                     self.emulator.click_button(ui.NOT_ENOUGH_ENERGY)
                     logger.warning(f"Not enough energy for starting mission, current energy: {self.game.energy}")
                     return 0
-                # r_sleep(2)
+                r_sleep(2)
                 if wait_until(self.emulator.is_ui_element_on_screen,
                               ui_element=ui.CLEAR_TICKET_USED_NOTIFICATION_CLOSE, timeout=4):
                     logger.debug(f"Clicked Clear Ticket Close button.  {self.mode_name}")

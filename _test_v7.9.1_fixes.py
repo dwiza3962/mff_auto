@@ -6,7 +6,8 @@ from lib.game.missions import HeroesReunited, IndustrialComplex, DeviantDiversio
     MysteriousAmbush, RoadToMonastery, StingOfTheScorpion, SelfDefenseProtocol, DangerousSisters, CosmicRider, \
     InhumanPrincess, MeanAndGreen, DarkAdvent, IncreasingDarkness, Blindsided, LegacyOfBlood, QuantumPower, \
     WingsOfDarkness, ClobberinTime, Hothead, AwManThisGuy, DominoFalls, GoingRogue, FriendsAndEnemies, \
-    WeatheringTheStorm, WorldBoss, WorldBossInvasion, Shadowland, GiantBossRaid
+    WeatheringTheStorm, WorldBoss, WorldBossInvasion, Shadowland, GiantBossRaid, CoopPlay, TimelineBattle, \
+    AllianceBattle
 from lib.game.missions.epic_quest import SmallerHeadsPrevail, BrainsVsBlades, DeadlyAccuracy, DoomsDay, \
     FateOfTheUniverse, PlayingHero, MutualEnemy, BeginningOfTheChaos, TheFault, GoldenGods, VeiledSecret, TwistedWorld, \
     TheBigTwin, StupidXMen, TrueEvolution
@@ -41,10 +42,50 @@ if __name__ == '__main__':
 
     # WorldBoss(game).do_missions(mode=WorldBoss.MODE.ULTIMATE, difficulty=20, boss=WorldBoss.BOSS.TODAYS_BOSS)
 
-    # Shadowland(game).do_missions(times=1, roster_mode=Shadowland.RosterMode.STRONG_ROSTER)
+    # Shadowland(game).do_missions(times=1, roster_mode='MAXIMUM_ROSTER')
+    Shadowland(game).do_missions(roster_mode='MAXIMUM_ROSTER')
 
-    # TrueEvolution(game).do_missions(times=1)
+    # # GBR
+    # GiantBossRaid(game).do_missions(times=1, max_rewards=True)
+    #
+    #
+    # # Missions
+    # # Deluxe Pack Missions
+    # #Eternals - Makkari / Gilgamesh
+    # HeroesReunited(game).do_missions()
+    # # Fantastic Four - Invisible Woman
+    # DoomsDay(game).do_missions()
+    # # Galactic Imperative - Nova
+    # FateOfTheUniverse(game).do_missions()
+    # # Dark Avengers - Moonstone
+    # PlayingHero(game).do_missions()
+    # # X-Men Magneto
+    # MutualEnemy(game).do_missions()
+    # # X-Force Psylocke
+    # BeginningOfTheChaos(game).do_missions()
+    #
+    # # True Evolution
+    # TrueEvolution(game).do_missions()
+    #
+    # # Golden Gods
+    # GoldenGods(game).do_missions()
+    #
+    #
+    # # Coop
+    # CoopPlay(game).do_missions()
+    #
+    # # Timeline
+    # TimelineBattle(game).do_missions()
+    #
+    # # WBI
+    # WorldBossInvasion(game).do_missions()
+    #
+    # # WB
+    # WorldBoss(game).change_world_boss_of_the_day(world_boss=['Proxima Midnight', 'Black Dwarf', 'Corvus Glave', 'Supergiant', 'Ebony Maw'], max_resets=99)
+    # WorldBoss(game).do_missions(mode='ULTIMATE', difficulty=20, boss='TODAYS_BOSS')
+    #
+    # # AB
+    # AllianceBattle(game).do_missions()
 
-    GiantBossRaid(game).do_missions(times=1, max_rewards=True)
 
 
