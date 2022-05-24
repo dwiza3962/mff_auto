@@ -9,4 +9,4 @@ win32gui==221.6
 
 #   gui
 pyqt5==5.13.0
-multiprocess==0.70.10
+multiprocess==0.70.13
