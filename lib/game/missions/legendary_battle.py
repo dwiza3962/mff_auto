@@ -19,6 +19,7 @@ class LegendaryBattle(Missions):
     SPIDERMAN_FFH = "SPIDERMAN_FFH"
     AVENGERS_ENDGAME = "AVENGERS_ENDGAME"
     SHANG_CHI = "SHANG_CHI"
+    THOR_LOVE_THUNDER = "THOR_LOVE_THUNDER"
 
     class MODE:
         NORMAL = "NORMAL"
@@ -89,11 +90,15 @@ class LegendaryBattle(Missions):
             logger.error(f"Got wrong mode for battles: {mode}.")
             return False
         if battle not in [self.THOR_RAGNAROK, self.BLACK_PANTHER, self.ANT_MAN, self.INFINITY_WAR,
-                          self.CAPTAIN_MARVEL, self.AVENGERS_ENDGAME, self.SPIDERMAN_FFH, self.BLACK_WIDOW, self.SHANG_CHI]:
+                          self.CAPTAIN_MARVEL, self.AVENGERS_ENDGAME, self.SPIDERMAN_FFH, self.BLACK_WIDOW, self.SHANG_CHI, self.THOR_LOVE_THUNDER]:
             logger.error(f"Got wrong battle: {battle}.")
             return False
+
+        if battle == self.THOR_LOVE_THUNDER:
+            return self._select_legendary_battle_from_top(title=ui.LB_THOR_LOVE_THUNDER_BATTLE_TITLE,
+                                                          battle=ui.LB_THOR_LOVE_THUNDER_BATTLE, mode=mode)
         if battle == self.SHANG_CHI:
-            return self._select_legendary_battle_from_top(title=ui.LB_SHANG_CHI_BATTLE_TITLE,
+            return self._select_legendary_battle_from_bottom(title=ui.LB_SHANG_CHI_BATTLE_TITLE,
                                                           battle=ui.LB_SHANG_CHI_BATTLE, mode=mode)
         if battle == self.BLACK_WIDOW:
             return self._select_legendary_battle_from_bottom(title=ui.LB_CAPTAIN_MARVEL_BATTLE_TITLE,
@@ -170,11 +175,12 @@ class LegendaryBattle(Missions):
         :param ui.UIElement battle: legendary battle.
         :param str mode: difficulty of legendary battle.
         """
+        logger.debug(f"Title: {title.text} Battle: {battle.text} Mode: {mode}.")
         if wait_until(self.emulator.is_ui_element_on_screen, ui_element=title):
             logger.debug(f"Found selected {title.text}, entering with {mode} mode.")
             return self._select_battle_mode(mode=mode)
         else:
-            logger.debug(f"{title.text} isn't selected, trying to found it.")
+            logger.debug(f"{title.text} isn't selected, trying to find it.")
             self.emulator.drag(ui.LB_DRAG_TO, ui.LB_DRAG_FROM)
             r_sleep(1)
             if wait_until(self.emulator.is_ui_element_on_screen, ui_element=battle):

@@ -10,7 +10,8 @@ class _LegendaryBattle(GameMode):
         "Ant-Man & The Wasp": missions.LegendaryBattle.ANT_MAN,
         "Captain Marvel": missions.LegendaryBattle.CAPTAIN_MARVEL,
         # "Black Widow": missions.LegendaryBattle.BLACK_WIDOW,
-        "Shang-Chi": missions.LegendaryBattle.SHANG_CHI
+        "Shang-Chi": missions.LegendaryBattle.SHANG_CHI,
+        "Thor: Love and Thunder": missions.LegendaryBattle.THOR_LOVE_THUNDER
     }
 
     def __init__(self, game):
