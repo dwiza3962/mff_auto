@@ -43,15 +43,15 @@ class Store(Notifications):
         :rtype: bool
         """
         if self._open_filter_menu():
-            r_sleep(1)  # Wait for animations
+            r_sleep(4)  # Wait for animations
             if not self.emulator.is_ui_element_on_screen(ui_filter) and ui_filter.name in self.SECOND_LIST:
-                while not wait_until(self.emulator.is_ui_element_on_screen, ui_element=ui_filter, timeout=1):
+                while not wait_until(self.emulator.is_ui_element_on_screen, ui_element=ui_filter, timeout=3):
                     logger.debug("Dragging to the bottom of the filters.")
-                    self.emulator.drag(from_ui=ui.STORE_FILTER_DRAG_BOTTOM, to_ui=ui.STORE_FILTER_DRAG_TOP, duration=3)
+                    self.emulator.drag(from_ui=ui.STORE_FILTER_DRAG_BOTTOM, to_ui=ui.STORE_FILTER_DRAG_TOP, duration=5)
             if self.emulator.is_ui_element_on_screen(ui_filter):
                 logger.debug(f"Selecting by filter {ui_filter.name}")
                 self.emulator.click_button(ui_filter)
-                return wait_until(self.is_store_open)
+                return wait_until(self.is_store_open, timeout=10)
 
 
 class EnergyStore(Store):
@@ -210,9 +210,11 @@ class ArtifactStore(Store):
         """Acquires available Free Artifact Chest."""
         if not self.open_artifact_store():
             return logger.error("Can't open Artifact Store.")
+        r_sleep(3)  # Wait for animations
         self._drag_store_list_to_the_right()
-        r_sleep(1)  # Wait for animations
+        r_sleep(2)  # Wait for animations
         self._drag_store_list_to_the_right()
+        r_sleep(2)  # Wait for animations
         self.emulator.click_button(ui.STORE_ARTIFACT_FREE_CHEST)
         if wait_until(self.emulator.is_ui_element_on_screen, ui_element=ui.STORE_ARTIFACT_FREE_CHEST_BUTTON_ACQUIRE):
             logger.debug("Acquiring Free Artifact Chest.")
@@ -251,10 +253,14 @@ class ArtifactStore(Store):
                     self.emulator.click_button(ui.STORE_ARTIFACT_GOLD_CHEST_PURCHASE)
                     if wait_until(self.emulator.is_ui_element_on_screen, ui_element=ui.SKIP_CUTSCENE):
                         self.emulator.click_button(ui.SKIP_CUTSCENE)
-                        if wait_until(self.emulator.is_ui_element_on_screen,
+                    if wait_until(self.emulator.is_ui_element_on_screen,
                                       ui_element=ui.STORE_ARTIFACT_FREE_CHEST_PURCHASE_CLOSE):
-                            self.emulator.click_button(ui.STORE_ARTIFACT_FREE_CHEST_PURCHASE_CLOSE)
-                            logger.info(f"Artifact Chest STORE_ARTIFACT_CHEST_GOLD acquired.")
+                        self.emulator.click_button(ui.STORE_ARTIFACT_FREE_CHEST_PURCHASE_CLOSE)
+                        logger.info(f"Artifact Chest STORE_ARTIFACT_CHEST_GOLD acquired.")
+                    if wait_until(self.emulator.is_ui_element_on_screen,
+                                      ui_element=ui.STORE_ARTIFACT_FREE_CHEST_PURCHASE_CLOSE2):
+                        self.emulator.click_button(ui.STORE_ARTIFACT_FREE_CHEST_PURCHASE_CLOSE2)
+                        logger.info(f"Artifact Chest STORE_ARTIFACT_CHEST_GOLD acquired.")
                     if wait_until(self.emulator.is_ui_element_on_screen,
                                   ui_element=ui.STORE_RECHARGE_ENERGY_VIA_POINTS_LIMIT):
                         logger.info("Daily Acquire Artifact Chest Reached.")

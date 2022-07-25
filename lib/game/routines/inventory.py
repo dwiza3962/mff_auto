@@ -74,6 +74,7 @@ class CustomGear(Notifications):
                 logger.warning("Custom Gear: can't select gear for upgrade, probably you have none, exiting.")
                 self.game.go_to_main_menu()
                 break
+
             self.emulator.click_button(ui.CUSTOM_GEAR_QUICK_UPGRADE)
             if wait_until(self.emulator.is_ui_element_on_screen, ui_element=ui.CUSTOM_GEAR_QUICK_UPGRADE_CONFIRM):
                 logger.debug("Custom Gear: confirming upgrading.")
