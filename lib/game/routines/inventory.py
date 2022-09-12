@@ -29,8 +29,14 @@ class ComicCards(Notifications):
                 if wait_until(self.emulator.is_ui_element_on_screen, ui_element=ui.CARDS_UPGRADE_CONFIRM):
                     self.emulator.click_button(ui.CARDS_UPGRADE_CONFIRM)
                     if wait_until(self.emulator.is_ui_element_on_screen, timeout=10,
+                                  ui_element=ui.CARDS_UPGRADE_ALL_RESULTS_OK_BUTTON):
+                        logger.debug(f"Comic Cards: Upgrade All OK Continue")
+                        self.emulator.click_button(ui.CARDS_UPGRADE_ALL_RESULTS_OK_BUTTON)
+                        wait_until(self.emulator.is_image_on_screen, ui_element=card_select_ui)
+                        continue
+                    if wait_until(self.emulator.is_ui_element_on_screen, timeout=10,
                                   ui_element=ui.CARDS_UPGRADE_RESULTS_OK):
-                        logger.debug(f"Comic Cards: successfully upgraded UI Element {card_select_ui}")
+                        logger.debug(f"Comic Cards: Upgrade All OK Middle")
                         self.emulator.click_button(ui.CARDS_UPGRADE_RESULTS_OK)
                         wait_until(self.emulator.is_image_on_screen, ui_element=card_select_ui)
                         continue
