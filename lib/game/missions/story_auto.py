@@ -1,5 +1,5 @@
 import lib.logger as logging
-from lib.functions import wait_until
+from lib.functions import wait_until, r_sleep, is_strings_similar
 from lib.game import ui
 from lib.game.battle_bot import ManualBattleBot
 from lib.game.missions.missions import Missions
@@ -13,6 +13,12 @@ class StoryAuto(Missions):
     class STORY_MISSION:
         DIMENSIONAL_CLASH_NORMAL = "STORY_MISSION_DIMENSIONAL_CLASH_NORMAL"
         DIMENSIONAL_CLASH_ULTIMATE = "STORY_MISSION_DIMENSIONAL_CLASH_ULTIMATE"
+        TRUE_SHIELD_NORMAL = "STORY_MISSION_TRUE_SHIELD_NORMAL"
+        TRUE_SHIELD_ULTIMATE = "STORY_MISSION_TRUE_SHIELD_ULTIMATE"
+        ALL_WAR_NORMAL = "STORY_MISSION_ALL_WAR_NORMAL"
+        ALL_WAR_ULTIMATE = "STORY_MISSION_ALL_WAR_ULTIMATE"
+        FUTURE_ENDS_HERE_NORMAL = "STORY_MISSION_FUTURE_ENDS_HERE_NORMAL"
+        FUTURE_ENDS_HERE_ULTIMATE = "STORY_MISSION_FUTURE_ENDS_HERE_ULTIMATE"
 
     class STORY_STAGE:
         DIMENSIONAL_CLASH_1_1 = "STORY_MISSION_DIMENSIONAL_CLASH_1_1"
@@ -35,11 +41,22 @@ class StoryAuto(Missions):
         DIMENSIONAL_CLASH_8_1 = "STORY_MISSION_DIMENSIONAL_CLASH_8_1"
         DIMENSIONAL_CLASH_8_2 = "STORY_MISSION_DIMENSIONAL_CLASH_8_2"
         DIMENSIONAL_CLASH_8_3 = "STORY_MISSION_DIMENSIONAL_CLASH_8_3"
+        TRUE_SHIELD_9_1 = "STORY_MISSION_TRUE_SHIELD_9_1"
+        TRUE_SHIELD_9_2 = "STORY_MISSION_TRUE_SHIELD_9_2"
+        TRUE_SHIELD_10_1 = "STORY_MISSION_TRUE_SHIELD_10_1"
+        TRUE_SHIELD_10_2 = "STORY_MISSION_TRUE_SHIELD_10_2"
+        ALL_WAR_11_1 = "STORY_MISSION_ALL_WAR_11_1"
+        ALL_WAR_11_2 = "STORY_MISSION_ALL_WAR_11_2"
+        ALL_WAR_12_1 = "STORY_MISSION_ALL_WAR_12_1"
+        ALL_WAR_12_2 = "STORY_MISSION_ALL_WAR_12_2"
+        FUTURE_ENDS_HERE_13_1 = "STORY_MISSION_FUTURE_ENDS_HERE_13_1"
+        FUTURE_ENDS_HERE_13_2 = "STORY_MISSION_FUTURE_ENDS_HERE_13_2"
+        FUTURE_ENDS_HERE_13_3 = "STORY_MISSION_FUTURE_ENDS_HERE_13_3"
 
     def __init__(self, game):
         """Class initialization.
 
-        :param lib.game.game.Game game: instance of the game.
+        :param lib.game.game.Game: instance of the game.
         """
         super().__init__(game, mode_name='STORY')
 
@@ -64,6 +81,7 @@ class StoryAuto(Missions):
         """
         if not self.game.go_to_mission_selection():
             return logger.error("Can't go into Mission selection.")
+
         if wait_until(self.emulator.is_ui_element_on_screen, ui_element=ui.STORY_MISSION):
             self.emulator.click_button(ui.STORY_MISSION)
             return wait_until(self.emulator.is_ui_element_on_screen, ui_element=ui.STORY_LABEL)
@@ -76,6 +94,12 @@ class StoryAuto(Missions):
         :rtype: bool
         """
         story_mission_ui = ui.get_by_name(story_mission)
+
+        logger.info(f"Mission Name: {story_mission}")
+        if story_mission.__contains__("FUTURE_ENDS_HERE"):
+            self.emulator.drag(ui.STORY_MISSION_DRAG_START_PAGE2, ui.STORY_MISSION_DRAG_END_PAGE2, duration=0.5)
+            r_sleep(1)
+
         if wait_until(self.emulator.is_ui_element_on_screen, ui_element=story_mission_ui):
             logger.debug(f"Opening Story mission {story_mission_ui}")
             self.emulator.click_button(story_mission_ui)
@@ -89,15 +113,39 @@ class StoryAuto(Missions):
         :param str story_stage: UI element that represent mission stage.
         """
         while not self.emulator.is_ui_element_on_screen(ui.get_by_name(story_stage)):
-            logger.info(f"Clicking Minus Button")
+            # logger.info(f"Clicking Minus Button")
             self.emulator.click_button(ui.STORY_STAGE_MINUS)
             if self.emulator.is_ui_element_on_screen(ui.STORY_MISSION_DIMENSIONAL_CLASH_1_1):
                 break
-        while not self.emulator.is_ui_element_on_screen(ui.get_by_name(story_stage)):
-            logger.info(f"Clicking Plus Button")
+            if self.emulator.is_ui_element_on_screen(ui.STORY_MISSION_TRUE_SHIELD_9_1):
+                break
+            if self.emulator.is_ui_element_on_screen(ui.STORY_MISSION_ALL_WAR_11_1):
+                break
+            if self.emulator.is_ui_element_on_screen(ui.STORY_MISSION_FUTURE_ENDS_HERE_13_1):
+                break
+
+        available_rewards_str = self.emulator.get_screen_text(ui.STORY_AVAILABLE_REWARDS)
+        available_rewards = is_strings_similar(available_rewards_str, "Daily Count 1/1")
+        logger.info(f"Available Rewards: {available_rewards}")
+
+        while not available_rewards:
+            # logger.info(f"Clicking Plus Button")
             self.emulator.click_button(ui.STORY_STAGE_PLUS)
+            available_rewards_str = self.emulator.get_screen_text(ui.STORY_AVAILABLE_REWARDS)
+            available_rewards = is_strings_similar(available_rewards_str, "Daily Count 1/1")
+            logger.info(f"Available Rewards: {available_rewards}")
+            if available_rewards:
+                break
             if self.emulator.is_ui_element_on_screen(ui.STORY_MISSION_DIMENSIONAL_CLASH_8_3):
                 break
+            if self.emulator.is_ui_element_on_screen(ui.STORY_MISSION_TRUE_SHIELD_10_2):
+                break
+            if self.emulator.is_ui_element_on_screen(ui.STORY_MISSION_ALL_WAR_12_2):
+                break
+            if self.emulator.is_ui_element_on_screen(ui.STORY_MISSION_FUTURE_ENDS_HERE_13_3):
+                break
+
+        return available_rewards
 
     def select_team(self):
         """Selects team for missions."""
@@ -122,19 +170,44 @@ class StoryAuto(Missions):
 
         if self.open_story_missions() and self._open_story_mission(story_mission=story_mission):
             logger.info(f"Starting Story {times} times.")
-            self._select_story_stage(story_stage=story_stage)
+            if not self._select_story_stage(story_stage=story_stage):
+                logger.info(f"Daily Rewards already obtained for Story Missions.")
+                return
+            r_sleep(1)
+            if not self.press_start_button():
+                return
             while times > 0:
-                if not self.press_start_button():
-                    return
                 # Running Auto Play
-                if wait_until(self.emulator.is_ui_element_on_screen, timeout=30,
+                if wait_until(self.emulator.is_ui_element_on_screen, timeout=3,
                               ui_element=ui.STORY_AUTO_END_BATTLE_LABEL):
                     logger.info("Battle Has Ended.")
+                    # Exit Power Save
+                    self.emulator.drag(ui.STORY_AUTO_EXIT_POWER_SAVE_1, ui.STORY_AUTO_EXIT_POWER_SAVE_2, duration=0.5)
+                    r_sleep(1)
+                    self.emulator.drag(ui.STORY_AUTO_EXIT_POWER_SAVE_1, ui.STORY_AUTO_EXIT_POWER_SAVE_2, duration=0.5)
                     times = 0
-                else:
-                    logger.info("Battle Still Happening, continuing.")
-        logger.info("No more stages.")
 
+                if wait_until(self.emulator.is_ui_element_on_screen, timeout=3,
+                              ui_element=ui.STORY_AUTO_POWER_SAVE_BUTTON):
+                    logger.info("In Battle Mode, Switching to Power Save.")
+                    self.emulator.click_button(ui.STORY_AUTO_POWER_SAVE_BUTTON)
+
+                if wait_until(self.emulator.is_ui_element_on_screen, timeout=3,
+                              ui_element=ui.STORY_AUTO_PROGRESS_LABEL):
+                    logger.info("In Power Save Mode.")
+
+                if wait_until(self.emulator.is_ui_element_on_screen, timeout=3,
+                              ui_element=ui.STORY_AUTO_CLOSE_BUTTON):
+                    self.emulator.click_button(ui.STORY_AUTO_CLOSE_BUTTON)
+                    times = 0
+
+                if times > 0:
+                    logger.info("Battle Still Happening, continuing.")
+
+        logger.info("No more stages.")
+        self.emulator.drag(ui.STORY_AUTO_EXIT_POWER_SAVE_1, ui.STORY_AUTO_EXIT_POWER_SAVE_2, duration=0.5)
+        self.emulator.click_button(ui.STORY_AUTO_CLOSE_BUTTON)
+        self.press_home_button(home_button=ui.STORY_AUTO_HOME_BUTTON)
     def press_start_button(self, start_button_ui=ui.STORY_ULTIMATE_CLEAR_BUTTON):
         """Presses start button of the mission."""
         self.select_team()
@@ -143,6 +216,8 @@ class StoryAuto(Missions):
         if wait_until(self.emulator.is_ui_element_on_screen, timeout=2, ui_element=ui.STORY_AUTO_PROGRESS_BUTTON):
             self.emulator.click_button(ui.STORY_AUTO_PROGRESS_BUTTON)
             logger.info(f"Clicked Auto Use Designated Characters: {self.game.energy}")
+
+        if wait_until(self.emulator.is_ui_element_on_screen, timeout=2, ui_element=ui.STORY_AUTO_PROGRESS_START_BUTTON):
             self.emulator.click_button(ui.STORY_AUTO_PROGRESS_START_BUTTON)
             logger.info(f"Clicked Auto Progress Start: {self.game.energy}")
 
@@ -150,17 +225,21 @@ class StoryAuto(Missions):
             self.emulator.click_button(ui.NOT_ENOUGH_ENERGY)
             logger.warning(f"Not enough energy for starting mission, current energy: {self.game.energy}")
             return False
+
         if wait_until(self.emulator.is_ui_element_on_screen, timeout=1, ui_element=ui.INVENTORY_FULL):
             self.emulator.click_button(ui.INVENTORY_FULL)
             logger.warning("Your inventory is full, cannot start mission.")
             return False
+
         if wait_until(self.emulator.is_ui_element_on_screen, timeout=1,
                       ui_element=ui.STORY_UNUSABLE_CHARACTER_NOTICE):
             self.emulator.click_button(ui.STORY_UNUSABLE_CHARACTER_NOTICE)
             logger.warning("Your team has unusable characters (not 70lvl/T3/Ascended), cannot start mission.")
             return False
+
         if wait_until(self.emulator.is_ui_element_on_screen, timeout=1, ui_element=ui.STORY_DAILY_REWARD_NOTICE):
             self.emulator.click_button(ui.STORY_DAILY_REWARD_NOTICE)
+
         if wait_until(self.emulator.is_ui_element_on_screen, timeout=1,
                       ui_element=ui.ITEM_MAX_LIMIT_NOTIFICATION):
             self.emulator.click_button(ui.ITEM_MAX_LIMIT_NOTIFICATION)

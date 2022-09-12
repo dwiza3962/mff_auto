@@ -228,6 +228,15 @@ class Game(Notifications):
             return logger.error("Mission team: Team number should be between 1 and 5.")
         self.mission_team = team_number
 
+    def set_story_team(self, team_number):
+        """Sets team for usual missions.
+
+        :param int team_number: team number to set.
+        """
+        if team_number < 1 or team_number > 5:
+            return logger.error("Mission team: Team number should be between 1 and 5.")
+        self.story_team = team_number
+
     def is_main_menu(self):
         """Checks if main menu screen is opened by looking for `TEAM` and `STORE` labels."""
         return self.emulator.is_ui_element_on_screen(ui.TEAM) and self.emulator.is_ui_element_on_screen(ui.STORE)
