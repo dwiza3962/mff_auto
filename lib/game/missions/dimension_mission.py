@@ -97,22 +97,23 @@ class DimensionMission(Missions):
             self.emulator.click_button(ui.DM_LEVEL_READY)
             return wait_until(self.emulator.is_ui_element_on_screen, ui_element=ui.DM_START_BUTTON)
 
-    def do_missions(self, times=0, difficulty=15, use_hidden_tickets=False, acquire_rewards=False):
+    def do_missions(self, times=0, difficulty=15, use_hidden_tickets=False, acquire_rewards=False, use_clear_tickets=False):
         """Does missions."""
         if times == 0:
             times = self.MISSION_MULTIPLIER * self.stages
         if times != 0:
-            self.start_missions(times=times, difficulty=difficulty, use_hidden_tickets=use_hidden_tickets)
+            self.start_missions(times=times, difficulty=difficulty, use_hidden_tickets=use_hidden_tickets, use_clear_tickets=use_clear_tickets)
         if acquire_rewards:
             self.acquire_rewards()
         self.end_missions()
 
-    def start_missions(self, times=0, difficulty=15, use_hidden_tickets=False):
+    def start_missions(self, times=0, difficulty=15, use_hidden_tickets=False, use_clear_tickets=False):
         """Starts Dimension Missions.
 
         :param int times: how many times to complete missions.
         :param int difficulty: name of UI element that contains info about difficulty of stage.
         :param bool use_hidden_tickets: use Hidden Tickets or not.
+        :param bool use_clear_tickets: use Clear Tickets or not.
         """
         logger.info(f"Starting Dimensions Missions for {times} times.")
         if not self.open_dimension_mission():
@@ -120,22 +121,60 @@ class DimensionMission(Missions):
         self._select_stage_level(level_num=difficulty)
         if self._get_ready_for_mission():
             r_sleep(1)
-            if not self.is_stage_startable():
-                return logger.error("Cannot start Dimension Mission battle, not enough boost points.")
+            # if not self.is_stage_startable():
+            #     return logger.error("Cannot start Dimension Mission battle, not enough boost points.")
         while times > 0:
-            if not self.press_start_button(start_button_ui=ui.DM_START_BUTTON,
-                                           use_hidden_tickets=use_hidden_tickets):
-                return logger.error("Cannot start Dimension Mission battle, exiting.")
-            AutoBattleBot(self.game, self.battle_over_conditions).fight()
-            times -= 1
-            self.close_mission_notifications()
-            logger.debug(f"{times} stages left to complete.")
-            if times > 0:
-                self.press_repeat_button()
+            if use_clear_tickets:
+                used_times = self.press_clear_button(start_button_ui=ui.DM_CLEAR_BUTTON, use_hidden_tickets=use_hidden_tickets, times=times)
+                times -= used_times
+                self.close_mission_notifications()
+                logger.debug(f"{times} stages left to complete.")
             else:
-                self.press_home_button()
-                self.close_after_mission_notifications()
+                if not self.press_start_button(start_button_ui=ui.DM_START_BUTTON, use_hidden_tickets=use_hidden_tickets):
+                    return logger.error("Cannot start Dimension Mission battle, exiting.")
+                AutoBattleBot(self.game, self.battle_over_conditions).fight()
+                times -= 1
+                self.close_mission_notifications()
+                logger.debug(f"{times} stages left to complete.")
+                if times > 0:
+                    self.press_repeat_button()
+                else:
+                    self.press_home_button()
+                    self.close_after_mission_notifications()
         logger.info("No more stages.")
+
+    def press_clear_button(self, start_button_ui=ui.DM_START_BUTTON, use_hidden_tickets=False, times=1):
+        logger.debug("Clicked Clear Tickets.")
+        if self.emulator.is_ui_element_on_screen(start_button_ui):
+            self.select_team()
+            self.emulator.click_button(start_button_ui)
+            if use_hidden_tickets and wait_until(self.emulator.is_ui_element_on_screen, timeout=2,
+                                                 ui_element=ui.DM_TICKET_NOTIFICATION_USE):
+                logger.debug("Clicked USE hidden tickets.")
+                self.emulator.click_button(ui.DM_TICKET_NOTIFICATION_USE)
+            if not use_hidden_tickets and wait_until(self.emulator.is_ui_element_on_screen, timeout=2,
+                                                     ui_element=ui.DM_TICKET_NOTIFICATION_DONT_USE):
+                logger.debug("Clicked DON'T USE hidden tickets.")
+                self.emulator.click_button(ui.DM_TICKET_NOTIFICATION_DONT_USE)
+            if times > 1 and wait_until(self.emulator.is_ui_element_on_screen, timeout=2, ui_element=ui.CLEAR_TICKET_NOTIFICATION_X10):
+                logger.debug(f"USE x10 Clear Tickets.")
+                self.emulator.click_button(ui.CLEAR_TICKET_NOTIFICATION_X10)
+                if wait_until(self.emulator.is_ui_element_on_screen, timeout=2,
+                              ui_element=ui.ITEM_MAX_LIMIT_NOTIFICATION):
+                    self.emulator.click_button(ui.ITEM_MAX_LIMIT_NOTIFICATION)
+                r_sleep(10) #wait for animations
+                self.close_clear_ticket_summary()
+                return 10
+            elif wait_until(self.emulator.is_ui_element_on_screen, timeout=2, ui_element=ui.CLEAR_TICKET_NOTIFICATION_X1):
+                logger.debug(f"USE x1 Clear Tickets.")
+                self.emulator.click_button(ui.CLEAR_TICKET_NOTIFICATION_X1)
+                if wait_until(self.emulator.is_ui_element_on_screen, timeout=2,
+                              ui_element=ui.ITEM_MAX_LIMIT_NOTIFICATION):
+                    self.emulator.click_button(ui.ITEM_MAX_LIMIT_NOTIFICATION)
+                r_sleep(5) #wait for animations
+                self.close_clear_ticket_summary()
+                return 1
+        return 0
 
     def press_start_button(self, start_button_ui=ui.DM_START_BUTTON, use_hidden_tickets=False):
         """Presses start button of the mission."""

@@ -233,6 +233,15 @@ class Notifications:
             return True
         return False
 
+    def close_clear_ticket_summary(self):
+        if self.emulator.is_ui_element_on_screen(ui.CLEAR_TICKET_NOTIFICATION_CLOSE):
+            self.emulator.click_button(ui.CLEAR_TICKET_NOTIFICATION_CLOSE)
+            return True
+        elif self.emulator.is_ui_element_on_screen(ui.CLEAR_TICKET_USED_NOTIFICATION_CLOSE):
+            self.emulator.click_button(ui.CLEAR_TICKET_USED_NOTIFICATION_CLOSE)
+            return True
+        return False
+
     def close_heroic_quest_notification(self):
         """Closes Heroic Quest notification.
 
@@ -275,7 +284,8 @@ class Notifications:
                    self.close_items_def_notification() or \
                    self.close_rank_up_notification() or \
                    self.close_shield_lvl_up_notification() or \
-                   self.close_recruit_character_notification()
+                   self.close_recruit_character_notification() or \
+                   self.close_ads()
 
         for _ in range(timeout):
             notification_closed = wait_until(close_notifications, timeout=1)
