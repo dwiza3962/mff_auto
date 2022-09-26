@@ -313,3 +313,33 @@ class BattleWorld(EventMissions):
             self.game.go_to_main_menu()
 
         return
+
+class EventQuest(EventMissions):
+    """Class for working with Future Pass event."""
+
+    EVENT_NAME = "EVENT QUEST"
+
+    def open_event_quest(self):
+        """Opens Future Pass in Event List."""
+        self.game.go_to_main_menu()
+        event_ui = self.find_event_ui_by_name(self.EVENT_NAME, similar_to_full_line=False)
+        if not event_ui:
+            return logger.warning(f"Can't find {self.EVENT_NAME}, probably event isn't on right now.")
+        self.emulator.click_button(event_ui)
+        self.close_ads()
+        return wait_until(self.emulator.is_ui_element_on_screen, ui_element=ui.EVENT_QUEST_LABEL)
+
+    def _acquire_rewards(self):
+        if wait_until(self.emulator.is_ui_element_on_screen, ui_element=ui.EVENT_QUEST_ACQUIRE_ALL):
+            logger.info("Acquiring all rewards.")
+            self.emulator.click_button(ui.EVENT_QUEST_ACQUIRE_ALL)
+            r_sleep(1)  # Wait for animation
+            return True
+        logger.info("No rewards.")
+        return False
+    def acquire_all_rewards(self):
+        """Acquired all available daily rewards from Daily Challenges."""
+        self.open_event_quest()
+        self._acquire_rewards()
+        self.close_mission_notifications(5)
+        self.game.go_to_main_menu()
