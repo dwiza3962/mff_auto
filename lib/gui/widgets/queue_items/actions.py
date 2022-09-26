@@ -381,6 +381,30 @@ class _Iso8Combine(Action):
                                                      values_dict=self.iso_to_combine))
 
 
+class _StoryCombineFragments(Action):
+    story_missions = {
+        "Dimensional Clash [Normal]": missions.StoryAuto.STORY_MISSION.DIMENSIONAL_CLASH_NORMAL,
+        "Dimensional Clash [Ultimate]": missions.StoryAuto.STORY_MISSION.DIMENSIONAL_CLASH_ULTIMATE,
+        "True Shield [Normal]": missions.StoryAuto.STORY_MISSION.TRUE_SHIELD_NORMAL,
+        "True Shield [Ultimate]": missions.StoryAuto.STORY_MISSION.TRUE_SHIELD_ULTIMATE,
+        "All War [Normal]": missions.StoryAuto.STORY_MISSION.ALL_WAR_NORMAL,
+        "All War [Ultimate]": missions.StoryAuto.STORY_MISSION.ALL_WAR_ULTIMATE,
+        "Future Ends Here [Normal]": missions.StoryAuto.STORY_MISSION.FUTURE_ENDS_HERE_NORMAL,
+        "Future Ends Here [Ultimate]": missions.StoryAuto.STORY_MISSION.FUTURE_ENDS_HERE_ULTIMATE
+    }
+
+    def __init__(self, game):
+        self.story_auto = missions.StoryAuto(game)
+        super().__init__(game, "STORY MISSION - COMBINE FRAGMENTS", self.story_auto.combine_story_fragment)
+        self.mode_settings.append(Action.ModeSetting(setting_type=Action.ModeSetting.Combobox,
+                                                       setting_key="story_mission",
+                                                       text="Select Story Mission",
+                                                       values_dict=self.story_missions))
+        self.mode_settings.append(Action.ModeSetting(setting_type=Action.ModeSetting.Spinbox,
+                                                     setting_key="times",
+                                                     text="Select the number of times to combine",
+                                                     min=0, max=99, initial_value=0))
+
 class _Iso8Lock(Action):
     iso_to_lock = {
         "Powerful (White)": routines.Iso8.ISO8_TYPE.POWERFUL,

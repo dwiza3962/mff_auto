@@ -94,15 +94,13 @@ def get_missions_dict(mission_instances):
                                  find_instance(missions._MonasteryInTrouble), find_instance(missions._PowerOfTheDark)]
         },
         "STORY MISSION": find_instance(missions._StoryMission),
+        "STORY MISSION AUTO": find_instance(missions._StoryAutoMission),
         "DIMENSION MISSION": find_instance(missions._DimensionMissions),
         "LEGENDARY BATTLE": find_instance(missions._LegendaryBattle),
         "SQUAD BATTLE": find_instance(missions._SquadBattles),
         "WORLD BOSS": find_instance(missions._WorldBosses),
         "TIMELINE BATTLE": find_instance(missions._TimelineBattle),
-        "DANGER ROOM": find_instance(missions._DangerRoom),
         "ALLIANCE BATTLE": find_instance(missions._AllianceBattle),
-        "CO-OP PLAY": find_instance(missions._CoopPlay),
-        "WORLD BOSS INVASION": find_instance(missions._WorldBossInvasion),
         "GIANT BOSS RAID": find_instance(missions._GiantBossRaid),
         "SHADOWLAND": find_instance(missions._Shadowland)
     }

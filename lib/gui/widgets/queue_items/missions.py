@@ -321,42 +321,6 @@ class _SquadBattles(GameMode):
                                                        }))
 
 
-class _WorldBossInvasion(GameMode):
-
-    def __init__(self, game):
-        super().__init__(game, "WORLD BOSS INVASION", missions.WorldBossInvasion)
-        self.mode_settings.append(GameMode.ModeSetting(setting_type=GameMode.ModeSetting.Checkbox,
-                                                       setting_key="all_stages",
-                                                       text="All available"))
-        self.mode_settings.append(GameMode.ModeSetting(setting_type=GameMode.ModeSetting.Spinbox,
-                                                       setting_key="times",
-                                                       text="Select how many times to complete",
-                                                       min=1, max=5))
-        self.mode_settings.append(GameMode.ModeSetting(setting_type=GameMode.ModeSetting.Checkbox,
-                                                       setting_key="ignore_coop_mission",
-                                                       text="Do not filter characters by Co-op mission",
-                                                       initial_state=False))
-
-
-class _DangerRoom(GameMode):
-
-    def __init__(self, game):
-        super().__init__(game, "DANGER ROOM", missions.DangerRoom)
-        self.mode_settings.append(GameMode.ModeSetting(setting_type=GameMode.ModeSetting.Checkbox,
-                                                       setting_key="all_stages",
-                                                       text="All available daily entries"))
-        self.mode_settings.append(GameMode.ModeSetting(setting_type=GameMode.ModeSetting.Spinbox,
-                                                       setting_key="times",
-                                                       text="Select how many stages to complete"))
-        self.mode_settings.append(GameMode.ModeSetting(setting_type=GameMode.ModeSetting.Combobox,
-                                                       setting_key="mode",
-                                                       text="Select Danger Room mode",
-                                                       values_dict={
-                                                           "Normal": missions.DangerRoom.MODE.NORMAL,
-                                                           "Extreme": missions.DangerRoom.MODE.EXTREME
-                                                       }))
-
-
 class _DangerousSisters(GameMode):
 
     def __init__(self, game):
@@ -717,37 +681,51 @@ class _Shadowland(GameMode):
 class _StoryMission(GameMode):
     story_missions = {
         "Dimensional Clash [Normal]": missions.Story.STORY_MISSION.DIMENSIONAL_CLASH_NORMAL,
-        "Dimensional Clash [Ultimate]": missions.Story.STORY_MISSION.DIMENSIONAL_CLASH_ULTIMATE
+        "Dimensional Clash [Ultimate]": missions.Story.STORY_MISSION.DIMENSIONAL_CLASH_ULTIMATE,
+        "True Shield [Normal]": missions.StoryAuto.STORY_MISSION.TRUE_SHIELD_NORMAL,
+        "True Shield [Ultimate]": missions.StoryAuto.STORY_MISSION.TRUE_SHIELD_ULTIMATE,
+        "All War [Normal]": missions.StoryAuto.STORY_MISSION.ALL_WAR_NORMAL,
+        "All War [Ultimate]": missions.StoryAuto.STORY_MISSION.ALL_WAR_ULTIMATE,
+        "Future Ends Here [Normal]": missions.StoryAuto.STORY_MISSION.FUTURE_ENDS_HERE_NORMAL,
+        "Future Ends Here [Ultimate]": missions.StoryAuto.STORY_MISSION.FUTURE_ENDS_HERE_ULTIMATE
     }
 
     story_stage = {
         "1-1 Emergency Dispatch": missions.Story.STORY_STAGE.DIMENSIONAL_CLASH_1_1,
         "1-2 An Unexpected Encounter": missions.Story.STORY_STAGE.DIMENSIONAL_CLASH_1_2,
         "1-3 Robotic Theft": missions.Story.STORY_STAGE.DIMENSIONAL_CLASH_1_3,
-        # NOAUTO_"2-1 The Rescue Plan": missions.Story.STORY_STAGE.DIMENSIONAL_CLASH_2_1,
-        # NOAUTO_"2-2 Scheme of Advanced Evil": missions.Story.STORY_STAGE.DIMENSIONAL_CLASH_2_2,
-        # NOAUTO_"2-3 Mad Science to the Max": missions.Story.STORY_STAGE.DIMENSIONAL_CLASH_2_3,
-        # TODO GOLEFT_"3-1 S.H.I.E.D. Under Siege": missions.Story.STORY_STAGE.DIMENSIONAL_CLASH_3_1,
-        # TODO GORIGHT_"3-2 Shadow Over The Streets": missions.Story.STORY_STAGE.DIMENSIONAL_CLASH_3_2,
+        "2-1 The Rescue Plan": missions.Story.STORY_STAGE.DIMENSIONAL_CLASH_2_1,
+        "2-2 Scheme of Advanced Evil": missions.Story.STORY_STAGE.DIMENSIONAL_CLASH_2_2,
+        "2-3 Mad Science to the Max": missions.Story.STORY_STAGE.DIMENSIONAL_CLASH_2_3,
+        "3-1 S.H.I.E.D. Under Siege": missions.Story.STORY_STAGE.DIMENSIONAL_CLASH_3_1,
+        "3-2 Shadow Over The Streets": missions.Story.STORY_STAGE.DIMENSIONAL_CLASH_3_2,
         "3-3 Chaos Descends": missions.Story.STORY_STAGE.DIMENSIONAL_CLASH_3_3,
-        # ALLOVER_"4-1 Crack in the S.H.I.E.L.D.": missions.Story.STORY_STAGE.DIMENSIONAL_CLASH_4_1,
+        "4-1 Crack in the S.H.I.E.L.D.": missions.Story.STORY_STAGE.DIMENSIONAL_CLASH_4_1,
         "4-2 The Beginning of the Storm": missions.Story.STORY_STAGE.DIMENSIONAL_CLASH_4_2,
-        # HERO REFLECT AVOID FIRE "5-1 The Battle for Domination": missions.Story.STORY_STAGE.DIMENSIONAL_CLASH_5_1,
+        "5-1 The Battle for Domination": missions.Story.STORY_STAGE.DIMENSIONAL_CLASH_5_1,
         "6-1 An Eternal Nemesis": missions.Story.STORY_STAGE.DIMENSIONAL_CLASH_6_1,
         "6-2 The Red Madness": missions.Story.STORY_STAGE.DIMENSIONAL_CLASH_6_2,
         "7-1 Emergency Dispatch": missions.Story.STORY_STAGE.DIMENSIONAL_CLASH_7_1,
         "7-2 An Unexpected Encounter": missions.Story.STORY_STAGE.DIMENSIONAL_CLASH_7_2,
         "7-3 Robotic Theft": missions.Story.STORY_STAGE.DIMENSIONAL_CLASH_7_3,
         "8-1 Dimensional Shift": missions.Story.STORY_STAGE.DIMENSIONAL_CLASH_8_1,
-        # NOAUTO_"8-2 Anti-Matter Recovery": missions.Story.STORY_STAGE.DIMENSIONAL_CLASH_8_2,
-        "8-3 The Showdown": missions.Story.STORY_STAGE.DIMENSIONAL_CLASH_8_3
+        "8-2 Anti-Matter Recovery": missions.Story.STORY_STAGE.DIMENSIONAL_CLASH_8_2,
+        "8-3 The Showdown": missions.Story.STORY_STAGE.DIMENSIONAL_CLASH_8_3,
+        "9-1": missions.Story.STORY_STAGE.TRUE_SHIELD_9_1,
+        "9-2": missions.Story.STORY_STAGE.TRUE_SHIELD_9_2,
+        "10-1": missions.Story.STORY_STAGE.TRUE_SHIELD_10_1,
+        "10-2": missions.Story.STORY_STAGE.TRUE_SHIELD_10_2,
+        "11-1": missions.Story.STORY_STAGE.ALL_WAR_11_1,
+        "11-2": missions.Story.STORY_STAGE.ALL_WAR_11_2,
+        "12-1": missions.Story.STORY_STAGE.ALL_WAR_12_1,
+        "12-2": missions.Story.STORY_STAGE.ALL_WAR_12_2,
+        "13-1": missions.Story.STORY_STAGE.FUTURE_ENDS_HERE_13_1,
+        "13-2": missions.Story.STORY_STAGE.FUTURE_ENDS_HERE_13_2,
+        "13-3": missions.Story.STORY_STAGE.FUTURE_ENDS_HERE_13_3,
     }
 
     def __init__(self, game):
         super().__init__(game, "STORY MISSION", missions.Story)
-        self.mode_settings.append(GameMode.ModeSetting(setting_type=GameMode.ModeSetting.Spinbox,
-                                                       setting_key="times",
-                                                       text="Select how many stages to complete"))
         self.mode_settings.append(GameMode.ModeSetting(setting_type=GameMode.ModeSetting.Combobox,
                                                        setting_key="story_mission",
                                                        text="Select Story Mission",
@@ -756,6 +734,26 @@ class _StoryMission(GameMode):
                                                        setting_key="story_stage",
                                                        text="Select mission stage",
                                                        values_dict=self.story_stage))
+
+
+class _StoryAutoMission(GameMode):
+    story_missions = {
+        "Dimensional Clash [Normal]": missions.StoryAuto.STORY_MISSION.DIMENSIONAL_CLASH_NORMAL,
+        "Dimensional Clash [Ultimate]": missions.StoryAuto.STORY_MISSION.DIMENSIONAL_CLASH_ULTIMATE,
+        "True Shield [Normal]": missions.StoryAuto.STORY_MISSION.TRUE_SHIELD_NORMAL,
+        "True Shield [Ultimate]": missions.StoryAuto.STORY_MISSION.TRUE_SHIELD_ULTIMATE,
+        "All War [Normal]": missions.StoryAuto.STORY_MISSION.ALL_WAR_NORMAL,
+        "All War [Ultimate]": missions.StoryAuto.STORY_MISSION.ALL_WAR_ULTIMATE,
+        "Future Ends Here [Normal]": missions.StoryAuto.STORY_MISSION.FUTURE_ENDS_HERE_NORMAL,
+        "Future Ends Here [Ultimate]": missions.StoryAuto.STORY_MISSION.FUTURE_ENDS_HERE_ULTIMATE
+    }
+
+    def __init__(self, game):
+        super().__init__(game, "STORY MISSION AUTO", missions.StoryAuto)
+        self.mode_settings.append(GameMode.ModeSetting(setting_type=GameMode.ModeSetting.Combobox,
+                                                       setting_key="story_mission",
+                                                       text="Select Story Mission",
+                                                       values_dict=self.story_missions))
 
 
 class _HeroesReunited(GameMode):

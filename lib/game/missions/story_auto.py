@@ -1,7 +1,6 @@
 import lib.logger as logging
 from lib.functions import wait_until, r_sleep, is_strings_similar
 from lib.game import ui
-from lib.game.battle_bot import ManualBattleBot
 from lib.game.missions.missions import Missions
 
 logger = logging.get_logger(__name__)
@@ -107,13 +106,14 @@ class StoryAuto(Missions):
             return wait_until(self.emulator.is_ui_element_on_screen, ui_element=ui.STORY_ULTIMATE_START_BUTTON)
         logger.error(f"Can't open Story mission {story_mission_ui}")
 
-    def _select_story_stage(self, story_stage):
+    def _select_start_story_stage(self):
         """Selects stage of Story mission.
 
         :param str story_stage: UI element that represent mission stage.
         """
-        while not self.emulator.is_ui_element_on_screen(ui.get_by_name(story_stage)):
-            # logger.info(f"Clicking Minus Button")
+
+        logger.info(f"Moving to the First Mission.")
+        while True:
             self.emulator.click_button(ui.STORY_STAGE_MINUS)
             if self.emulator.is_ui_element_on_screen(ui.STORY_MISSION_DIMENSIONAL_CLASH_1_1):
                 break
@@ -124,12 +124,13 @@ class StoryAuto(Missions):
             if self.emulator.is_ui_element_on_screen(ui.STORY_MISSION_FUTURE_ENDS_HERE_13_1):
                 break
 
+        # TODO allow this optional param to skip if no daily reward left.   Leaving as default for now.
+        logger.info(f"Finding Daily Rewards.")
         available_rewards_str = self.emulator.get_screen_text(ui.STORY_AVAILABLE_REWARDS)
         available_rewards = is_strings_similar(available_rewards_str, "Daily Count 1/1")
         logger.info(f"Available Rewards: {available_rewards}")
 
         while not available_rewards:
-            # logger.info(f"Clicking Plus Button")
             self.emulator.click_button(ui.STORY_STAGE_PLUS)
             available_rewards_str = self.emulator.get_screen_text(ui.STORY_AVAILABLE_REWARDS)
             available_rewards = is_strings_similar(available_rewards_str, "Daily Count 1/1")
@@ -153,30 +154,31 @@ class StoryAuto(Missions):
         logger.debug(f"Selecting Story team: {team_element.name}")
         self.emulator.click_button(team_element)
 
-    def do_missions(self, times=None, story_mission=None, story_stage=None):
+    def do_missions(self, story_mission=None):
         """Does missions.
 
-        :param int times: how many stages to complete.
         :param str story_mission: UI element that represent Story Mission.
         :param str story_stage: UI element that represent mission stage.
         """
-        self.start_missions(times=times, story_mission=story_mission, story_stage=story_stage)
+        self.start_missions(story_mission=story_mission)
         self.end_missions()
 
-    def start_missions(self, times=0, story_mission=None, story_stage=None):
+    def start_missions(self, story_mission=None):
         """Starts Story mission."""
 
-        logger.info(f"Params: {times} {story_mission} {story_stage}.")
+        logger.info(f"Params: {story_mission}.")
+
+        do_full_missions = True
 
         if self.open_story_missions() and self._open_story_mission(story_mission=story_mission):
-            logger.info(f"Starting Story {times} times.")
-            if not self._select_story_stage(story_stage=story_stage):
+            logger.info(f"Starting Story Auto.")
+            if not self._select_start_story_stage():
                 logger.info(f"Daily Rewards already obtained for Story Missions.")
                 return
             r_sleep(1)
             if not self.press_start_button():
                 return
-            while times > 0:
+            while do_full_missions:
                 # Running Auto Play
                 if wait_until(self.emulator.is_ui_element_on_screen, timeout=3,
                               ui_element=ui.STORY_AUTO_END_BATTLE_LABEL):
@@ -185,7 +187,7 @@ class StoryAuto(Missions):
                     self.emulator.drag(ui.STORY_AUTO_EXIT_POWER_SAVE_1, ui.STORY_AUTO_EXIT_POWER_SAVE_2, duration=0.5)
                     r_sleep(1)
                     self.emulator.drag(ui.STORY_AUTO_EXIT_POWER_SAVE_1, ui.STORY_AUTO_EXIT_POWER_SAVE_2, duration=0.5)
-                    times = 0
+                    do_full_missions = False
 
                 if wait_until(self.emulator.is_ui_element_on_screen, timeout=3,
                               ui_element=ui.STORY_AUTO_POWER_SAVE_BUTTON):
@@ -199,15 +201,16 @@ class StoryAuto(Missions):
                 if wait_until(self.emulator.is_ui_element_on_screen, timeout=3,
                               ui_element=ui.STORY_AUTO_CLOSE_BUTTON):
                     self.emulator.click_button(ui.STORY_AUTO_CLOSE_BUTTON)
-                    times = 0
+                    do_full_missions = False
 
-                if times > 0:
-                    logger.info("Battle Still Happening, continuing.")
+                if do_full_missions:
+                    logger.info("Battle Still chugging along, continuing to look for mission end.")
 
         logger.info("No more stages.")
         self.emulator.drag(ui.STORY_AUTO_EXIT_POWER_SAVE_1, ui.STORY_AUTO_EXIT_POWER_SAVE_2, duration=0.5)
         self.emulator.click_button(ui.STORY_AUTO_CLOSE_BUTTON)
         self.press_home_button(home_button=ui.STORY_AUTO_HOME_BUTTON)
+
     def press_start_button(self, start_button_ui=ui.STORY_ULTIMATE_CLEAR_BUTTON):
         """Presses start button of the mission."""
         self.select_team()
@@ -243,4 +246,40 @@ class StoryAuto(Missions):
         if wait_until(self.emulator.is_ui_element_on_screen, timeout=1,
                       ui_element=ui.ITEM_MAX_LIMIT_NOTIFICATION):
             self.emulator.click_button(ui.ITEM_MAX_LIMIT_NOTIFICATION)
+
         return True
+
+    def combine_story_fragment(self, story_mission=None, times=1):
+        logger.warning(f"Combine Story Fragment for {story_mission}.")
+        if self.open_story_missions() and self._open_story_mission(story_mission=story_mission):
+            while times > 0:
+                if wait_until(self.emulator.is_ui_element_on_screen, ui_element=ui.STORY_COMBINE_FRAGMENT_BUTTON):
+                    self.emulator.click_button(ui.STORY_COMBINE_FRAGMENT_BUTTON)
+                    if wait_until(self.emulator.is_ui_element_on_screen,
+                                  ui_element=ui.STORY_COMBINE_FRAGMENT_ULTIMATE_BUTTON):
+                        self.emulator.click_button(ui.STORY_COMBINE_FRAGMENT_ULTIMATE_BUTTON)
+                    if wait_until(self.emulator.is_ui_element_on_screen,
+                                  ui_element=ui.STORY_COMBINE_FRAGMENT_UI_COMBINE):
+                        self.emulator.click_button(ui.STORY_COMBINE_FRAGMENT_UI_COMBINE)
+
+                if wait_until(self.emulator.is_ui_element_on_screen, timeout=1, ui_element=ui.INVENTORY_FULL):
+                    self.emulator.click_button(ui.INVENTORY_FULL)
+                    logger.warning("Your inventory is full,cannot combine.")
+                    break
+
+                if wait_until(self.emulator.is_ui_element_on_screen,
+                              ui_element=ui.INSUFFICIENT_MATERIALS_NOTIFICATION):
+                    self.emulator.click_button(ui.INSUFFICIENT_MATERIALS_NOTIFICATION)
+                    self.emulator.click_button(ui.INSUFFICIENT_MATERIALS_NOTIFICATION)
+                    logger.warning("Insufficient Materials.")
+                    break
+
+                if wait_until(self.emulator.is_ui_element_on_screen, ui_element=ui.STORY_COMBINE_FRAGMENT_OK, timeout=5):
+                    logger.info("Successfully Combined.")
+                    self.emulator.click_button(ui.STORY_COMBINE_FRAGMENT_OK)
+                    times = times - 1
+
+                if times > 0:
+                    logger.info("Combining again.")
+
+        self.end_missions()

@@ -96,6 +96,7 @@ class MainWindow(QMainWindow, design.Ui_MainWindow):
         self.use_clear_tickets_checkbox.stateChanged.connect(self.use_clear_tickets_checkbox_state_changed)
         self.mission_team_spin_box.valueChanged.connect(self.mission_team_changed)
         self.timeline_team_spin_box.valueChanged.connect(self.timeline_team_changed)
+        self.story_team_spin_box.valueChanged.connect(self.story_team_changed)
         self.threads = ThreadPool()
         self._user_name_acquired = False
         self.background_functions_to_run()
@@ -153,6 +154,13 @@ class MainWindow(QMainWindow, design.Ui_MainWindow):
         logger.info(f"Team number for missions : {self.game.mission_team}")
         self.save_settings_to_file()
 
+    def story_team_changed(self):
+        """'Mission team' spinbox event when value is changed."""
+        team = self.story_team_spin_box.value()
+        self.game.set_story_team(team)
+        logger.info(f"Team number for story : {self.game.story_team}")
+        self.save_settings_to_file()
+
     def timeline_team_changed(self):
         """'Timeline team' spinbox event when value is changed."""
         team = self.timeline_team_spin_box.value()
@@ -188,12 +196,17 @@ class MainWindow(QMainWindow, design.Ui_MainWindow):
         self.emulator_type = game_settings.get("emulator_type")
         self.timeline_team_spin_box.setValue(game_settings.get("timeline_team"))
         self.mission_team_spin_box.setValue(game_settings.get("mission_team"))
+        if game_settings.get("story_team") is not None:
+            self.story_team_spin_box.setValue(game_settings.get("story_team"))
+        else:
+            self.story_team_spin_box.setValue(1)
         self.acquire_heroic_quest_rewards_checkbox.setChecked(game_settings.get("acquire_heroic_quest_rewards", True))
         self.use_clear_tickets_checkbox.setChecked(game_settings.get("use_clear_tickets", True))
         self.handle_network_errors_checkbox.setChecked(game_settings.get("handle_network_errors", False))
         self.init_emulator_and_game()
         self.game.set_mission_team(self.mission_team_spin_box.value())
         self.game.set_timeline_team(self.timeline_team_spin_box.value())
+        self.game.set_story_team(self.story_team_spin_box.value())
         self.game.ACQUIRE_HEROIC_QUEST_REWARDS = self.acquire_heroic_quest_rewards_checkbox.isChecked()
         self.game.USE_CLEAR_TICKETS = self.use_clear_tickets_checkbox.isChecked()
 
@@ -202,6 +215,7 @@ class MainWindow(QMainWindow, design.Ui_MainWindow):
         game_settings = {
             "timeline_team": self.game.timeline_team,
             "mission_team": self.game.mission_team,
+            "story_team": self.game.story_team,
             "acquire_heroic_quest_rewards": self.game.ACQUIRE_HEROIC_QUEST_REWARDS,
             "use_clear_tickets": self.game.USE_CLEAR_TICKETS,
             "handle_network_errors": self.handle_network_errors_checkbox.isChecked(),
@@ -221,8 +235,10 @@ class MainWindow(QMainWindow, design.Ui_MainWindow):
         game_settings = {
             "timeline_team": self.timeline_team_spin_box.value(),
             "mission_team": self.mission_team_spin_box.value(),
+            "story_team": self.story_team_spin_box.value(),
             "acquire_heroic_quest_rewards": self.acquire_heroic_quest_rewards_checkbox.isChecked(),
             "handle_network_errors": self.handle_network_errors_checkbox.isChecked(),
+            "use_clear_tickets": self.use_clear_tickets_checkbox.isChecked(),
             "emulator_name": self.emulator_name,
             "emulator_type": self.emulator_type,
             "game_app_rect": self.game_app_rect
