@@ -11,7 +11,7 @@ from lib.game.missions import HeroesReunited, IndustrialComplex, DeviantDiversio
 from lib.game.missions.epic_quest import SmallerHeadsPrevail, BrainsVsBlades, DeadlyAccuracy, DoomsDay, \
     FateOfTheUniverse, PlayingHero, MutualEnemy, BeginningOfTheChaos, TheFault, GoldenGods, VeiledSecret, TwistedWorld, \
     TheBigTwin, StupidXMen, TrueEvolution
-from lib.game.missions.events import EventMissions, WorldEvent, FuturePass
+from lib.game.missions.events import EventMissions, WorldEvent, FuturePass, EventQuest
 from lib.game.missions.story_auto import StoryAuto
 from lib.game.routines import DailyTrivia, Alliance, Friends, ArtifactStore, Artifact, CharacterStore
 
@@ -28,16 +28,27 @@ if __name__ == '__main__':
     game.USE_CLEAR_TICKETS = True  # Use Clear Tickets when Possible
     game.ACQUIRE_HEROIC_QUEST_REWARDS = True  # Setup ability to collect Heroic Quest rewards
 
-    # StoryAuto(game).do_missions(times=1, story_mission='STORY_MISSION_DIMENSIONAL_CLASH_NORMAL',
-    #                             story_stage='STORY_MISSION_DIMENSIONAL_CLASH_1_1')
-    StoryAuto(game).do_missions(times=1, story_mission='STORY_MISSION_TRUE_SHIELD_NORMAL',
-                                story_stage='STORY_MISSION_TRUE_SHIELD_9_1')
-    # StoryAuto(game).do_missions(times=1, story_mission='STORY_MISSION_ALL_WAR_NORMAL',
-    #                             story_stage='STORY_MISSION_ALL_WAR_11_1')
-    # StoryAuto(game).do_missions(times=1, story_mission='STORY_MISSION_FUTURE_ENDS_HERE_NORMAL',
-    #                             story_stage='STORY_MISSION_FUTURE_ENDS_HERE_13_1')
-    # StoryAuto(game).do_missions(times=1, story_mission='STORY_MISSION_DIMENSIONAL_CLASH_ULTIMATE', story_stage='STORY_MISSION_DIMENSIONAL_CLASH_1_1')
-    # StoryAuto(game).do_missions(times=1, story_mission='STORY_MISSION_TRUE_SHIELD_ULTIMATE', story_stage='STORY_MISSION_TRUE_SHIELD_9_1')
-    # StoryAuto(game).do_missions(times=1, story_mission='STORY_MISSION_ALL_WAR_ULTIMATE', story_stage='STORY_MISSION_ALL_WAR_11_1')
-    # StoryAuto(game).do_missions(times=1, story_mission='STORY_MISSION_FUTURE_ENDS_HERE_ULTIMATE', story_stage='STORY_MISSION_FUTURE_ENDS_HERE_13_1')
+    # StoryAuto(game).do_missions(story_mission='STORY_MISSION_DIMENSIONAL_CLASH_NORMAL')
+    # StoryAuto(game).do_missions(story_mission='STORY_MISSION_DIMENSIONAL_CLASH_ULTIMATE')
+    # StoryAuto(game).do_missions(story_mission='STORY_MISSION_TRUE_SHIELD_NORMAL')
+    # StoryAuto(game).do_missions(story_mission='STORY_MISSION_TRUE_SHIELD_ULTIMATE')
+    # StoryAuto(game).do_missions(story_mission='STORY_MISSION_ALL_WAR_NORMAL')
+    # StoryAuto(game).do_missions(story_mission='STORY_MISSION_ALL_WAR_ULTIMATE')
+    # StoryAuto(game).do_missions(story_mission='STORY_MISSION_FUTURE_ENDS_HERE_NORMAL')
+    # StoryAuto(game).do_missions(story_mission='STORY_MISSION_FUTURE_ENDS_HERE_ULTIMATE')
+
+    # StoryAuto(game).combine_story_fragment(story_mission='STORY_MISSION_DIMENSIONAL_CLASH_NORMAL')
+    # StoryAuto(game).combine_story_fragment(story_mission='STORY_MISSION_DIMENSIONAL_CLASH_ULTIMATE')
+    # StoryAuto(game).combine_story_fragment(story_mission='STORY_MISSION_TRUE_SHIELD_NORMAL')
+    # StoryAuto(game).combine_story_fragment(story_mission='STORY_MISSION_TRUE_SHIELD_ULTIMATE')
+    # StoryAuto(game).combine_story_fragment(story_mission='STORY_MISSION_ALL_WAR_NORMAL')
+    # StoryAuto(game).combine_story_fragment(story_mission='STORY_MISSION_ALL_WAR_ULTIMATE')
+    # StoryAuto(game).combine_story_fragment(story_mission='STORY_MISSION_FUTURE_ENDS_HERE_NORMAL')
+    # StoryAuto(game).combine_story_fragment(story_mission='STORY_MISSION_FUTURE_ENDS_HERE_ULTIMATE', times=9)
+
+    # GiantBossRaid(game).do_missions(times=1, max_rewards=True)
+
+    # AllianceBattle(game).do_missions()
+
+    EventQuest(game).acquire_all_rewards()
 
