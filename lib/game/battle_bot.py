@@ -64,11 +64,14 @@ class BattleBot:
 
     def skip_tap_the_screen(self):
         """Skips TAP SCREEN battle cutscene."""
-        if self.emulator.is_ui_element_on_screen(ui_element=ui.SKIP_CUTSCENE) or \
-                self.emulator.is_ui_element_on_screen(ui_element=self._skip_tap_screen_high) or \
-                self.emulator.is_ui_element_on_screen(ui_element=self._skip_tap_screen_low):
-            logger.debug("Skipping TAP THE SCREEN.")
-            self.emulator.click_button(ui.SKIP_TAP_THE_SCREEN)
+        # Detection for the tap screen happens during an animation - so doesn't always get hit
+        # removing the check here and just 'tap the screen' but might have unintended consequences.
+        # logger.debug("Check Skipping TAP THE SCREEN.")
+        # if self.emulator.is_ui_element_on_screen(ui_element=ui.SKIP_CUTSCENE) or \
+        #         self.emulator.is_ui_element_on_screen(ui_element=self._skip_tap_screen_high) or \
+        #         self.emulator.is_ui_element_on_screen(ui_element=self._skip_tap_screen_low):
+        # logger.debug("Skipping TAP THE SCREEN.")
+        self.emulator.click_button(ui.SKIP_TAP_THE_SCREEN)
 
     def skip_frost_beast(self):
         """SKips Frost Beast cutscene."""
