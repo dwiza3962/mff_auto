@@ -239,7 +239,7 @@ class Game(Notifications):
 
     def is_main_menu(self):
         """Checks if main menu screen is opened by looking for `TEAM` and `STORE` labels."""
-        return self.emulator.is_ui_element_on_screen(ui.TEAM) and self.emulator.is_ui_element_on_screen(ui.STORE)
+        return self.emulator.is_ui_element_on_screen(ui.TEAM) or self.emulator.is_ui_element_on_screen(ui.INVENTORY)
 
     def is_loading_circle(self):
         """Checks if loading circle is on screen. Looks for colors in special places."""

@@ -2,15 +2,21 @@
 
 TEAM = UIElement(name='TEAM')
 TEAM.description = "Team button in main menu. Main identifier that main menu is opened."
-TEAM.text_rect = Rect(0.006246382572988315, 0.4405371832572446, 0.10943132455015132, 0.521622934762648)
+TEAM.text_rect = Rect(0.011808921574089543, 0.45150611847747224, 0.10051859899344437, 0.5267027838247905)
 TEAM.text = "TEAM"
 TEAM.text_threshold = 155
 
 STORE = UIElement(name='STORE')
 STORE.description = "Team button in main menu. Main identifier that main menu is opened."
-STORE.text_rect = Rect(0.008489533485535331, 0.32356101715108876, 0.11391762637524536, 0.39800039558227884)
+STORE.text_rect = Rect(0.005760534477315353, 0.3225975493106406, 0.1045508570579605, 0.39421342106999147)
 STORE.text = "STORE"
 STORE.text_threshold = 155
+
+INVENTORY = UIElement(name='INVENTORY')
+INVENTORY.description = "Inventory button in main menu. Main identifier that main menu is opened."
+INVENTORY.text_rect = Rect(0.007776663509573417, 0.569672306880401, 0.17511537318699272, 0.6556113529916221)
+INVENTORY.text = "INVENTORY"
+INVENTORY.text_threshold = 155
 
 MAIN_MENU_AD = UIElement(name='MAIN_MENU_AD')
 MAIN_MENU_AD.description = "The X-button of closing ads in main menu."
