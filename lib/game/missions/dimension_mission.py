@@ -97,12 +97,12 @@ class DimensionMission(Missions):
             self.emulator.click_button(ui.DM_LEVEL_READY)
             return wait_until(self.emulator.is_ui_element_on_screen, ui_element=ui.DM_START_BUTTON)
 
-    def do_missions(self, times=0, difficulty=15, use_hidden_tickets=False, acquire_rewards=False, use_clear_tickets=False):
+    def do_missions(self, times=0, difficulty=15, use_hidden_tickets=False, acquire_rewards=False):
         """Does missions."""
         if times == 0:
             times = self.MISSION_MULTIPLIER * self.stages
         if times != 0:
-            self.start_missions(times=times, difficulty=difficulty, use_hidden_tickets=use_hidden_tickets, use_clear_tickets=use_clear_tickets)
+            self.start_missions(times=times, difficulty=difficulty, use_hidden_tickets=use_hidden_tickets, use_clear_tickets=self.game.USE_CLEAR_TICKETS)
         if acquire_rewards:
             self.acquire_rewards()
         self.end_missions()
@@ -143,8 +143,8 @@ class DimensionMission(Missions):
                     self.close_after_mission_notifications()
         logger.info("No more stages.")
 
-    def press_clear_button(self, start_button_ui=ui.DM_START_BUTTON, use_hidden_tickets=False, times=1):
-        logger.debug("Clicked Clear Tickets.")
+    def press_clear_button(self, start_button_ui=ui.DM_CLEAR_BUTTON, use_hidden_tickets=False, times=1):
+        logger.debug("Clicked Clear Tickets." + start_button_ui.text)
         if self.emulator.is_ui_element_on_screen(start_button_ui):
             self.select_team()
             self.emulator.click_button(start_button_ui)

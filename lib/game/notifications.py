@@ -184,6 +184,9 @@ class Notifications:
         if self.emulator.is_ui_element_on_screen(ui.STAGES_DONE_NOTIFICATION):
             self.emulator.click_button(ui.STAGES_DONE_NOTIFICATION)
             return True
+        if self.emulator.is_ui_element_on_screen(ui.ALL_AVAILABLE_ENTRIES_USED):
+            self.emulator.click_button(ui.ALL_AVAILABLE_ENTRIES_USED)
+            return True
         return False
 
     def close_rank_up_notification(self):

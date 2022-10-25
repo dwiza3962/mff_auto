@@ -193,6 +193,8 @@ class Missions(Notifications):
         if self.emulator.is_ui_element_on_screen(clear_button_ui):
             self.select_team()
             self.emulator.click_button(clear_button_ui)
+            logger.debug(f"Clicked USE x1 Clear Tickets button.   {self.mode_name}")
+            self.emulator.click_button(ui.CLEAR_TICKET_NOTIFICATION_X1)
             if wait_until(self.emulator.is_ui_element_on_screen, timeout=2, ui_element=ui.NOT_ENOUGH_ENERGY):
                 self.emulator.click_button(ui.NOT_ENOUGH_ENERGY)
                 logger.warning(f"Not enough energy for starting mission, current energy: {self.game.energy}")
@@ -203,8 +205,9 @@ class Missions(Notifications):
                 return False
             if wait_until(self.emulator.is_ui_element_on_screen, timeout=2, ui_element=ui.ALL_AVAILABLE_ENTRIES_USED):
                 self.emulator.click_button(ui.ALL_AVAILABLE_ENTRIES_USED)
-                logger.warning("All available entires are used.")
+                logger.warning("All available entries are used.")
                 return False
+            logger.debug(f"Checking {ui.ITEM_MAX_LIMIT_NOTIFICATION.text}")
             if wait_until(self.emulator.is_ui_element_on_screen, timeout=2, ui_element=ui.ITEM_MAX_LIMIT_NOTIFICATION):
                 self.emulator.click_button(ui.ITEM_MAX_LIMIT_NOTIFICATION)
             return True
@@ -221,7 +224,7 @@ class Missions(Notifications):
 
     def press_home_button(self, home_button=ui.HOME_BUTTON):
         """Presses home button of the mission."""
-        logger.debug(f"Clicking HOME button with UI Element: {home_button}.")
+        logger.debug(f"Clicking HOME button with UI Element: {home_button} {home_button.description}.")
         self.emulator.click_button(home_button)
         while not self.game.is_main_menu():
             self.close_after_mission_notifications(timeout=3)

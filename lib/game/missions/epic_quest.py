@@ -33,8 +33,6 @@ class EpicQuest(Missions):
                 if not self.press_clear_button(ui.CLEAR_BUTTON):
                     logger.error(f"Cannot Clear Epic Quest stage {self.mode_name}, exiting.")
                     return 0
-                logger.debug(f"Clicked USE x1 Clear Tickets button.   {self.mode_name}")
-                self.emulator.click_button(ui.CLEAR_TICKET_NOTIFICATION_X1)
                 if wait_until(self.emulator.is_ui_element_on_screen, timeout=1, ui_element=ui.NOT_ENOUGH_ENERGY):
                     self.emulator.click_button(ui.NOT_ENOUGH_ENERGY)
                     logger.warning(f"Not enough energy for starting mission, current energy: {self.game.energy}")
@@ -49,7 +47,8 @@ class EpicQuest(Missions):
                     if stage_num > 0:
                         logger.debug(f"{stage_num} stages left to complete.")
                     else:
-                        self.press_home_button()
+                        self.close_mission_notifications()
+                        # self.press_home_button()
         else:
             if not wait_until(self.emulator.is_ui_element_on_screen, ui_element=ui.START_BUTTON):
                 self.emulator.click_button(stage_button)
