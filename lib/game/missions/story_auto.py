@@ -194,17 +194,17 @@ class StoryAuto(Missions):
                     logger.info("In Battle Mode, Switching to Power Save.")
                     self.emulator.click_button(ui.STORY_AUTO_POWER_SAVE_BUTTON)
 
-                if wait_until(self.emulator.is_ui_element_on_screen, timeout=3,
-                              ui_element=ui.STORY_AUTO_PROGRESS_LABEL):
-                    logger.info("In Power Save Mode.")
+                # if wait_until(self.emulator.is_ui_element_on_screen, timeout=3,
+                #               ui_element=ui.STORY_AUTO_PROGRESS_LABEL):
+                #     # logger.info("In Power Save Mode.")
 
                 if wait_until(self.emulator.is_ui_element_on_screen, timeout=3,
                               ui_element=ui.STORY_AUTO_CLOSE_BUTTON):
                     self.emulator.click_button(ui.STORY_AUTO_CLOSE_BUTTON)
                     do_full_missions = False
 
-                if do_full_missions:
-                    logger.info("Battle Still chugging along, continuing to look for mission end.")
+                # if do_full_missions:
+                #     # logger.info("Battle Still chugging along, continuing to look for mission end.")
 
         logger.info("No more stages.")
         self.emulator.drag(ui.STORY_AUTO_EXIT_POWER_SAVE_1, ui.STORY_AUTO_EXIT_POWER_SAVE_2, duration=0.5)
@@ -255,12 +255,14 @@ class StoryAuto(Missions):
             while times > 0:
                 if wait_until(self.emulator.is_ui_element_on_screen, ui_element=ui.STORY_COMBINE_FRAGMENT_BUTTON):
                     self.emulator.click_button(ui.STORY_COMBINE_FRAGMENT_BUTTON)
-                    if wait_until(self.emulator.is_ui_element_on_screen,
-                                  ui_element=ui.STORY_COMBINE_FRAGMENT_ULTIMATE_BUTTON):
-                        self.emulator.click_button(ui.STORY_COMBINE_FRAGMENT_ULTIMATE_BUTTON)
-                    if wait_until(self.emulator.is_ui_element_on_screen,
-                                  ui_element=ui.STORY_COMBINE_FRAGMENT_UI_COMBINE):
-                        self.emulator.click_button(ui.STORY_COMBINE_FRAGMENT_UI_COMBINE)
+
+                if wait_until(self.emulator.is_ui_element_on_screen,
+                              ui_element=ui.STORY_COMBINE_FRAGMENT_ULTIMATE_BUTTON):
+                    self.emulator.click_button(ui.STORY_COMBINE_FRAGMENT_ULTIMATE_BUTTON)
+
+                if wait_until(self.emulator.is_ui_element_on_screen,
+                              ui_element=ui.STORY_COMBINE_FRAGMENT_UI_COMBINE):
+                    self.emulator.click_button(ui.STORY_COMBINE_FRAGMENT_UI_COMBINE)
 
                 if wait_until(self.emulator.is_ui_element_on_screen, timeout=1, ui_element=ui.INVENTORY_FULL):
                     self.emulator.click_button(ui.INVENTORY_FULL)
