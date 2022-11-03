@@ -73,6 +73,13 @@ class QueueItem(QListWidgetItem):
         :rtype: str
         """
         additional_text = ''
+
+        story_mission = self.parameters.get("story_mission")
+        if story_mission:
+            story_mission_formatted = story_mission.replace('STORY_MISSION_', '')
+            story_mission_formatted = story_mission_formatted.replace('_', ' ')
+            additional_text += f" - {story_mission_formatted.title()}"
+
         if self.parameters.get("action"):
             hour_offset = self.parameters.get("hour_offset")
             if hour_offset:
@@ -80,19 +87,25 @@ class QueueItem(QListWidgetItem):
             queue_index = self.parameters.get("queue_index")
             if queue_index:
                 additional_text += f"#{queue_index}"
+            # logger.debug(f"Action Params: {self.parameters}")
             return f"[Action] {self.mode_name.title()} {additional_text}"
         if self.parameters.get("event"):
+            # logger.debug(f"Event Params: {self.parameters}")
             return f"[Event] {self.mode_name.title()} {additional_text}"
         farm_bios = self.parameters.get("farm_shifter_bios")
         battle = self.parameters.get("battle")
         mission_mode = self.parameters.get("mode")
         times = self.parameters.get("times")
+        roster_mode = self.parameters.get("roster_mode")
+        # logger.debug(f"Mode: {self.mode_name} Mission Params: {self.parameters}")
         if farm_bios:
             additional_text += " [Bio]"
         if battle:
             additional_text += f" [{battle.replace('_', ' ').title()}]"
         if mission_mode:
             additional_text += f" [{mission_mode.replace('_', ' ').title()}]"
+        if roster_mode:
+            additional_text += f" [{roster_mode.replace('_', ' ').title()}]"
         if times and not self.parameters.get("all_stages"):
             additional_text += f" [{times} stages]"
         else:
