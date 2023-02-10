@@ -34,7 +34,7 @@ class DispatchMission:
         self.emulator.drag(ui.DISPATCH_DRAG_LEFT_POSITION, ui.DISPATCH_DRAG_RIGHT_POSITION)
         r_sleep(1)
         self.emulator.drag(ui.DISPATCH_DRAG_LEFT_POSITION, ui.DISPATCH_DRAG_RIGHT_POSITION)
-        r_sleep(1)
+        r_sleep(2)
 
     def _acquire_rewards_from_sectors(self):
         """Acquired rewards from Dispatch Mission's sectors starting from the left one."""
@@ -49,3 +49,5 @@ class DispatchMission:
                 r_sleep(0.3)  # In order to not be fast as Sonic
             logger.debug("Acquired all available rewards.")
             self.emulator.click_button(ui.DISPATCH_ACQUIRE_OK_BUTTON)
+        else:
+            logger.debug("Failed to Find Acquire Button")

@@ -109,6 +109,10 @@ class Alliance(Notifications):
                     logger.info("Item was bought.")
                     self.emulator.click_button(ui.ALLIANCE_STORE_PURCHASE_CLOSE)
                     return True
+                if wait_until(self.emulator.is_ui_element_on_screen, ui_element=ui.ALLIANCE_STORE_PURCHASE_CLOSE2):
+                    logger.info("Item was bought.")
+                    self.emulator.click_button(ui.ALLIANCE_STORE_PURCHASE_CLOSE2)
+                    return True
                 if wait_until(self.emulator.is_ui_element_on_screen, ui_element=ui.ALLIANCE_STORE_PURCHASE_NO_TOKENS):
                     logger.info("Not enough Alliance Tokens for purchase.")
                     self.emulator.click_button(ui.ALLIANCE_STORE_PURCHASE_NO_TOKENS)

@@ -223,9 +223,17 @@ class ArtifactStore(Store):
                 self.emulator.click_button(ui.STORE_ARTIFACT_FREE_CHEST_PURCHASE)
                 if wait_until(self.emulator.is_ui_element_on_screen, ui_element=ui.SKIP_CUTSCENE):
                     self.emulator.click_button(ui.SKIP_CUTSCENE)
+                    r_sleep(2)  # Wait for animation
                     if wait_until(self.emulator.is_ui_element_on_screen,
                                   ui_element=ui.STORE_ARTIFACT_FREE_CHEST_PURCHASE_CLOSE):
                         self.emulator.click_button(ui.STORE_ARTIFACT_FREE_CHEST_PURCHASE_CLOSE)
+                        r_sleep(1)  # Wait for animation
+                        logger.info("Free Artifact Chest acquired.")
+                        self.emulator.click_button(ui.MENU_BACK)
+                        r_sleep(1)  # Wait for animation
+                    if wait_until(self.emulator.is_ui_element_on_screen,
+                                  ui_element=ui.STORE_ARTIFACT_FREE_CHEST_PURCHASE_CLOSE2):
+                        self.emulator.click_button(ui.STORE_ARTIFACT_FREE_CHEST_PURCHASE_CLOSE2)
                         r_sleep(1)  # Wait for animation
                         logger.info("Free Artifact Chest acquired.")
                         self.emulator.click_button(ui.MENU_BACK)
